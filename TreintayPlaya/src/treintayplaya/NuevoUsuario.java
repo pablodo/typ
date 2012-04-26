@@ -151,11 +151,9 @@ public class NuevoUsuario extends javax.swing.JInternalFrame {
         // Agregar el Usuario a la Base
         if(valEmail && valPass) {
             try {
+                java.sql.Connection cnx = Conexion.getInstance().getConnection();
 
-                Class.forName("org.gjt.mm.mysql.Driver");
-                java.sql.Connection cnx = java.sql.DriverManager.getConnection("jdbc:mysql://localhost/TreintaYPlaya", "root", "");
-
-                java.sql.PreparedStatement pstm = cnx.prepareStatement("insert into UsuariosWeb (usrEmail, usrPass, usrNivel, usrActivo) values (?,?,?,?)") ;
+                java.sql.PreparedStatement pstm = cnx.prepareStatement("insert into UsuariosWeb (usrEmail, usrPass, usrNivel, usrActivo, usrPropID) values (?,AES_ENCRYPT(?, 'typ2012'),?,?,0)") ;
 
                 pstm.setString(1, jtxfUsuario.getText());
                 pstm.setString(2, String.valueOf(jpfPass.getPassword())/*toString()*/);
@@ -167,10 +165,6 @@ public class NuevoUsuario extends javax.swing.JInternalFrame {
                 javax.swing.JOptionPane.showMessageDialog(this, "El Usuario Se Registró Correctamente.", "Registro", javax.swing.JOptionPane.INFORMATION_MESSAGE);
 
                 cnx.close();
-
-            } catch (ClassNotFoundException cnfe) {
-                javax.swing.JOptionPane.showMessageDialog(this, cnfe.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
-
             } catch (java.sql.SQLException sqle) {
                 javax.swing.JOptionPane.showMessageDialog(this, sqle.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
             }

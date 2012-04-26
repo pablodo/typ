@@ -10,6 +10,11 @@
  */
 package treintayplaya;
 
+import java.sql.SQLException;
+import java.util.GregorianCalendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author sergio
@@ -18,13 +23,35 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
 
     /** Creates new form AltaAlquiler */
     java.sql.Connection cnx;
-    String [] ufID;
-    String [] cliID;
+    VistaActividadAdmin tabla;
+    GregorianCalendar fechaActual;
+    Thread fechas;
+    private Alquiler alquiler;
+    private Integer operacion;
+    String[] titulos = {"Reserva Provisoria", "Confirmar Reserva", "Cancelar Reserva"};
+    
+    
+    public AltaAlquiler(VistaActividadAdmin tabla, Alquiler alquiler, Integer operacion) {
+        initComponents();
+        this.tabla = tabla;
+        this.operacion = operacion;
+        cnx = Conexion.getInstance().getConnection();
+        cargaCombos();
+        this.alquiler = alquiler;
+        if (operacion == Alquiler.RESERVAR){
+            setearFechas();
+        }else{
+            cargarAlquiler(alquiler.id);
+        }
+        setTitle(titulos[operacion]);
+    }
     
     public AltaAlquiler() {
-        initComponents();
-        cnx = Conexion.getInstance().getConnection();
-        this.cargaCombos();
+        this(null, new Alquiler(), 0);
+    }
+    
+    public AltaAlquiler(VistaActividadAdmin tabla){
+        this(tabla, new Alquiler(), 0);
     }
 
     /** This method is called from within the constructor to
@@ -41,15 +68,15 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         jlblOperador = new javax.swing.JLabel();
         jlblAlqOperador = new javax.swing.JLabel();
         jlblUF = new javax.swing.JLabel();
-        jcbxUF = new javax.swing.JComboBox();
+        jcbxUF = new treintayplaya.ComboTabla();
         jlblCliente = new javax.swing.JLabel();
-        jcbxCliente = new javax.swing.JComboBox();
+        jcbxCliente = new treintayplaya.ComboTabla();
+        ((ComboTabla)jcbxCliente).addItem(" ", 0);
         jlblFIN = new javax.swing.JLabel();
         jdcFIN = new com.toedter.calendar.JDateChooser();
         jlblFOUT = new javax.swing.JLabel();
         jdcFOUT = new com.toedter.calendar.JDateChooser();
         jpnlPax = new javax.swing.JPanel();
-        jlblCPax = new javax.swing.JLabel();
         jcbxAdultos = new javax.swing.JComboBox();
         jlblAdultos = new javax.swing.JLabel();
         jcbxMenores = new javax.swing.JComboBox();
@@ -58,9 +85,10 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         jlblBebes = new javax.swing.JLabel();
         jcbxDesayunos = new javax.swing.JComboBox();
         jlblDesayunos = new javax.swing.JLabel();
-        jlblAlqCPax = new javax.swing.JLabel();
+        jlblDesayunos1 = new javax.swing.JLabel();
+        jcbxDesayunos1 = new javax.swing.JComboBox();
         jlblContrato = new javax.swing.JLabel();
-        jcbxContrato = new javax.swing.JComboBox();
+        jcbxContrato = new treintayplaya.ComboTabla();
         jlblvencimiento = new javax.swing.JLabel();
         jdcVencimiento = new com.toedter.calendar.JDateChooser();
         jlblImporte = new javax.swing.JLabel();
@@ -68,12 +96,16 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         jbtnAceptar = new javax.swing.JButton();
         jbtnCancelar = new javax.swing.JButton();
         jpnlDetPagos = new javax.swing.JPanel();
+        jcbxFormasPago = new ComboTabla();
         jLabel1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
         jLabel2 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox();
+        jcbxCuentaOperacion = new ComboTabla();
         jlblCuenta = new javax.swing.JLabel();
-        jcbxCuenta = new javax.swing.JComboBox();
+        jcbxCuentaImputacion = new ComboTabla();
+        jbtnNuevoInquilino = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jLabel3 = new javax.swing.JLabel();
 
         setClosable(true);
         setTitle("Alta de Reserva Provisoria");
@@ -86,13 +118,20 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
 
         jlblOperador.setText("Operador:");
 
+        jlblAlqOperador.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
+        jlblAlqOperador.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jlblAlqOperador.setText(DatosGlobales.usrEmail);
         jlblAlqOperador.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
 
         jlblUF.setText("Unidad Funcional:");
 
-        jlblCliente.setText("Inquilino:");
+        jcbxUF.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jcbxUFItemStateChanged(evt);
+            }
+        });
 
-        jcbxCliente.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " " }));
+        jlblCliente.setText("Inquilino:");
 
         jlblFIN.setText("Fecha IN:");
 
@@ -102,9 +141,8 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
 
         jdcFOUT.setDateFormatString("dd-MM-yyyy");
 
-        jpnlPax.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        jlblCPax.setText("Ocupantes:");
+        jpnlPax.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Ocupantes", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(255, 0, 0)));
+        jpnlPax.setName("");
 
         jcbxAdultos.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" }));
 
@@ -122,53 +160,52 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
 
         jlblDesayunos.setText("Desayunos");
 
-        jlblAlqCPax.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jlblAlqCPax.setText("0A-0M-0B-0D");
-        jlblAlqCPax.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        jlblDesayunos1.setText("Desayunos Imputados");
+
+        jcbxDesayunos1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" }));
 
         org.jdesktop.layout.GroupLayout jpnlPaxLayout = new org.jdesktop.layout.GroupLayout(jpnlPax);
         jpnlPax.setLayout(jpnlPaxLayout);
         jpnlPaxLayout.setHorizontalGroup(
             jpnlPaxLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jpnlPaxLayout.createSequentialGroup()
-                .addContainerGap()
-                .add(jlblCPax, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 91, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(18, 18, 18)
-                .add(jcbxAdultos, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jlblAdultos)
-                .add(18, 18, 18)
-                .add(jcbxMenores, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 71, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jlblMenores)
-                .add(18, 18, 18)
-                .add(jcbxBebes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 70, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jlblBebes)
+                .add(jcbxAdultos, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 57, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .add(jcbxDesayunos, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(jlblAdultos)
+                .add(30, 30, 30)
+                .add(jcbxMenores, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 59, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(3, 3, 3)
+                .add(jlblMenores)
+                .add(27, 27, 27)
+                .add(jcbxBebes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 70, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(3, 3, 3)
+                .add(jlblBebes)
+                .add(96, 96, 96)
+                .add(jcbxDesayunos, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 60, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jlblDesayunos)
-                .add(18, 18, 18)
-                .add(jlblAlqCPax, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 127, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .add(11, 11, 11)
+                .add(jcbxDesayunos1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 60, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jlblDesayunos1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 152, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(22, 22, 22))
         );
         jpnlPaxLayout.setVerticalGroup(
             jpnlPaxLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jpnlPaxLayout.createSequentialGroup()
-                .addContainerGap(16, Short.MAX_VALUE)
-                .add(jpnlPaxLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jlblCPax)
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .add(jpnlPaxLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
                     .add(jcbxAdultos, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jlblAdultos)
                     .add(jcbxMenores, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jlblMenores)
                     .add(jcbxBebes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jlblBebes)
-                    .add(jlblAlqCPax)
                     .add(jcbxDesayunos, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jlblDesayunos))
-                .add(7, 7, 7))
+                    .add(jlblDesayunos)
+                    .add(jcbxDesayunos1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jlblDesayunos1))
+                .addContainerGap())
         );
 
         jlblContrato.setText("Contrato:");
@@ -179,9 +216,10 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
 
         jlblImporte.setText("Importe Total:");
 
-        jftfImporte.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
+        jftfImporte.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
         jftfImporte.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
+        jbtnAceptar.setMnemonic('A');
         jbtnAceptar.setText("Aceptar");
         jbtnAceptar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -189,6 +227,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
             }
         });
 
+        jbtnCancelar.setMnemonic('C');
         jbtnCancelar.setText("Cancelar");
         jbtnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -196,15 +235,11 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
             }
         });
 
-        jpnlDetPagos.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Detalles de Pagos", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 13), new java.awt.Color(255, 0, 0))); // NOI18N
+        jpnlDetPagos.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Detalles de Pagos", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(255, 0, 0)));
 
         jLabel1.setText("Forma de Pago:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         jLabel2.setText("Cuenta de Operación:");
-
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jlblCuenta.setText("Cuenta de Imputación:");
 
@@ -216,15 +251,15 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .add(jLabel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 115, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(18, 18, 18)
-                .add(jComboBox1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 246, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(jcbxFormasPago, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 246, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(45, 45, 45)
                 .add(jpnlDetPagosLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                    .add(jLabel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
+                    .add(jLabel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(jlblCuenta, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jpnlDetPagosLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jcbxCuenta, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(jComboBox2, 0, 255, Short.MAX_VALUE))
+                    .add(jcbxCuentaImputacion, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(jcbxCuentaOperacion, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jpnlDetPagosLayout.setVerticalGroup(
@@ -233,15 +268,26 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .add(jpnlDetPagosLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel1)
-                    .add(jComboBox1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jcbxFormasPago, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jLabel2)
-                    .add(jComboBox2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jcbxCuentaOperacion, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(18, 18, 18)
                 .add(jpnlDetPagosLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jlblCuenta)
-                    .add(jcbxCuenta, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(16, Short.MAX_VALUE))
+                    .add(jcbxCuentaImputacion, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        jbtnNuevoInquilino.setText("Nuevo");
+        jbtnNuevoInquilino.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnNuevoInquilinoActionPerformed(evt);
+            }
+        });
+
+        jScrollPane1.setViewportView(jTextArea1);
+
+        jLabel3.setText("Observaciones:");
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -252,94 +298,113 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jpnlDetPagos, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(layout.createSequentialGroup()
-                        .add(0, 0, Short.MAX_VALUE)
-                        .add(jbtnAceptar)
-                        .add(18, 18, 18)
-                        .add(jbtnCancelar))
-                    .add(jpnlPax, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(layout.createSequentialGroup()
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-                            .add(org.jdesktop.layout.GroupLayout.LEADING, layout.createSequentialGroup()
-                                .add(jlblFIN, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 105, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .add(26, 26, 26)
-                                .add(jdcFIN, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE))
-                            .add(layout.createSequentialGroup()
-                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-                                        .add(org.jdesktop.layout.GroupLayout.LEADING, jlblFecha, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .add(org.jdesktop.layout.GroupLayout.LEADING, jlblUF, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .add(jlblContrato, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 105, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                                .add(18, 18, 18)
-                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                                    .add(jlblAlqFecha, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .add(jcbxUF, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .add(jcbxContrato, 0, 263, Short.MAX_VALUE))))
-                        .add(44, 44, 44)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(layout.createSequentialGroup()
-                                .add(jlblImporte, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 153, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .add(18, 18, 18)
-                                .add(jftfImporte))
-                            .add(layout.createSequentialGroup()
-                                .add(jlblvencimiento)
-                                .add(18, 18, 18)
-                                .add(jdcVencimiento, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .add(layout.createSequentialGroup()
-                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-                                    .add(jlblFOUT, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .add(jlblOperador, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .add(jlblCliente, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE))
-                                .add(18, 18, 18)
+                                .add(jlblUF, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 131, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(9, 9, 9)
                                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                    .add(jdcFOUT, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .add(jlblAlqOperador, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jcbxCliente, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
+                                    .add(jdcFIN, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 307, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                    .add(jcbxUF, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 127, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                            .add(jlblFIN, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 105, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(layout.createSequentialGroup()
+                                .add(jlblFecha, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 122, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(18, 18, 18)
+                                .add(jlblAlqFecha, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 307, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(layout.createSequentialGroup()
+                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(layout.createSequentialGroup()
+                                        .add(jlblOperador, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 80, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                        .add(18, 18, 18))
+                                    .add(layout.createSequentialGroup()
+                                        .add(jlblCliente, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .add(7, 7, 7)))
+                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(layout.createSequentialGroup()
+                                        .add(jcbxCliente, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 245, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .add(jbtnNuevoInquilino))
+                                    .add(jlblAlqOperador, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .add(layout.createSequentialGroup()
+                                .add(jlblFOUT)
+                                .add(25, 25, 25)
+                                .add(jdcFOUT, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .add(layout.createSequentialGroup()
+                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(jlblvencimiento)
+                                    .add(jlblImporte, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 153, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(jftfImporte)
+                                    .add(jdcVencimiento, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                        .add(layout.createSequentialGroup()
+                            .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 451, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(jbtnAceptar)
+                            .add(18, 18, 18)
+                            .add(jbtnCancelar))
+                        .add(layout.createSequentialGroup()
+                            .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                .add(jLabel3)
+                                .add(jpnlPax, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 905, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(layout.createSequentialGroup()
+                                    .add(jlblContrato, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 105, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                    .add(36, 36, 36)
+                                    .add(jcbxContrato, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 263, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                            .add(0, 0, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
                 .addContainerGap()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
                     .add(jlblOperador, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(jlblAlqOperador, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(jlblFecha, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(jlblAlqFecha, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 28, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(18, 18, 18)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                        .add(jcbxUF, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(jlblUF))
-                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                        .add(jlblCliente)
-                        .add(jcbxCliente, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                .add(18, 18, 18)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                    .add(jdcFOUT, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jlblAlqFecha, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 28, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jlblFecha, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
+                    .add(jcbxUF, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jlblCliente)
+                    .add(jcbxCliente, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jbtnNuevoInquilino)
+                    .add(jlblUF))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
                     .add(jdcFIN, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jlblFIN)
-                    .add(jlblFOUT))
-                .add(18, 18, 18)
+                    .add(jlblFOUT)
+                    .add(jdcFOUT, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(jpnlPax, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(18, 18, 18)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                        .add(jlblContrato)
-                        .add(jcbxContrato, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
+                    .add(jlblContrato)
+                    .add(jcbxContrato, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jlblvencimiento)
                     .add(jdcVencimiento, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(18, 18, 18)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
                     .add(jlblImporte)
                     .add(jftfImporte, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(17, 17, 17)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(jpnlDetPagos, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .add(18, 18, 18)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jLabel3)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 51, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(7, 7, 7)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jbtnAceptar)
                     .add(jbtnCancelar))
                 .addContainerGap())
         );
+
+        jpnlPax.getAccessibleContext().setAccessibleName("");
+        jpnlDetPagos.getAccessibleContext().setAccessibleDescription("");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -348,72 +413,108 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         dispose();
     }//GEN-LAST:event_jbtnCancelarActionPerformed
 
+    
     private void jbtnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnAceptarActionPerformed
-        try {
-            java.sql.PreparedStatement pstm = cnx.prepareStatement("insert into Alquileres (alqFecha, alqUF, alqCliente, alqFIN, alqFOUT, alqTotal) values (?, ?, ?, ?, ?, ?)");
-            
-            pstm.setString(1, jlblFecha.getText());
-            pstm.setString(2, jcbxUF.getSelectedItem().toString());
-            pstm.setString(3, jcbxCliente.getSelectedItem().toString());
-            pstm.setString(4, jdcFIN.getDateFormatString());
-            pstm.setString(5, jdcFOUT.getDateFormatString());
-            pstm.setString(6, jftfImporte.getText());
-            
-            int result = pstm.executeUpdate();
-            
-            if(result == 1) {
+        if (validaFormulario()){
+            boolean insert1 = false;
+            try {
+                cnx.setAutoCommit(false);
+                insert1 = insertAlquiler();
+                if (insert1){
+                    if (alquiler.id == 0){
+                        alquiler.id = getUltimoAlquiler();
+                    }else{
+                        deleteDetalleAlquiler(alquiler.id);
+                    }
+                    insertDetalleAlquiler(alquiler.id);
+                }
+            } catch(java.sql.SQLException sqle) {
+                sqle.printStackTrace();
+                try {
+                    cnx.rollback();
+                } catch (SQLException ex) {}
+            } finally {
+                try {
+                    cnx.setAutoCommit(true);
+                } catch (SQLException ex) {}
+            }
+            if (insert1){
+                if (tabla != null)
+                    tabla.updateTable();
                 dispose();
             }
-
-        } catch(java.sql.SQLException sqle) {
-            
         }
     }//GEN-LAST:event_jbtnAceptarActionPerformed
 
-    public void cargaCombos() {
+    private void jcbxUFItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbxUFItemStateChanged
+        this.setCuentas();
+    }//GEN-LAST:event_jcbxUFItemStateChanged
+
+    private void jbtnNuevoInquilinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnNuevoInquilinoActionPerformed
+        AltaInquilinos inquilinos = new AltaInquilinos(this);
+        AppPrincipal.desktopPane.add(inquilinos);
+        inquilinos.show();
+        inquilinos.toFront();
+    }//GEN-LAST:event_jbtnNuevoInquilinoActionPerformed
+
+    private void cargaCombos() {
         try {
             
-            jlblAlqFecha.setText(DatosGlobales.getFechaActual());
+            java.sql.Statement stmUFs        = cnx.createStatement();
+            java.sql.Statement stmFormasPago = cnx.createStatement();
+            java.sql.Statement stmContratos  = cnx.createStatement();
             
-            java.sql.Statement stmUFs       = cnx.createStatement();
-            java.sql.Statement stmClientes  = cnx.createStatement();
+            java.sql.ResultSet rstUFs        = stmUFs.executeQuery("select ufNombre, ufID from UnidadesFuncionales where ufTipo > 0 order by ufNombre");
+            java.sql.ResultSet rstFormasPago = stmFormasPago.executeQuery("select fpNombre, fpID from FormasPago order by fpID");
+            java.sql.ResultSet rstContratos  = stmContratos.executeQuery("select conTipo, ID from Contratos order by conTipo");
             
-            java.sql.ResultSet rstUFs       = stmUFs.executeQuery("select ufNombre from UnidadesFuncionales order by ufNombre");
-            java.sql.ResultSet rstClientes  = stmClientes.executeQuery("select clipApellido from Clientes order by cliApellido");
+            while(rstUFs.next()){
+                int ufID = rstUFs.getInt("ufID");
+                ((ComboTabla)jcbxUF).addItem(rstUFs.getString("ufNombre"), ufID);
+            }
             
-            //ufID = new String[rstUFs.]
-            while(rstUFs.next())
-                jcbxUF.addItem(rstUFs.getString("ufNombre"));
-            
-            while(rstClientes.next())
-                jcbxCliente.addItem(rstClientes.getString("cliApellido"));
+            while(rstFormasPago.next()){
+                int fpID = rstFormasPago.getInt("fpID");
+                ((ComboTabla)jcbxFormasPago).addItem(rstFormasPago.getString("fpNombre"), fpID);
+            }
+
+            while(rstContratos.next()){
+                int conID = rstContratos.getInt("ID");
+                ((ComboTabla)jcbxContrato).addItem(rstContratos.getString("conTipo"), conID);
+            }
             
             rstUFs.close();
-            rstClientes.close();
+            rstFormasPago.close();
+            rstContratos.close();
             
+            stmUFs.close();
+            stmFormasPago.close();
+            stmContratos.close();
+            
+            this.cargarInquilinos();
         } catch(java.sql.SQLException sqle) {
-            
+            sqle.printStackTrace();
         }        
     }
 
-//    public static String getFechaActual() {
-//        java.util.Date ahora = new java.util.Date();
-//        java.text.SimpleDateFormat formateador = new java.text.SimpleDateFormat("dd-MM-yyyy");
-//        return formateador.format(ahora);
-//    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JComboBox jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JButton jbtnAceptar;
     private javax.swing.JButton jbtnCancelar;
+    private javax.swing.JButton jbtnNuevoInquilino;
     private javax.swing.JComboBox jcbxAdultos;
     private javax.swing.JComboBox jcbxBebes;
-    private javax.swing.JComboBox jcbxCliente;
+    public javax.swing.JComboBox jcbxCliente;
     private javax.swing.JComboBox jcbxContrato;
-    private javax.swing.JComboBox jcbxCuenta;
+    private javax.swing.JComboBox jcbxCuentaImputacion;
+    private javax.swing.JComboBox jcbxCuentaOperacion;
     private javax.swing.JComboBox jcbxDesayunos;
+    private javax.swing.JComboBox jcbxDesayunos1;
+    private javax.swing.JComboBox jcbxFormasPago;
     private javax.swing.JComboBox jcbxMenores;
     private javax.swing.JComboBox jcbxUF;
     private com.toedter.calendar.JDateChooser jdcFIN;
@@ -421,15 +522,14 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
     private com.toedter.calendar.JDateChooser jdcVencimiento;
     private javax.swing.JFormattedTextField jftfImporte;
     private javax.swing.JLabel jlblAdultos;
-    private javax.swing.JLabel jlblAlqCPax;
     private javax.swing.JLabel jlblAlqFecha;
     private javax.swing.JLabel jlblAlqOperador;
     private javax.swing.JLabel jlblBebes;
-    private javax.swing.JLabel jlblCPax;
     private javax.swing.JLabel jlblCliente;
     private javax.swing.JLabel jlblContrato;
     private javax.swing.JLabel jlblCuenta;
     private javax.swing.JLabel jlblDesayunos;
+    private javax.swing.JLabel jlblDesayunos1;
     private javax.swing.JLabel jlblFIN;
     private javax.swing.JLabel jlblFOUT;
     private javax.swing.JLabel jlblFecha;
@@ -441,4 +541,193 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jpnlDetPagos;
     private javax.swing.JPanel jpnlPax;
     // End of variables declaration//GEN-END:variables
+
+    void selectUF(Integer id) {
+        ((ComboTabla)jcbxUF).setSelectedItemById(id);
+        setCuentas();
+    }
+
+    void setFechaInicial(GregorianCalendar fechaInicial) {
+        jdcFIN.setCalendar(fechaInicial);
+    }
+    
+    void setFechaFinal(GregorianCalendar fechaFinal) {
+        jdcFOUT.setCalendar(fechaFinal);
+    }
+
+    private boolean validaFormulario() {
+        return true;
+    }
+    
+    public void setCuentas(){
+        if (((ComboTabla)jcbxUF).getIdCount() > 0){
+            ((ComboTabla)jcbxCuentaOperacion).removeAllItems();
+            ((ComboTabla)jcbxCuentaImputacion).removeAllItems();
+            try {
+                java.sql.PreparedStatement pstm = cnx.prepareStatement("SELECT propID, propNCuenta FROM Propietarios WHERE (propUF = ? or propUF = 0) AND propNCuenta != ''");
+
+                int propUF = ((ComboTabla) jcbxUF).getSelectedId();
+                pstm.setInt(1, propUF);
+
+                java.sql.ResultSet rst = pstm.executeQuery();
+
+                while(rst.next()){
+                    int propID = rst.getInt("propID");
+                    ((ComboTabla)jcbxCuentaOperacion).addItem(rst.getString("propNCuenta"), propID);
+                    ((ComboTabla)jcbxCuentaImputacion).addItem(rst.getString("propNCuenta"), propID);
+                }
+
+                rst.close();
+                pstm.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(AltaAlquiler.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    private boolean insertAlquiler() throws SQLException{
+        String query = "INSERT INTO Alquileres (alqFecha, alqEstado, alqOperador, alqUF, alqCliente, alqFIN, alqFOUT, "
+                               + "alqOcupantesA, alqOcupantesM, alqOcupantesB, alqOcupantesD, alqContrato, alqTotal, "
+                               + "alqVencimiento, alqFormaPago, alqCuentaImp, alqCuentaOpe) VALUES "
+                               + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        if (alquiler.id > 0){
+            query = "UPDATE Alquileres SET alqFecha=?, alqEstado=?, alqOperador=?, alqUF=?, alqCliente=?, alqFIN=?, alqFOUT=?, "
+                               + "alqOcupantesA=?, alqOcupantesM=?, alqOcupantesB=?, alqOcupantesD=?, alqContrato=?, alqTotal=?, "
+                               + "alqVencimiento=?, alqFormaPago=?, alqCuentaImp=?, alqCuentaOpe=?";
+        }
+
+        java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
+
+        int ufID = ((ComboTabla)jcbxUF).getSelectedId();
+        int cliID = ((ComboTabla)jcbxCliente).getSelectedId();
+        String fIN = FechasFormatter.getFechaString(jdcFIN.getCalendar());
+        String fOUT = FechasFormatter.getFechaString(jdcFOUT.getCalendar());
+        String vencimiento = FechasFormatter.getFechaString(jdcVencimiento.getCalendar());
+
+        pstm.setString( 1, jlblAlqFecha.getText());
+        pstm.setInt   ( 2, operacion); 
+        pstm.setInt   ( 3, DatosGlobales.usrID);
+        pstm.setInt   ( 4, ufID);
+        pstm.setInt   ( 5, cliID);
+        pstm.setString( 6, fIN);
+        pstm.setString( 7, fOUT);
+        pstm.setInt   ( 8, Integer.valueOf(jcbxAdultos.getSelectedItem().toString()));
+        pstm.setInt   ( 9, Integer.valueOf(jcbxMenores.getSelectedItem().toString()));
+        pstm.setInt   (10, Integer.valueOf(jcbxBebes.getSelectedItem().toString()));
+        pstm.setInt   (11, Integer.valueOf(jcbxDesayunos.getSelectedItem().toString()));
+        pstm.setInt   (12, ((ComboTabla)jcbxContrato).getSelectedId());
+        pstm.setDouble(13, Double.valueOf(jftfImporte.getValue().toString()));
+        pstm.setString(14, vencimiento);
+        pstm.setInt   (15, ((ComboTabla)jcbxFormasPago).getSelectedId());
+        pstm.setInt   (16, ((ComboTabla)jcbxCuentaImputacion).getSelectedId());
+        pstm.setInt   (17, ((ComboTabla)jcbxCuentaOperacion).getSelectedId());
+
+        int result = pstm.executeUpdate();
+        return result == 1;
+    }
+
+    private int getUltimoAlquiler() throws SQLException {
+        String query = "SELECT LAST_INSERT_ID() as id FROM Alquileres LIMIT 1";
+        java.sql.Statement st  = cnx.createStatement();
+        java.sql.ResultSet rst = st.executeQuery(query);
+        rst.next();
+        int id = rst.getInt("id");
+        rst.close();
+        st.close();
+        return id;
+    }
+
+    private void insertDetalleAlquiler(int alqID) throws SQLException {
+        long firstDayMillis = jdcFIN.getCalendar().getTimeInMillis();
+        long lastDayMillis = jdcFOUT.getCalendar().getTimeInMillis();
+        int dias = (int)((lastDayMillis - firstDayMillis) / 1000 / 60 / 60 / 24);
+        GregorianCalendar calendar = (GregorianCalendar)jdcFIN.getCalendar();
+                
+        String query = "INSERT INTO DetAlquileres (dalqAlq, dalqFecha) VALUES ";
+        for (int i=0; i<=dias; i++){         
+            String aux = "(" + String.valueOf(alqID) + ", '" + FechasFormatter.getFechaSimpleString(calendar) + "')";
+            if (i < dias)
+                aux += ", ";
+            
+            query += aux;
+            calendar.add(GregorianCalendar.DATE, 1);
+        }
+
+        java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
+        pstm.executeUpdate();
+    }
+
+    private void setearFechas() {
+        fechas = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while ( ! isClosed()){
+                    try {
+                        fechaActual = new GregorianCalendar();
+                        GregorianCalendar fechaVencimiento = (GregorianCalendar)fechaActual.clone();
+                        fechaVencimiento.add(GregorianCalendar.HOUR, 48);
+                        jlblAlqFecha.setText(FechasFormatter.getFechaString(fechaActual));
+                        jdcVencimiento.setCalendar(fechaVencimiento);
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(AltaAlquiler.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        });
+        fechas.start();
+    }
+
+    private void cargarAlquiler(Integer alquilerID) {
+        if (alquilerID < 1){
+            throw new NullPointerException("alquilerID debe ser mayor a 0");
+        }
+        try {
+            String query = "SELECT * FROM Alquileres INNER JOIN UsuariosWeb ON alqOperador= usrID WHERE alqID = ?";
+            java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
+            pstm.setInt(1, alquilerID);
+            java.sql.ResultSet rst = pstm.executeQuery();
+            
+            rst.next();
+            jlblAlqFecha.setText(rst.getString("alqFecha").substring(0, 19));
+            jdcVencimiento.setCalendar(FechasFormatter.getFechaCalendar(rst.getString("alqVencimiento")));
+            jlblOperador.setText(rst.getString("usrEmail"));
+            selectUF(rst.getInt("alqUF"));
+            ((ComboTabla)jcbxCliente).setSelectedItemById(rst.getInt("alqCliente"));
+            jdcFIN.setCalendar(FechasFormatter.getFechaCalendar(rst.getString("alqFIN")));
+            jdcFOUT.setCalendar(FechasFormatter.getFechaCalendar(rst.getString("alqFOUT")));
+            jcbxAdultos.setSelectedItem(String.valueOf(rst.getInt("alqOcupantesA")));
+            jcbxMenores.setSelectedItem(String.valueOf(rst.getInt("alqOcupantesM")));
+            jcbxBebes.setSelectedItem(String.valueOf(rst.getInt("alqOcupantesB")));
+            jcbxDesayunos.setSelectedItem(String.valueOf(rst.getInt("alqOcupantesD")));
+            ((ComboTabla)jcbxContrato).setSelectedItemById(rst.getInt("alqContrato"));
+            jftfImporte.setValue(rst.getDouble("alqTotal"));
+            ((ComboTabla)jcbxFormasPago).setSelectedItemById(rst.getInt("alqFormaPago"));
+            ((ComboTabla)jcbxCuentaImputacion).setSelectedItemById(rst.getInt("alqCuentaImp"));
+            ((ComboTabla)jcbxCuentaOperacion).setSelectedItemById(rst.getInt("alqCuentaOpe"));
+        } catch (SQLException ex) {
+            Logger.getLogger(AltaAlquiler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+
+    private void deleteDetalleAlquiler(Integer id) throws SQLException {
+        String query = "DELETE FROM DetAlquileres WHERE dalqAlq = ?";
+        java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
+        pstm.setInt(1, id);
+        pstm.executeUpdate();
+    }
+
+    void cargarInquilinos() throws SQLException {
+        jcbxCliente.removeAllItems();
+        java.sql.Statement stmClientes   = cnx.createStatement();
+        java.sql.ResultSet rstClientes   = stmClientes.executeQuery("select cliID, cliApellido from Clientes order by cliApellido");
+        while(rstClientes.next()){
+            int cliID = rstClientes.getInt("cliID");
+            ((ComboTabla)jcbxCliente).addItem(rstClientes.getString("cliApellido"), cliID);
+        }
+        rstClientes.close();
+        stmClientes.close();
+    }
+
 }

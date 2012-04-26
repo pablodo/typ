@@ -4,6 +4,10 @@
  */
 package treintayplaya;
 
+import java.util.ArrayList;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author sergio
@@ -12,24 +16,14 @@ public class ConsultaPropietarios extends javax.swing.JInternalFrame {
 
     public static javax.swing.table.DefaultTableModel modelo;
     public static java.sql.Connection cnx;
+    private static ArrayList<Integer> IDs;
     
     /**
      * Creates new form ConsultaClientes
      */
     public ConsultaPropietarios() {
         modelo = new javax.swing.table.DefaultTableModel();
-
-        try {
-            Class.forName("org.gjt.mm.mysql.Driver");
-        
-            cnx = java.sql.DriverManager.getConnection("jdbc:mysql://sergioioppolo.com.ar/sdioppolo_typ", "sdioppolo_root", "sdi7346DB");
-            
-        } catch(ClassNotFoundException cnfe) {
-            cnfe.printStackTrace();
-        } catch(java.sql.SQLException sqle) {
-            sqle.printStackTrace();
-        }
-
+        cnx = Conexion.getInstance().getConnection();
         initComponents();
     }
 
@@ -51,13 +45,9 @@ public class ConsultaPropietarios extends javax.swing.JInternalFrame {
 
         setTitle("Consulta de Propietarios");
 
-        jScrollPane1.setColumnHeaderView(null);
-
         jTable1.setModel(modelo);
         jTable1.setGridColor(new java.awt.Color(204, 204, 204));
-        jTable1.setShowGrid(true);
         jTable1.getTableHeader().setReorderingAllowed(false);
-        modelo.addColumn("Unidad Funcional");
         modelo.addColumn("Apellido");
         modelo.addColumn("Nombre");
         modelo.addColumn("Teléfono");
@@ -82,6 +72,11 @@ public class ConsultaPropietarios extends javax.swing.JInternalFrame {
         });
 
         jbtnActualizar.setText("Actualizar");
+        jbtnActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnActualizarActionPerformed(evt);
+            }
+        });
 
         jbtnCerrar.setText("Cerrar");
         jbtnCerrar.addActionListener(new java.awt.event.ActionListener() {
@@ -120,7 +115,7 @@ public class ConsultaPropietarios extends javax.swing.JInternalFrame {
                     .add(jbtnBorrar)
                     .add(jbtnActualizar)
                     .add(jbtnCerrar))
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         pack();
@@ -138,12 +133,12 @@ public class ConsultaPropietarios extends javax.swing.JInternalFrame {
 
     private void jbtnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnBorrarActionPerformed
         try {
-
+            
             java.sql.PreparedStatement pstm = cnx.prepareStatement("delete from Propietarios where propApellido = ? and propNombre = ? and propEmail = ?");
 
-            pstm.setString(1, (String) jTable1.getValueAt(jTable1.getSelectedRow(), 1));
-            pstm.setString(2, (String) jTable1.getValueAt(jTable1.getSelectedRow(), 2));
-            pstm.setString(3, (String) jTable1.getValueAt(jTable1.getSelectedRow(), 6));
+            pstm.setString(1, (String) jTable1.getValueAt(jTable1.getSelectedRow(), 0));
+            pstm.setString(2, (String) jTable1.getValueAt(jTable1.getSelectedRow(), 1));
+            pstm.setString(3, (String) jTable1.getValueAt(jTable1.getSelectedRow(), 4));
             
             int result = pstm.executeUpdate();
             
@@ -156,19 +151,33 @@ public class ConsultaPropietarios extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jbtnBorrarActionPerformed
 
+    private void jbtnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnActualizarActionPerformed
+        if (jTable1.getSelectedRow() >= 0) {
+            int propID = IDs.get(this.jTable1.getSelectedRow());
+            AltaPropietarios aPropietarios = new AltaPropietarios(propID);
+            AppPrincipal.desktopPane.add(aPropietarios);
+            aPropietarios.show();
+        }
+    }//GEN-LAST:event_jbtnActualizarActionPerformed
+
     public static void actualizaTablaPropietarios() {
         try {
-
+            
+            while (modelo.getRowCount() > 0)
+                modelo.removeRow(0);
+            
             java.sql.Statement stm = cnx.createStatement();
 
-            java.sql.ResultSet rst = stm.executeQuery("select propUF, propApellido, propNombre, propTelefono, propCelular, propEmail from Propietarios order by propUF");
-
+            java.sql.ResultSet rst = stm.executeQuery("select propID, propApellido, propNombre, propTelefono, propCelular, propEmail from Propietarios");
+            IDs = new ArrayList<Integer>();
+            
             while(rst.next()) {
-
-                Object [] fila = new Object[6];
-
-                for(int i = 0; i < 6; i++)
-                    fila[i] = rst.getObject(i + 1);
+                IDs.add(rst.getInt("propID"));
+                
+                Object [] fila = new Object[5];
+                
+                for(int i = 1; i < 6; i++)
+                    fila[i-1] = rst.getObject(i+1);
 
                 modelo.addRow(fila);
             }

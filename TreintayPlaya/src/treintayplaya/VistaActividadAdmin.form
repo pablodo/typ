@@ -20,7 +20,8 @@
       <SubComponents>
         <MenuItem class="javax.swing.JMenuItem" name="reservarMenuItem">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Reservar"/>
+            <Property name="text" type="java.lang.String" value="Reserva Provisoria"/>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="reservarMenuItemActionPerformed"/>
@@ -29,6 +30,7 @@
         <MenuItem class="javax.swing.JMenuItem" name="confirmarMenuItem">
           <Properties>
             <Property name="text" type="java.lang.String" value="Confirmar Reserva"/>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="confirmarMenuItemActionPerformed"/>
@@ -36,7 +38,8 @@
         </MenuItem>
         <MenuItem class="javax.swing.JMenuItem" name="cerrarMenuItem">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Cerrar Contrato"/>
+            <Property name="text" type="java.lang.String" value="Cancelar Contrato"/>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cerrarMenuItemActionPerformed"/>
@@ -45,10 +48,17 @@
         <MenuItem class="javax.swing.JMenuItem" name="anularMenuItem">
           <Properties>
             <Property name="text" type="java.lang.String" value="Anular"/>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="anularMenuItemActionPerformed"/>
           </Events>
+        </MenuItem>
+        <MenuItem class="javax.swing.JMenuItem" name="reservaPropietarioMenuItem">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Reserva Propietario"/>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
         </MenuItem>
       </SubComponents>
     </Container>
@@ -80,7 +90,7 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Component id="jToolBar1" alignment="0" pref="996" max="32767" attributes="0"/>
-          <Component id="jScrollPane1" alignment="0" pref="996" max="32767" attributes="0"/>
+          <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -88,8 +98,7 @@
           <Group type="102" alignment="0" attributes="0">
               <Component id="jToolBar1" min="-2" pref="25" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollPane1" pref="541" max="32767" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jScrollPane1" pref="516" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -110,6 +119,9 @@
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnAnteriorActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.Box$Filler" name="filler1">
           <Properties>
@@ -121,9 +133,11 @@
             <AuxValue name="classDetails" type="java.lang.String" value="Box.Filler.HorizontalGlue"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JLabel" name="jlblMes">
+        <Component class="javax.swing.JLabel" name="jlblMesActual">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Mes Actual"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="this.getMesActual()" type="code"/>
+            </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.Box$Filler" name="filler2">
@@ -143,15 +157,13 @@
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnSiguienteActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
-      <Properties>
-        <Property name="rowHeaderView" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
-          <ComponentRef name="null"/>
-        </Property>
-      </Properties>
       <AuxValues>
         <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
       </AuxValues>
@@ -160,56 +172,32 @@
       <SubComponents>
         <Component class="javax.swing.JTable" name="jtblVistaMensual">
           <Properties>
-            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="32" rowCount="32">
-                <Column editable="true" title="UF" type="java.lang.Object"/>
-                <Column editable="true" title="1" type="java.lang.Object"/>
-                <Column editable="true" title="2" type="java.lang.Object"/>
-                <Column editable="true" title="3" type="java.lang.Object"/>
-                <Column editable="true" title="4" type="java.lang.Object"/>
-                <Column editable="true" title="5" type="java.lang.Object"/>
-                <Column editable="true" title="6" type="java.lang.Object"/>
-                <Column editable="true" title="7" type="java.lang.Object"/>
-                <Column editable="true" title="8" type="java.lang.Object"/>
-                <Column editable="true" title="9" type="java.lang.Object"/>
-                <Column editable="true" title="10" type="java.lang.Object"/>
-                <Column editable="true" title="11" type="java.lang.Object"/>
-                <Column editable="true" title="12" type="java.lang.Object"/>
-                <Column editable="true" title="13" type="java.lang.Object"/>
-                <Column editable="true" title="14" type="java.lang.Object"/>
-                <Column editable="true" title="15" type="java.lang.Object"/>
-                <Column editable="true" title="16" type="java.lang.Object"/>
-                <Column editable="true" title="17" type="java.lang.Object"/>
-                <Column editable="true" title="18" type="java.lang.Object"/>
-                <Column editable="true" title="19" type="java.lang.Object"/>
-                <Column editable="true" title="20" type="java.lang.Object"/>
-                <Column editable="true" title="21" type="java.lang.Object"/>
-                <Column editable="true" title="22" type="java.lang.Object"/>
-                <Column editable="true" title="23" type="java.lang.Object"/>
-                <Column editable="true" title="24" type="java.lang.Object"/>
-                <Column editable="true" title="25" type="java.lang.Object"/>
-                <Column editable="true" title="26" type="java.lang.Object"/>
-                <Column editable="true" title="27" type="java.lang.Object"/>
-                <Column editable="true" title="28" type="java.lang.Object"/>
-                <Column editable="true" title="29" type="java.lang.Object"/>
-                <Column editable="true" title="30" type="java.lang.Object"/>
-                <Column editable="true" title="31" type="java.lang.Object"/>
-              </Table>
+            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="modelo" type="code"/>
             </Property>
-            <Property name="cellSelectionEnabled" type="boolean" value="true"/>
+            <Property name="cellSelectionEnabled" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="true" type="code"/>
+            </Property>
+            <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
+              <TableColumnModel selectionModel="2"/>
+            </Property>
             <Property name="componentPopupMenu" type="javax.swing.JPopupMenu" editor="org.netbeans.modules.form.ComponentChooserEditor">
               <ComponentRef name="jpmEstado"/>
             </Property>
             <Property name="gridColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="cc" green="cc" red="cc" type="rgb"/>
             </Property>
-            <Property name="showGrid" type="boolean" value="true"/>
             <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
               <TableHeader reorderingAllowed="false" resizingAllowed="false"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jtblVistaMensualMouseClicked"/>
+          </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="jtblVistaMensual.setValueAt(&quot;2 AMB al Frente&quot;, 0, 0);&#xa;jtblVistaMensual.setValueAt(&quot;UF 1&quot;, 1, 0);&#xa;jtblVistaMensual.setValueAt(&quot;UF 2&quot;, 2, 0);&#xa;jtblVistaMensual.setValueAt(&quot;UF 4&quot;, 3, 0);&#xa;jtblVistaMensual.setValueAt(&quot;UF 6&quot;, 4, 0);&#xa;jtblVistaMensual.setValueAt(&quot;UF 12&quot;, 5, 0);&#xa;jtblVistaMensual.setValueAt(&quot;UF 13&quot;, 6, 0);&#xa;jtblVistaMensual.setValueAt(&quot;UF 17&quot;, 7, 0);&#xa;jtblVistaMensual.setValueAt(&quot;UF 22 A&quot;, 8, 0);&#xa;jtblVistaMensual.setValueAt(&quot;UF 24&quot;, 9, 0);&#xa;jtblVistaMensual.setValueAt(&quot;UF 28&quot;, 10, 0);&#xa;&#xa;jtblVistaMensual.setValueAt(&quot;3 AMB 1 B&#xd1; al Frente&quot;, 11, 0);&#xa;jtblVistaMensual.setValueAt(&quot;UF 23&quot;, 12, 0);&#xa;&#xa;jtblVistaMensual.setValueAt(&quot;3 AMB 1 B&#xd1; Lateral&quot;, 13, 0);&#xa;jtblVistaMensual.setValueAt(&quot;UF 7&quot;, 14, 0);&#xa;jtblVistaMensual.setValueAt(&quot;UF 9&quot;, 15, 0);&#xa;jtblVistaMensual.setValueAt(&quot;UF 11&quot;, 16, 0);&#xa;jtblVistaMensual.setValueAt(&quot;UF 18&quot;, 17, 0);&#xa;jtblVistaMensual.setValueAt(&quot;UF 20&quot;, 18, 0);&#xa;&#xa;jtblVistaMensual.setValueAt(&quot;3 AMB 2 B&#xd1; al Frente&quot;, 19, 0);&#xa;jtblVistaMensual.setValueAt(&quot;UF 3&quot;, 20, 0);&#xa;jtblVistaMensual.setValueAt(&quot;UF 5&quot;, 21, 0);&#xa;jtblVistaMensual.setValueAt(&quot;UF 14&quot;, 22, 0);&#xa;jtblVistaMensual.setValueAt(&quot;UF 16&quot;, 23, 0);&#xa;jtblVistaMensual.setValueAt(&quot;UF 15&quot;, 24, 0);&#xa;jtblVistaMensual.setValueAt(&quot;UF 26&quot;, 25, 0);&#xa;jtblVistaMensual.setValueAt(&quot;UF 25&quot;, 26, 0);&#xa;jtblVistaMensual.setValueAt(&quot;UF 27&quot;, 27, 0);&#xa;jtblVistaMensual.setValueAt(&quot;4 AMB 2 B&#xd1; Lateral&quot;, 28, 0);&#xa;"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTable(){&#xa;    public boolean isCellEditable(int row, int col){&#xa;        return false;&#xa;    }&#xa;}"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="jtblVistaMensual.setShowGrid(true);"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="this.updateTable();"/>
           </AuxValues>
         </Component>
       </SubComponents>

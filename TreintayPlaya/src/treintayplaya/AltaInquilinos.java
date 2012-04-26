@@ -4,19 +4,46 @@
  */
 package treintayplaya;
 
+import java.awt.event.KeyEvent;
 import java.sql.SQLException;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author sergio
  */
 public class AltaInquilinos extends javax.swing.JInternalFrame {
-
+    
+    private Integer cliID;
+    private javax.swing.text.MaskFormatter formatter;
+    private AltaAlquiler altaAlquiler = null;
+    private java.sql.Connection cnx;
     /**
      * Creates new form AltaInquilinos
      */
     public AltaInquilinos() {
+        this(null, 0);
+    }
+    
+    public AltaInquilinos(Integer cliID) {
+        this(null, cliID);
+    }
+    
+    public AltaInquilinos(AltaAlquiler altaAlquiler){
+        this(altaAlquiler, 0);
+    }
+
+    public AltaInquilinos(AltaAlquiler altaAlquiler, Integer cliID) {     
         initComponents();
+        this.cliID = cliID;
+        this.altaAlquiler = altaAlquiler;
+        if (cliID > 0 && this.altaAlquiler == null){
+            setTitle("Modificar inquilino");
+            cargarCliente(cliID);
+        }
     }
 
     /**
@@ -53,6 +80,20 @@ public class AltaInquilinos extends javax.swing.JInternalFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        jftfDNI.setVerifyInputWhenFocusTarget(false);
+        jftfDNI.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jftfDNIFocusLost(evt);
+            }
+        });
+        jftfDNI.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jftfDNIKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jftfDNIKeyTyped(evt);
+            }
+        });
 
         jlblApellido.setText("Apellido:");
 
@@ -65,6 +106,7 @@ public class AltaInquilinos extends javax.swing.JInternalFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        jftfTelefono.setVerifyInputWhenFocusTarget(false);
 
         jlblCelular.setText("Celular:");
 
@@ -73,6 +115,7 @@ public class AltaInquilinos extends javax.swing.JInternalFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        jftfCelular.setVerifyInputWhenFocusTarget(false);
 
         jlblEmail.setText("Email:");
 
@@ -115,7 +158,7 @@ public class AltaInquilinos extends javax.swing.JInternalFrame {
                     .add(jftfTelefono)
                     .add(jftfCelular)
                     .add(jtxfEmail))
-                .addContainerGap(10, Short.MAX_VALUE))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -160,33 +203,52 @@ public class AltaInquilinos extends javax.swing.JInternalFrame {
 
     private void jbtnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnAceptarActionPerformed
         try {
-            Class.forName("org.gjt.mm.mysql.Driver");
-            
-            java.sql.Connection cnx = java.sql.DriverManager.getConnection("jdbc:mysql://sergioioppolo.com.ar/sdioppolo_typ", "sdioppolo_root", "sdi7346DB");
-            
-            java.sql.PreparedStatement pstm = cnx.prepareStatement("insert into Clientes (cliDNI, cliApellido, cliNombre, cliTelefono, cliCelular, cliEmail) values (?, ?, ?, ?, ?, ?)");
-            
-            pstm.setString(1, jftfDNI.getText());
-            pstm.setString(2, jtxfApellido.getText());
-            pstm.setString(3, jtxfNombre.getText());
-            pstm.setString(4, jftfTelefono.getText());
-            pstm.setString(5, jftfCelular.getText());
-            pstm.setString(6, jtxfEmail.getText());
-            
-            int result = pstm.executeUpdate();
-            
+            cnx = Conexion.getInstance().getConnection();
+            cnx.setAutoCommit(false);
+            int result = insertCliente();
             if(result == 1) {
-                Object [] fila = {jtxfApellido.getText(), jtxfNombre.getText(), jftfTelefono.getText(), jftfCelular.getText(), jtxfEmail.getText()};
-                ConsultaInquilinos.modelo.addRow(fila);
-                dispose();
+                if (this.altaAlquiler == null){
+                    ConsultaInquilinos.actualizaTablaClientes();
+                }else{
+                    cliID = getUltimoCliente();
+                    if (cliID > 0){
+                        altaAlquiler.cargarInquilinos();
+                        ((ComboTabla)altaAlquiler.jcbxCliente).setSelectedItemById(cliID);
+                    }else{
+                        throw new java.sql.SQLException();
+                    }
+                }
+                
             }
-
-        } catch(ClassNotFoundException cnfe) {
-            
+ 
         } catch(java.sql.SQLException sqle) {
-            
+            sqle.printStackTrace();
+            try {
+                cnx.rollback();
+            } catch (SQLException ex) {}
+        }finally{
+            try {
+                cnx.setAutoCommit(true);
+            } catch (SQLException ex) {}
         }
+        dispose();
     }//GEN-LAST:event_jbtnAceptarActionPerformed
+
+    private void jftfDNIKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jftfDNIKeyPressed
+        
+    }//GEN-LAST:event_jftfDNIKeyPressed
+
+    private void jftfDNIKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jftfDNIKeyTyped
+        controlNumberEvent(evt);
+    }//GEN-LAST:event_jftfDNIKeyTyped
+
+    private void jftfDNIFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jftfDNIFocusLost
+        String text = String.valueOf(jftfDNI.getValue());
+        if(text.endsWith(" ")){
+            text = " ".concat(text.substring(0, text.length()-1));
+        }
+        jftfDNI.setValue(text);
+    }//GEN-LAST:event_jftfDNIFocusLost
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jbtnAceptar;
@@ -204,4 +266,56 @@ public class AltaInquilinos extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jtxfEmail;
     private javax.swing.JTextField jtxfNombre;
     // End of variables declaration//GEN-END:variables
+
+    private void cargarCliente(Integer cliID) {
+        try{
+            cnx = Conexion.getInstance().getConnection();
+            String query = "SELECT * FROM Clientes WHERE cliID = ?";
+            java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
+            pstm.setInt(1, cliID);
+            java.sql.ResultSet rst = pstm.executeQuery();
+            
+            rst.next();
+            jtxfApellido.setText(rst.getString("cliApellido"));
+            jtxfNombre.setText(rst.getString("cliNombre"));
+            jtxfEmail.setText(rst.getString("cliEmail"));
+            jftfDNI.setText(rst.getString("cliDNI"));
+            jftfCelular.setText(rst.getString("cliCelular").replaceAll("-", ""));
+            jftfTelefono.setText(rst.getString("cliTelefono"));
+            
+        }catch(java.sql.SQLException sqle){
+            sqle.printStackTrace();
+        }
+    }
+
+    private void controlNumberEvent(KeyEvent evt) {
+        if (evt.getKeyChar() != ' '){
+            try{
+                int aux = Integer.parseInt(String.valueOf(evt.getKeyChar()));
+            }catch(NumberFormatException nfe){
+                evt.consume();
+            }
+        }
+    }
+
+    private int insertCliente() throws SQLException {
+        java.sql.PreparedStatement pstm = cnx.prepareStatement("insert into Clientes (cliDNI, cliApellido, cliNombre, cliTelefono, cliCelular, cliEmail) values (?, ?, ?, ?, ?, ?)");
+            
+        pstm.setString(1, jftfDNI.getText());
+        pstm.setString(2, jtxfApellido.getText());
+        pstm.setString(3, jtxfNombre.getText());
+        pstm.setString(4, jftfTelefono.getText());
+        pstm.setString(5, jftfCelular.getText());
+        pstm.setString(6, jtxfEmail.getText());
+
+        return pstm.executeUpdate();
+    }
+
+    private Integer getUltimoCliente() throws SQLException {
+        java.sql.Statement stm = cnx.createStatement();
+        java.sql.ResultSet rst = stm.executeQuery("SELECT LAST_INSERT_ID() as id FROM Clientes");
+        rst.next();
+        cliID = rst.getInt("id");
+        return cliID;
+    }
 }

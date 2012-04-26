@@ -21,22 +21,26 @@ SET time_zone = "+00:00";
 --
 CREATE TABLE IF NOT EXISTS `Alquileres` (
   `alqID` int(11) NOT NULL AUTO_INCREMENT,
-  `alqFecha` date NOT NULL,
-  `alqOperador` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `alqEstado` int(11) NOT NULL,
+  `alqFecha` datetime NOT NULL,
+  `alqOperador` int(11) NOT NULL,
   `alqUF` int(11) NOT NULL,
   `alqCliente` int(11) NOT NULL,
-  `alqFIN` date NOT NULL,
-  `alqFOUT` date NOT NULL,
+  `alqFIN` datetime NOT NULL,
+  `alqFOUT` datetime NOT NULL,
   `alqOcupantesA` int(11) NOT NULL,
   `alqOcupantesM` int(11) NOT NULL,
   `alqOcupantesB` int(11) NOT NULL,
-  `alqOcupantesD` int(11) NOT NULL,
+  `alqDesayunos` int(11) NOT NULL,
+  `alqDesayunosImp` int(11) NOT NULL,
   `alqContrato` int(11) NOT NULL,
   `alqTotal` decimal(10,2) NOT NULL,
-  `alqVencimiento` date NOT NULL,
+  `alqTotalImp` decimal(10,2) NOT NULL,
+  `alqVencimiento` datetime NOT NULL,
   `alqFormaPago` int(11) NOT NULL,
   `alqCuentaImp` int(11) NOT NULL,
   `alqCuentaOpe` int(11) NOT NULL,
+  `alqObservaciones` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`alqID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 -- --------------------------------------------------------
@@ -59,7 +63,9 @@ INSERT INTO `Bancos` (`bancoID`, `bancoNombre`) VALUES
 (1, 'H.S.B.C.'),
 (4, 'Nación'),
 (5, 'Provincia'),
-(2, 'Santander Rio');
+(2, 'Santander Rio'),
+(8, 'Macro'),
+(9, 'CITI');
 -- --------------------------------------------------------
 --
 -- Estructura de tabla para la tabla `Clientes`
@@ -78,10 +84,10 @@ CREATE TABLE IF NOT EXISTS `Clientes` (
 -- Volcado de datos para la tabla `Clientes`
 --
 INSERT INTO `Clientes` (`cliID`, `cliDNI`, `cliApellido`, `cliNombre`, `cliTelefono`, `cliCelular`, `cliEmail`) VALUES
-(2, '23456789', 'Bbbb', 'Bbb', '123-4567-8909-8765', '098-8765-4322-3456', 'Bbbb@gmail.com'),
-(3, '21345678', 'Cccc', 'Ccc', '987-9876-7676-5644', '765-6756-5456-4564', 'Cccc@gmail.com'),
-(4, '87766554', 'Dddd', 'Ddd', '765-7644-5586-7978', '543-3654-5765-8768', 'Dddd@gmail.com'),
-(5, '12321324', 'kjknkjnkjn', 'knkk', '988-9786-8756-6456', '798-7986-8768-6686', 'gjgdjshgd@jvjhghj.sfgs');
+(1, '23456789', 'Bbbb', 'Bbb', '123-4567-8909-8765', '098-8765-4322-3456', 'Bbbb@gmail.com'),
+(2, '21345678', 'Cccc', 'Ccc', '987-9876-7676-5644', '765-6756-5456-4564', 'Cccc@gmail.com'),
+(3, '87766554', 'Dddd', 'Ddd', '765-7644-5586-7978', '543-3654-5765-8768', 'Dddd@gmail.com'),
+(4, '12321324', 'kjknkjnkjn', 'knkk', '988-9786-8756-6456', '798-7986-8768-6686', 'gjgdjshgd@jvjhghj.sfgs');
 -- --------------------------------------------------------
 --
 -- Estructura de tabla para la tabla `Conceptos`
@@ -127,7 +133,7 @@ CREATE TABLE IF NOT EXISTS `DetAlquileres` (
 --
 CREATE TABLE IF NOT EXISTS `Movimientos` (
   `movID` int(11) NOT NULL AUTO_INCREMENT,
-  `movFecha` date NOT NULL,
+  `movFecha` datetime NOT NULL,
   `movTipo` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
   `movImporte` decimal(10,2) NOT NULL,
   `movUF` int(11) NOT NULL,
@@ -152,15 +158,21 @@ CREATE TABLE IF NOT EXISTS `Propietarios` (
   `propNCuenta` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `propCBU` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
   `propTCuenta` int(11) NOT NULL,
-  `propUF` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `propUF` int(11) NOT NULL,
   PRIMARY KEY (`propID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 --
 -- Volcado de datos para la tabla `Propietarios`
 --
 INSERT INTO `Propietarios` (`propID`, `propApellido`, `propNombre`, `propEmail`, `propTelefono`, `propCelular`, `propCUIT`, `propBanco`, `propNCuenta`, `propCBU`, `propTCuenta`, `propUF`) VALUES
-(1, 'Patri', 'Juan Antonio', 'jjjuan23jjj@hotmail.com', '1234-1234-1234', '1234-1234-1234', '20-11985872-1', 1, '6096034138', ' 1500609900060960341382', 1, '1'),
-(2, 'IOPPOLO', 'Sergio', 'sdfadsfsf ', '2342-3432-3454', '2432-3454-5456', '44-54324323-4', 3, '325345454553534', '435435345345435', 4, 'UF 4');
+( 1, 'Patri',         'Juan Antonio', 'jjjuan23jjj@hotmail.com',    '011-155-010-2757', '011-155-010-2757', '20-11985872-1', 1, '6096-03413-8', '1500609900060960341382', 1, 1),
+( 2, 'Dal Lago',      'Mercedes',     'carodal_lago@hotmail.com',   '011 154 969 1701', '011 154 969 1701', '',              0, '',             '',                       0, 1),
+( 3, 'Menaged',       'David',        'menageddavid@hotmail.com',   '011 154 083 1845', '011 154 083 1845', '27-14026259-0', 6, '143-14296-4',  '0170143840000001429646', 2, 2),
+( 4, 'Muebles París', 'Ariel',        'mueblesparis@speedy.com.ar', '',                 '0223 4964050',     '',              0, '',             '',                       0, 3),
+( 5, 'Muebles París', 'Daniel',       '',                           '0223 154 473 760', '0223 4964050',     '30-70068339-3', 1, '0753-20349-1', '1500025100007532034914', 4, 3),
+( 6, 'Bianchi'      , 'Patricia',     '',                           '',                 '',                 '27-24364732-6', 9, '5-201532-517', '0167777100052015325173', 1, 0),
+( 7, 'Bianchi'      , 'Patricia',     '',                           '',                 '',                 '27-24364732-6', 1, '786153532',    '1500032900007861535328', 1, 0);
+/*(  , '', '', '', '', '', '', 0, '', '', 0, 0),*/
 -- --------------------------------------------------------
 --
 -- Estructura de tabla para la tabla `Tarifas`
@@ -185,9 +197,10 @@ CREATE TABLE IF NOT EXISTS `TCuentas` (
 --
 INSERT INTO `TCuentas` (`tcID`, `tcNombre`) VALUES
 (1, 'Caja de Ahorro $'),
-(2, 'Caja de Ahorros'),
+(2, 'Caja de Ahorro'),
 (3, 'Cuenta Corriente'),
-(4, 'Especial');
+(4, 'Cuenta Corriente $'),
+(5, 'Especial');
 -- --------------------------------------------------------
 --
 -- Estructura de tabla para la tabla `TiposUF`

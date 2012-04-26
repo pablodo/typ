@@ -10,8 +10,6 @@
  */
 package treintayplaya;
 
-import javax.swing.JInternalFrame;
-
 /**
  *
  * @author sergio
@@ -83,14 +81,14 @@ public class AppPrincipal extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(886, Short.MAX_VALUE)
+                .addContainerGap(879, Short.MAX_VALUE)
                 .add(jlblAppUsuario)
                 .add(22, 22, 22))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(8, Short.MAX_VALUE)
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .add(jlblAppUsuario)
                 .addContainerGap())
         );
@@ -98,7 +96,7 @@ public class AppPrincipal extends javax.swing.JFrame {
         jPanel1.setBounds(0, 650, 1030, 30);
         desktopPane.add(jPanel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        fileMenu.setMnemonic('f');
+        fileMenu.setMnemonic('A');
         fileMenu.setText("Archivo");
 
         saveMenuItem.setMnemonic('E');
@@ -118,8 +116,11 @@ public class AppPrincipal extends javax.swing.JFrame {
 
         AppMenuBar.add(fileMenu);
 
+        usrMenu.setMnemonic('S');
         usrMenu.setText("Sesión");
 
+        loginMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
+        loginMenuItem.setMnemonic('i');
         loginMenuItem.setText("Iniciar Sesión");
         loginMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -138,6 +139,7 @@ public class AppPrincipal extends javax.swing.JFrame {
 
         AppMenuBar.add(usrMenu);
 
+        admMenu.setMnemonic('d');
         admMenu.setText("Administradores");
         admMenu.setEnabled(false);
 
@@ -233,6 +235,7 @@ public class AppPrincipal extends javax.swing.JFrame {
 
         AppMenuBar.add(admMenu);
 
+        propMenu.setMnemonic('P');
         propMenu.setText("Propietarios");
         propMenu.setEnabled(false);
 
@@ -241,7 +244,7 @@ public class AppPrincipal extends javax.swing.JFrame {
 
         AppMenuBar.add(propMenu);
 
-        helpMenu.setMnemonic('h');
+        helpMenu.setMnemonic('y');
         helpMenu.setText("Ayuda");
 
         contentMenuItem.setMnemonic('c');
@@ -265,11 +268,11 @@ public class AppPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(desktopPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .add(desktopPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1024, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(desktopPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .add(desktopPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 680, Short.MAX_VALUE)
         );
 
         pack();

@@ -18,17 +18,7 @@ public class AltaUF extends javax.swing.JInternalFrame {
         
     public AltaUF() {
         initComponents();
-        
-        try {
-            Class.forName("org.gjt.mm.mysql.Driver");
-
-            cnx = java.sql.DriverManager.getConnection("jdbc:mysql://sergioioppolo.com.ar/sdioppolo_typ", "sdioppolo_root", "sdi7346DB");
-        } catch(ClassNotFoundException cnfe) {
-            
-        } catch(java.sql.SQLException sqle) {
-            
-        }
-        
+        cnx = Conexion.getInstance().getConnection();
         this.cargaCombos();
     }
 
@@ -44,9 +34,9 @@ public class AltaUF extends javax.swing.JInternalFrame {
         jlblNombre = new javax.swing.JLabel();
         jtxfNombre = new javax.swing.JTextField();
         jlblTUF = new javax.swing.JLabel();
-        jcbxTUF = new javax.swing.JComboBox();
+        jcbxTUF = new ComboTabla();
         jlblPropietario = new javax.swing.JLabel();
-        jcbxPropietarios = new javax.swing.JComboBox();
+        jcbxPropietarios = new ComboTabla();
         jlblEquipamiento = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jtxaEquipamiento = new javax.swing.JTextArea();
@@ -155,7 +145,7 @@ public class AltaUF extends javax.swing.JInternalFrame {
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jlblComision)
                     .add(jftfComision, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 30, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 39, Short.MAX_VALUE)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jbtnAceptar)
                     .add(jbtnCancelar))
@@ -172,25 +162,20 @@ public class AltaUF extends javax.swing.JInternalFrame {
     private void jbtnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnAceptarActionPerformed
         try {
             
-            java.sql.Statement stm = cnx.createStatement();
-            java.sql.ResultSet rst = stm.executeQuery("select propID from Propietarios where propApellido = '" + jcbxPropietarios.getSelectedItem().toString() + "'");
-            
-            rst.next();
-            String propID = rst.getString(1);
-            
-            stm.close();
-            
-            java.sql.PreparedStatement pstm = cnx.prepareStatement("insert into UnidadesFuncionales (ufNombre, ufTipo, ufPropietario, ufDetalles, ufPrecio) values (?, ?, ?, ?, 0)");
-            
-            pstm.setString(1, jtxfNombre.getText());
+            java.sql.PreparedStatement pstm = cnx.prepareStatement("insert into UnidadFuncional (ufNombre, ufTipo, ufPropID, ufDetalle) values (?, ?, ?, ?)");
+
+            Integer propID = ((ComboTabla)jcbxPropietarios).getSelectedId();
+            Integer tuID = ((ComboTabla)jcbxTUF).getSelectedId();
+            pstm.setInt(1, tuID);
             pstm.setString(2, jcbxTUF.getSelectedItem().toString());
-            pstm.setString(3, propID);
+            pstm.setInt(3, propID);
             pstm.setString(4, jtxaEquipamiento.getText());
             
             int result = pstm.executeUpdate();
             
             if(result == 1) {
-                stm = cnx.createStatement();
+                /*
+                stm = cnx.createStatement();p
                 rst = stm.executeQuery("select propApellido, propNombre, propTelefono, propCelular, propEmail from Propietarios where propID = '" + propID + "'");
 
                 rst.next();
@@ -204,6 +189,8 @@ public class AltaUF extends javax.swing.JInternalFrame {
 
                 Object [] fila = {jtxfNombre.getText(), jcbxTUF.getSelectedItem().toString(), propApe, propNom, propTel, propCel, propEma};
                 ConsultaUF.modelo.addRow(fila);
+                */
+                ConsultaUF.actualizaTablaUF();
             }
             
             dispose();
@@ -220,15 +207,17 @@ public class AltaUF extends javax.swing.JInternalFrame {
             java.sql.Statement stmTUF           = cnx.createStatement();
             java.sql.Statement stmTarifas       = cnx.createStatement();
             
-            java.sql.ResultSet rstPropietarios  = stmPropietarios.executeQuery("select propApellido from Propietarios order by propUF");
-            java.sql.ResultSet rstTUF           = stmTUF.executeQuery("select tufDetalle from TiposUF order by tufDetalle");
-            java.sql.ResultSet rstTarifas       = stmTarifas.executeQuery("select tcNombre from TCuentas order by tcNombre");
+            java.sql.ResultSet rstPropietarios  = stmPropietarios.executeQuery("select propID, propApellido, propNombre from Propietarios order by propID");
+            java.sql.ResultSet rstTUF           = stmTUF.executeQuery("select tuID, tuNombre from TipoUnidad order by tuNombre");
+            //java.sql.ResultSet rstTarifas       = stmTarifas.executeQuery("select tcNombre from TCuentas order by tcNombre");
             
-            while(rstPropietarios.next())
-                jcbxPropietarios.addItem(rstPropietarios.getString("propApellido"));
+            while(rstPropietarios.next()){
+                String item = rstPropietarios.getString("propApellido") + ", " + rstPropietarios.getString("propNombre");
+                ((ComboTabla)jcbxPropietarios).addItem(item, rstPropietarios.getInt("propID"));
+            }
             
             while(rstTUF.next())
-                jcbxTUF.addItem(rstTUF.getString("tufDetalle"));
+                ((ComboTabla)jcbxTUF).addItem(rstTUF.getString("tuNombre"), rstTUF.getInt("tuID"));
             
             rstPropietarios.close();
             rstTUF.close();

@@ -10,29 +10,40 @@
  */
 package treintayplaya;
 
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+
 /**
  *
  * @author sergio
  */
 public class AltaPropietarios extends javax.swing.JInternalFrame {
-
+    public final static int ACTUALIZAR=1;
+    public final static int ALTA=0;
+    private int estado;
+    private int propID;
     java.sql.Connection cnx;
     
+    
     /** Creates new form AltaPropietarios */
-    public AltaPropietarios() {
-        initComponents();
-
-        try {
-            Class.forName("org.gjt.mm.mysql.Driver");
-
-            cnx = java.sql.DriverManager.getConnection("jdbc:mysql://sergioioppolo.com.ar/sdioppolo_typ", "sdioppolo_root", "sdi7346DB");
-        } catch(ClassNotFoundException cnfe) {
-            
-        } catch(java.sql.SQLException sqle) {
-            
+    public AltaPropietarios(int propID) {
+        this.estado = ALTA;
+        if (propID > 0){
+            this.estado = ACTUALIZAR;
+            this.propID = propID;
         }
-        
+        initComponents();
+        cnx = Conexion.getInstance().getConnection();
+        if (estado == ACTUALIZAR){
+            setTitle("Actualizar Propietario");
+            cargarPropietario();
+        }
         this.cargaCombos();
+    }
+    
+    public AltaPropietarios(){
+        this(0);
     }
 
     /** This method is called from within the constructor to
@@ -289,7 +300,7 @@ public class AltaPropietarios extends javax.swing.JInternalFrame {
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jbtnAceptar)
                     .add(jbtnCancelar))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -300,53 +311,97 @@ public class AltaPropietarios extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jbtnCancelarActionPerformed
 
     private void jbtnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnAceptarActionPerformed
-        try {
-            
-            java.sql.PreparedStatement pstm = cnx.prepareStatement("insert into Propietarios (propApellido, propNombre, propTelefono, propCelular, propEmail, propCUIT, propBanco, propTCuenta, propNCuenta, propCBU, propUF) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            
-            pstm.setString( 1, jtxfApellido.getText());
-            pstm.setString( 2, jtxfNombre.getText());
-            pstm.setString( 3, jftfTelefono.getText());
-            pstm.setString( 4, jftfCelular.getText());
-            pstm.setString( 5, jtxfEmail.getText());
-            pstm.setString( 6, jftfCUIT.getText());
-            pstm.setString( 7, jcbxBanco.getSelectedItem().toString());
-            pstm.setString( 8, jcbxTCuenta.getSelectedItem().toString());
-            pstm.setString( 9, jtxfNCuenta.getText());
-            pstm.setString(10, jtxfCBU.getText());
-            pstm.setString(11, jcbxUF.getSelectedItem().toString());
-            
-            int result = pstm.executeUpdate();
+        if (validaFormulario()){
+            int result = 0;
+            try {
+
+                String query = "INSERT INTO Propietarios (propApellido, propNombre, propTelefono, propCelular, propEmail, propCUIT, propBanco, propTCuenta, propNCuenta, propCBU) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; 
+                if (estado == ACTUALIZAR){
+                    query = "UPDATE Propietarios SET propApellido=?, propNombre=?, propTelefono=?, propCelular=?, propEmail=?, propCUIT=?, propBanco=?, propTCuenta=?, propNCuenta=?, propCBU=? WHERE propID = ?";
+                }
+                java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
+                
+                pstm.setString( 1, jtxfApellido.getText());
+                pstm.setString( 2, jtxfNombre.getText());
+                pstm.setString( 3, jftfTelefono.getText());
+                pstm.setString( 4, jftfCelular.getText());
+                pstm.setString( 5, jtxfEmail.getText());
+                pstm.setString( 6, jftfCUIT.getText());
+                pstm.setString( 7, String.valueOf(jcbxBanco.getSelectedItem()));
+                pstm.setString( 8, String.valueOf(jcbxTCuenta.getSelectedItem()));
+                pstm.setString( 9, jtxfNCuenta.getText());
+                pstm.setString(10, jtxfCBU.getText());
+                if (estado == ACTUALIZAR){
+                    pstm.setString(11, String.valueOf(propID));
+                }
+                
+                result = pstm.executeUpdate();
+
+            } catch(java.sql.SQLException sqle) {
+
+            }
             
             if(result == 1) {
-                Object [] fila = {jcbxUF.getSelectedItem().toString(), jtxfApellido.getText(), jtxfNombre.getText(), jftfTelefono.getText(), jftfCelular.getText(), jtxfEmail.getText()};
-                ConsultaPropietarios.modelo.addRow(fila);
+                ConsultaPropietarios.actualizaTablaPropietarios();
                 dispose();
             }
-
-        } catch(java.sql.SQLException sqle) {
-            
         }
     }//GEN-LAST:event_jbtnAceptarActionPerformed
 
+    private void cargarPropietario() {
+        try{    
+            String query = "SELECT propApellido, propNombre, propTelefono, propCelular, propEmail, propCUIT, propBanco, propTCuenta, propNCuenta, propCBU FROM Propietarios WHERE propID =";
+            query = query + " " + String.valueOf(propID);
+            java.sql.Statement pstm = cnx.createStatement();
+            ResultSet rst = pstm.executeQuery(query);
+            
+            rst.next();
+            jtxfApellido.setText(rst.getString("propApellido"));
+            jtxfNombre.setText(rst.getString("propNombre"));
+            jftfTelefono.setText(rst.getString("propTelefono"));
+            jftfCelular.setText(rst.getString("propCelular"));
+            jtxfEmail.setText(rst.getString("propEmail"));
+            jftfCUIT.setText(rst.getString("propCUIT"));
+            Integer banco = rst.getInt("propBanco");
+            if (banco != null && banco >= 0)
+                jcbxBanco.setSelectedIndex(banco);
+            Integer tCuenta = rst.getInt("propTCuenta");
+            if (tCuenta != null && tCuenta >= 0)
+                jcbxTCuenta.setSelectedIndex(tCuenta);
+            jcbxTCuenta.setSelectedIndex(rst.getInt("propTCuenta"));
+            jtxfNCuenta.setText(rst.getString("propNCuenta"));
+            jtxfCBU.setText(rst.getString("propCBU"));
+
+        } catch(java.sql.SQLException sqle) {
+
+        }    
+    }
+    
     public void cargaCombos() {
         try {
             
             java.sql.Statement stmBancos = cnx.createStatement();
             java.sql.Statement stmTCuentas = cnx.createStatement();
+            java.sql.Statement stmUF = cnx.createStatement();
             
             java.sql.ResultSet rstBancos = stmBancos.executeQuery("select bancoNombre from Bancos order by bancoNombre");
             java.sql.ResultSet rstTCuentas = stmTCuentas.executeQuery("select tcNombre from TCuentas order by tcNombre");
+            java.sql.ResultSet rstUF = stmUF.executeQuery("SELECT ufNombre, ufID FROM UnidadFuncional");
             
             while(rstBancos.next())
                 jcbxBanco.addItem(rstBancos.getString("bancoNombre"));
-            
+ 
             while(rstTCuentas.next())
                 jcbxTCuenta.addItem(rstTCuentas.getString("tcNombre"));
             
+            /*
+            while(rstUF.next()){
+                UFitem item = new UFitem(rstUF.getString("ufNombre"), rstUF.getInt("ufID"));
+                jcbxUF.addItem(item);
+            }*/
             rstBancos.close();
             rstTCuentas.close();
-            
+            rstUF.close();
         } catch(java.sql.SQLException sqle) {
             
         }
@@ -381,4 +436,22 @@ public class AltaPropietarios extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jtxfNCuenta;
     private javax.swing.JTextField jtxfNombre;
     // End of variables declaration//GEN-END:variables
+
+    private boolean validaFormulario() {
+        if ( ! validaTextField(jtxfApellido, "Apellido")) 
+            return false;
+        if ( ! validaTextField(jtxfNombre, "Nombre")) 
+            return false;
+        return true;
+    }
+    
+    private boolean validaTextField(JTextField obj, String name){
+        if (obj.getText() == null || "".equals(obj.getText())){
+            String msg = "Ingrese " + name + '.';
+            String msgTitle = "Error en " + name + '.';
+            JOptionPane.showMessageDialog(this, msg, msgTitle, JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        return true;
+    }
 }

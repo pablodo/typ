@@ -10,9 +10,6 @@
  */
 package treintayplaya;
 
-import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -21,7 +18,7 @@ import java.util.logging.Logger;
 public class LoginUsuarios extends javax.swing.JInternalFrame {
 
     String    usrPass;
-    int       usrNivel, usrEstado;
+    int       usrNivel, usrEstado, usrID;
 
         /** Creates new form LoginUsuarios */
     public LoginUsuarios() {
@@ -125,7 +122,7 @@ public class LoginUsuarios extends javax.swing.JInternalFrame {
             try {
                 java.sql.Connection cnx = Conexion.getInstance().getConnection();
 
-                java.sql.PreparedStatement pstm = cnx.prepareStatement("select usrNivel, usrActivo from UsuariosWeb where usrEmail = ? and AES_DECRYPT(usrPass,'typ2012') = ?") ;
+                java.sql.PreparedStatement pstm = cnx.prepareStatement("select usrID, usrNivel, usrActivo from UsuariosWeb where usrEmail = ? and AES_DECRYPT(usrPass, 'typ2012') = ?") ;
 
                 char [] charPass = jpfPass.getPassword();
                 usrPass = new String(charPass);
@@ -138,11 +135,13 @@ public class LoginUsuarios extends javax.swing.JInternalFrame {
                 if (rst.next()) {
                     usrNivel    = rst.getInt("usrNivel");
                     usrEstado   = rst.getInt("usrActivo");
+                    usrID       = rst.getInt("usrID");
                     
                     DatosGlobales.appSesion = true;
                     DatosGlobales.usrNivel  = usrNivel;
                     DatosGlobales.usrEstado = usrEstado;
                     DatosGlobales.usrEmail  = jtxfUsuario.getText();
+                    DatosGlobales.usrID     = usrID;
                     
                     if(DatosGlobales.usrNivel == 1 && DatosGlobales.usrEstado == 1 && DatosGlobales.appSesion) {
                         VistaActividadAdmin vistaAdmin = new VistaActividadAdmin();

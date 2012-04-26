@@ -4,7 +4,9 @@
  */
 package treintayplaya;
 
-import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Vector;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -18,23 +20,12 @@ public class ConsultaInquilinos extends javax.swing.JInternalFrame {
     
     public static javax.swing.table.DefaultTableModel modelo;
     public static java.sql.Connection cnx;
+    private static ArrayList<Integer> cliIDs;
     
     public ConsultaInquilinos() {
         modelo = new javax.swing.table.DefaultTableModel();
-
-        try {
-            Class.forName("org.gjt.mm.mysql.Driver");
-        
-            cnx = java.sql.DriverManager.getConnection("jdbc:mysql://sergioioppolo.com.ar/sdioppolo_typ", "sdioppolo_root", "sdi7346DB");
-            
-        } catch(ClassNotFoundException cnfe) {
-            cnfe.printStackTrace();
-        } catch(java.sql.SQLException sqle) {
-            sqle.printStackTrace();
-        }
-        
+        cnx = Conexion.getInstance().getConnection();
         initComponents();
-        
     }
 
     /**
@@ -47,7 +38,11 @@ public class ConsultaInquilinos extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTable1 = new javax.swing.JTable(){
+            public boolean isCellEditable(int row, int column){
+                return false;
+            }
+        };
         jbtnAgregar = new javax.swing.JButton();
         jbtnBorrar = new javax.swing.JButton();
         jbtnActualizar = new javax.swing.JButton();
@@ -56,11 +51,8 @@ public class ConsultaInquilinos extends javax.swing.JInternalFrame {
         setClosable(true);
         setTitle("Consulta de Clientes");
 
-        jScrollPane1.setColumnHeaderView(null);
-
         jTable1.setModel(modelo);
         jTable1.setGridColor(new java.awt.Color(204, 204, 204));
-        jTable1.setShowGrid(true);
         jTable1.getTableHeader().setReorderingAllowed(false);
         modelo.addColumn("Apellido");
         modelo.addColumn("Nombre");
@@ -86,6 +78,11 @@ public class ConsultaInquilinos extends javax.swing.JInternalFrame {
         });
 
         jbtnActualizar.setText("Actualizar");
+        jbtnActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnActualizarActionPerformed(evt);
+            }
+        });
 
         jbtnCerrar.setText("Cerrar");
         jbtnCerrar.addActionListener(new java.awt.event.ActionListener() {
@@ -142,41 +139,51 @@ public class ConsultaInquilinos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jbtnAgregarActionPerformed
 
     private void jbtnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnBorrarActionPerformed
-        try {
+        if (validaModificarCliente()){
+            try {
 
-            java.sql.PreparedStatement pstm = cnx.prepareStatement("delete from Clientes where cliApellido = ? and cliNombre = ? and cliEmail = ?");
+                java.sql.PreparedStatement pstm = cnx.prepareStatement("DELETE FROM Clientes WHERE cliID = ?");
 
-            pstm.setString(1, (String) jTable1.getValueAt(jTable1.getSelectedRow(), 0));
-            pstm.setString(2, (String) jTable1.getValueAt(jTable1.getSelectedRow(), 1));
-            pstm.setString(3, (String) jTable1.getValueAt(jTable1.getSelectedRow(), 4));
-            
-            int result = pstm.executeUpdate();
-            
-            if(result == 1) {
-                modelo.removeRow(jTable1.getSelectedRow());
+                pstm.setInt(1, cliIDs.get(jTable1.getSelectedRow()));
+
+                int result = pstm.executeUpdate();
+
+                if(result == 1) {
+                    cliIDs.remove(jTable1.getSelectedRow());
+                    modelo.removeRow(jTable1.getSelectedRow());
+                }
+
+            } catch (java.sql.SQLException sqle) {
+                sqle.printStackTrace();
             }
-            
-        } catch (java.sql.SQLException sqle) {
-            sqle.printStackTrace();
         }
-        
     }//GEN-LAST:event_jbtnBorrarActionPerformed
+
+    private void jbtnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnActualizarActionPerformed
+        if(validaModificarCliente()){
+            Integer cliID = cliIDs.get(jTable1.getSelectedRow());
+            AltaInquilinos aCliente = new AltaInquilinos(cliID);
+            AppPrincipal.desktopPane.add(aCliente);
+            aCliente.show();
+        }
+    }//GEN-LAST:event_jbtnActualizarActionPerformed
 
     public static void actualizaTablaClientes() {
         try {
 
             java.sql.Statement stm = cnx.createStatement();
 
-            java.sql.ResultSet rst = stm.executeQuery("select cliApellido, cliNombre, cliTelefono, cliCelular, cliEmail from Clientes order by cliApellido");
-
+            java.sql.ResultSet rst = stm.executeQuery("select cliID, cliApellido, cliNombre, cliTelefono, cliCelular, cliEmail from Clientes order by cliApellido");
+            cliIDs = new ArrayList<Integer>();
             while(rst.next()) {
-
-                Object [] fila = new Object[5];
-
-                for(int i = 0; i < 5; i++)
-                    fila[i] = rst.getObject(i + 1);
-
-                modelo.addRow(fila);
+                Vector row = new Vector();
+                row.add(rst.getString("cliApellido"));
+                row.add(rst.getString("cliNombre"));
+                row.add(rst.getString("cliTelefono"));
+                row.add(rst.getString("cliCelular"));
+                row.add(rst.getString("cliEmail"));
+                cliIDs.add(rst.getInt("cliID"));
+                modelo.addRow(row);
             }
         } catch (java.sql.SQLException sqle) {
             sqle.printStackTrace();
@@ -191,4 +198,12 @@ public class ConsultaInquilinos extends javax.swing.JInternalFrame {
     private javax.swing.JButton jbtnBorrar;
     private javax.swing.JButton jbtnCerrar;
     // End of variables declaration//GEN-END:variables
+
+    private boolean validaModificarCliente() {
+        if(jTable1.getSelectedRow() < 0){
+            JOptionPane.showMessageDialog(this, "Seleccione el cliente.");
+            return false;
+        }
+        return true;
+    }
 }

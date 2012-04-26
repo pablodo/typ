@@ -23,65 +23,86 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jpnlDetPagos" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      <Component id="jbtnAceptar" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jbtnCancelar" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Component id="jpnlPax" alignment="0" max="32767" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="jlblFIN" min="-2" pref="105" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
-                              <Component id="jdcFIN" pref="272" max="32767" attributes="0"/>
+                              <Component id="jlblUF" min="-2" pref="131" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jdcFIN" min="-2" pref="307" max="-2" attributes="0"/>
+                                  <Component id="jcbxUF" min="-2" pref="127" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Component id="jlblFIN" alignment="0" min="-2" pref="105" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jlblFecha" min="-2" pref="122" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="jlblAlqFecha" min="-2" pref="307" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="jlblOperador" min="-2" pref="80" max="-2" attributes="0"/>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" attributes="0">
+                                      <Component id="jlblCliente" max="32767" attributes="0"/>
+                                      <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Component id="jcbxCliente" min="-2" pref="245" max="-2" attributes="0"/>
+                                      <EmptySpace max="32767" attributes="0"/>
+                                      <Component id="jbtnNuevoInquilino" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="jlblAlqOperador" alignment="0" max="32767" attributes="0"/>
+                              </Group>
                           </Group>
                           <Group type="102" attributes="0">
+                              <Component id="jlblFOUT" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+                              <Component id="jdcFOUT" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                                      <Component id="jlblFecha" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="jlblUF" alignment="0" max="32767" attributes="0"/>
-                                  </Group>
-                                  <Component id="jlblContrato" alignment="0" min="-2" pref="105" max="-2" attributes="0"/>
+                                  <Component id="jlblvencimiento" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jlblImporte" min="-2" pref="153" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="jlblAlqFecha" max="32767" attributes="0"/>
-                                  <Component id="jcbxUF" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="jcbxContrato" pref="263" max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jftfImporte" max="32767" attributes="0"/>
+                                  <Component id="jdcVencimiento" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace min="44" pref="44" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Component id="jlblImporte" min="-2" pref="153" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="jftfImporte" max="32767" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jlblvencimiento" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="jdcVencimiento" max="32767" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                  <Component id="jlblFOUT" max="32767" attributes="0"/>
-                                  <Component id="jlblOperador" max="32767" attributes="0"/>
-                                  <Component id="jlblCliente" pref="113" max="32767" attributes="0"/>
-                              </Group>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jdcFOUT" max="32767" attributes="0"/>
-                                  <Component id="jlblAlqOperador" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="jcbxCliente" alignment="1" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="jScrollPane1" min="-2" pref="451" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="jbtnAceptar" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="jbtnCancelar" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jpnlPax" alignment="0" min="-2" pref="905" max="-2" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="jlblContrato" min="-2" pref="105" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
+                                  <Component id="jcbxContrato" min="-2" pref="263" max="-2" attributes="0"/>
                               </Group>
                           </Group>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -93,49 +114,48 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
               <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                  <Component id="jlblOperador" alignment="1" max="32767" attributes="0"/>
-                  <Component id="jlblAlqOperador" alignment="1" max="32767" attributes="0"/>
-                  <Component id="jlblFecha" max="32767" attributes="0"/>
-                  <Component id="jlblAlqFecha" alignment="1" min="-2" pref="28" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="2" attributes="0">
+                  <Component id="jlblOperador" alignment="2" max="32767" attributes="0"/>
+                  <Component id="jlblAlqOperador" alignment="2" max="32767" attributes="0"/>
+                  <Component id="jlblAlqFecha" alignment="2" min="-2" pref="28" max="-2" attributes="0"/>
+                  <Component id="jlblFecha" alignment="2" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jcbxUF" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jlblUF" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                      <Component id="jlblCliente" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jcbxCliente" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="2" attributes="0">
+                  <Component id="jcbxUF" alignment="2" min="-2" max="-2" attributes="0"/>
+                  <Component id="jlblCliente" alignment="2" min="-2" max="-2" attributes="0"/>
+                  <Component id="jcbxCliente" alignment="2" min="-2" max="-2" attributes="0"/>
+                  <Component id="jbtnNuevoInquilino" alignment="2" min="-2" max="-2" attributes="0"/>
+                  <Component id="jlblUF" alignment="2" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="jdcFOUT" min="-2" max="-2" attributes="0"/>
-                  <Component id="jdcFIN" alignment="1" min="-2" max="-2" attributes="0"/>
-                  <Component id="jlblFIN" alignment="1" min="-2" max="-2" attributes="0"/>
-                  <Component id="jlblFOUT" alignment="1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="2" attributes="0">
+                  <Component id="jdcFIN" alignment="2" min="-2" max="-2" attributes="0"/>
+                  <Component id="jlblFIN" alignment="2" min="-2" max="-2" attributes="0"/>
+                  <Component id="jlblFOUT" alignment="2" min="-2" max="-2" attributes="0"/>
+                  <Component id="jdcFOUT" alignment="2" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="jpnlPax" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jlblContrato" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jcbxContrato" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Component id="jlblvencimiento" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="jdcVencimiento" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="2" attributes="0">
+                  <Component id="jlblContrato" alignment="2" min="-2" max="-2" attributes="0"/>
+                  <Component id="jcbxContrato" alignment="2" min="-2" max="-2" attributes="0"/>
+                  <Component id="jlblvencimiento" alignment="2" min="-2" max="-2" attributes="0"/>
+                  <Component id="jdcVencimiento" alignment="2" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jlblImporte" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jftfImporte" alignment="3" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="2" attributes="0">
+                  <Component id="jlblImporte" alignment="2" min="-2" max="-2" attributes="0"/>
+                  <Component id="jftfImporte" alignment="2" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="jpnlDetPagos" max="32767" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jScrollPane1" min="-2" pref="51" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jbtnAceptar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jbtnCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -171,6 +191,13 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jlblAlqOperador">
       <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Ubuntu" size="15" style="1"/>
+        </Property>
+        <Property name="horizontalAlignment" type="int" value="0"/>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="DatosGlobales.usrEmail" type="code"/>
+        </Property>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.SoftBevelBorderInfo">
             <BevelBorder bevelType="1"/>
@@ -189,6 +216,12 @@
           <StringArray count="0"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="jcbxUFItemStateChanged"/>
+      </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new treintayplaya.ComboTabla()"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="jlblCliente">
       <Properties>
@@ -196,13 +229,11 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="jcbxCliente">
-      <Properties>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="1">
-            <StringItem index="0" value=" "/>
-          </StringArray>
-        </Property>
-      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new treintayplaya.ComboTabla()"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="((ComboTabla)jcbxCliente).addItem(&quot; &quot;, 0);"/>
+        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="jlblFIN">
       <Properties>
@@ -226,68 +257,64 @@
     </Component>
     <Container class="javax.swing.JPanel" name="jpnlPax">
       <Properties>
-        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
-            <EtchetBorder/>
-          </Border>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="javax.swing.BorderFactory.createTitledBorder(null, &quot;Ocupantes&quot;, javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(255, 0, 0))" type="code"/>
         </Property>
+        <Property name="name" type="java.lang.String" value=""/>
       </Properties>
+      <AccessibilityProperties>
+        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value=""/>
+      </AccessibilityProperties>
 
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jlblCPax" min="-2" pref="91" max="-2" attributes="0"/>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="jcbxAdultos" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jlblAdultos" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="jcbxMenores" min="-2" pref="71" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jlblMenores" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="jcbxBebes" min="-2" pref="70" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jlblBebes" min="-2" max="-2" attributes="0"/>
+                  <Component id="jcbxAdultos" min="-2" pref="57" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
-                  <Component id="jcbxDesayunos" min="-2" max="-2" attributes="0"/>
+                  <Component id="jlblAdultos" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                  <Component id="jcbxMenores" min="-2" pref="59" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
+                  <Component id="jlblMenores" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                  <Component id="jcbxBebes" min="-2" pref="70" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
+                  <Component id="jlblBebes" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="96" max="-2" attributes="0"/>
+                  <Component id="jcbxDesayunos" min="-2" pref="60" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jlblDesayunos" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="jlblAlqCPax" min="-2" pref="127" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
+                  <Component id="jcbxDesayunos1" min="-2" pref="60" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jlblDesayunos1" min="-2" pref="152" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace pref="16" max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jlblCPax" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jcbxAdultos" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jlblAdultos" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jcbxMenores" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jlblMenores" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jcbxBebes" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jlblBebes" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jlblAlqCPax" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jcbxDesayunos" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jlblDesayunos" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="2" attributes="0">
+                      <Component id="jcbxAdultos" alignment="2" min="-2" max="-2" attributes="0"/>
+                      <Component id="jlblAdultos" alignment="2" min="-2" max="-2" attributes="0"/>
+                      <Component id="jcbxMenores" alignment="2" min="-2" max="-2" attributes="0"/>
+                      <Component id="jlblMenores" alignment="2" min="-2" max="-2" attributes="0"/>
+                      <Component id="jcbxBebes" alignment="2" min="-2" max="-2" attributes="0"/>
+                      <Component id="jlblBebes" alignment="2" min="-2" max="-2" attributes="0"/>
+                      <Component id="jcbxDesayunos" alignment="2" min="-2" max="-2" attributes="0"/>
+                      <Component id="jlblDesayunos" alignment="2" min="-2" max="-2" attributes="0"/>
+                      <Component id="jcbxDesayunos1" alignment="2" min="-2" max="-2" attributes="0"/>
+                      <Component id="jlblDesayunos1" alignment="2" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JLabel" name="jlblCPax">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Ocupantes:"/>
-          </Properties>
-        </Component>
         <Component class="javax.swing.JComboBox" name="jcbxAdultos">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
@@ -380,14 +407,26 @@
             <Property name="text" type="java.lang.String" value="Desayunos"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="jlblAlqCPax">
+        <Component class="javax.swing.JLabel" name="jlblDesayunos1">
           <Properties>
-            <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="0A-0M-0B-0D"/>
-            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="org.netbeans.modules.form.compat2.border.SoftBevelBorderInfo">
-                <BevelBorder bevelType="1"/>
-              </Border>
+            <Property name="text" type="java.lang.String" value="Desayunos Imputados"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="jcbxDesayunos1">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="10">
+                <StringItem index="0" value="0"/>
+                <StringItem index="1" value="1"/>
+                <StringItem index="2" value="2"/>
+                <StringItem index="3" value="3"/>
+                <StringItem index="4" value="4"/>
+                <StringItem index="5" value="5"/>
+                <StringItem index="6" value="6"/>
+                <StringItem index="7" value="7"/>
+                <StringItem index="8" value="8"/>
+                <StringItem index="9" value="9"/>
+              </StringArray>
             </Property>
           </Properties>
         </Component>
@@ -404,6 +443,9 @@
           <StringArray count="0"/>
         </Property>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new treintayplaya.ComboTabla()"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="jlblvencimiento">
       <Properties>
@@ -423,13 +465,14 @@
     <Component class="javax.swing.JFormattedTextField" name="jftfImporte">
       <Properties>
         <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
-          <Format subtype="0" type="0"/>
+          <Format format="#,##0.00" subtype="-1" type="0"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="4"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="jbtnAceptar">
       <Properties>
+        <Property name="mnemonic" type="int" value="65"/>
         <Property name="text" type="java.lang.String" value="Aceptar"/>
       </Properties>
       <Events>
@@ -438,6 +481,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="jbtnCancelar">
       <Properties>
+        <Property name="mnemonic" type="int" value="67"/>
         <Property name="text" type="java.lang.String" value="Cancelar"/>
       </Properties>
       <Events>
@@ -454,6 +498,9 @@
           </Border>
         </Property>
       </Properties>
+      <AccessibilityProperties>
+        <Property name="AccessibleContext.accessibleDescription" type="java.lang.String" value=""/>
+      </AccessibilityProperties>
 
       <Layout>
         <DimensionLayout dim="0">
@@ -462,7 +509,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabel1" min="-2" pref="115" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="jComboBox1" min="-2" pref="246" max="-2" attributes="0"/>
+                  <Component id="jcbxFormasPago" min="-2" pref="246" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Component id="jLabel2" max="32767" attributes="0"/>
@@ -470,8 +517,8 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jcbxCuenta" max="32767" attributes="0"/>
-                      <Component id="jComboBox2" pref="255" max="32767" attributes="0"/>
+                      <Component id="jcbxCuentaImputacion" max="32767" attributes="0"/>
+                      <Component id="jcbxCuentaOperacion" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -483,36 +530,34 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jComboBox1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jcbxFormasPago" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jComboBox2" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jcbxCuentaOperacion" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jlblCuenta" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jcbxCuenta" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jcbxCuentaImputacion" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="17" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
+        <Component class="javax.swing.JComboBox" name="jcbxFormasPago">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="0"/>
+            </Property>
+          </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new ComboTabla()"/>
+          </AuxValues>
+        </Component>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
             <Property name="text" type="java.lang.String" value="Forma de Pago:"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JComboBox" name="jComboBox1">
-          <Properties>
-            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="4">
-                <StringItem index="0" value="Item 1"/>
-                <StringItem index="1" value="Item 2"/>
-                <StringItem index="2" value="Item 3"/>
-                <StringItem index="3" value="Item 4"/>
-              </StringArray>
-            </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel2">
@@ -520,31 +565,56 @@
             <Property name="text" type="java.lang.String" value="Cuenta de Operaci&#xf3;n:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JComboBox" name="jComboBox2">
+        <Component class="javax.swing.JComboBox" name="jcbxCuentaOperacion">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="4">
-                <StringItem index="0" value="Item 1"/>
-                <StringItem index="1" value="Item 2"/>
-                <StringItem index="2" value="Item 3"/>
-                <StringItem index="3" value="Item 4"/>
-              </StringArray>
+              <StringArray count="0"/>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new ComboTabla()"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="jlblCuenta">
           <Properties>
             <Property name="text" type="java.lang.String" value="Cuenta de Imputaci&#xf3;n:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JComboBox" name="jcbxCuenta">
+        <Component class="javax.swing.JComboBox" name="jcbxCuentaImputacion">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="0"/>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new ComboTabla()"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JButton" name="jbtnNuevoInquilino">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Nuevo"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnNuevoInquilinoActionPerformed"/>
+      </Events>
+    </Component>
+    <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTextArea" name="jTextArea1">
+        </Component>
+      </SubComponents>
+    </Container>
+    <Component class="javax.swing.JLabel" name="jLabel3">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Observaciones:"/>
+      </Properties>
+    </Component>
   </SubComponents>
 </Form>

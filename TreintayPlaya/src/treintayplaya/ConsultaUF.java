@@ -19,18 +19,7 @@ public class ConsultaUF extends javax.swing.JInternalFrame {
     
     public ConsultaUF() {
         modelo = new javax.swing.table.DefaultTableModel();
-
-        try {
-            Class.forName("org.gjt.mm.mysql.Driver");
-        
-            cnx = java.sql.DriverManager.getConnection("jdbc:mysql://sergioioppolo.com.ar/sdioppolo_typ", "sdioppolo_root", "sdi7346DB");
-            
-        } catch(ClassNotFoundException cnfe) {
-            cnfe.printStackTrace();
-        } catch(java.sql.SQLException sqle) {
-            sqle.printStackTrace();
-        }
-
+        cnx = Conexion.getInstance().getConnection();
         initComponents();
     }
 
@@ -155,7 +144,7 @@ public class ConsultaUF extends javax.swing.JInternalFrame {
 
             java.sql.Statement stm = cnx.createStatement();
 
-            java.sql.ResultSet rst = stm.executeQuery("select ufNombre, ufTipo, propApellido, propNombre, propTelefono, propCelular, propEmail from UnidadesFuncionales, Propietarios where ufPropietario = propID order by propUF");
+            java.sql.ResultSet rst = stm.executeQuery("select ufNombre, ufTipo, propApellido, propNombre, propTelefono, propCelular, propEmail from UnidadFuncional, Propietarios where ufPropID = propID order by propID, ufNombre");
 
             while(rst.next()) {
 

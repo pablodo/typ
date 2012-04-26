@@ -94,7 +94,7 @@
                   <Component id="jlblComision" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jftfComision" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="30" max="32767" attributes="0"/>
+              <EmptySpace pref="39" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jbtnAceptar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jbtnCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -123,6 +123,9 @@
           <StringArray count="0"/>
         </Property>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new treintayplaya.ComboTabla()"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="jlblPropietario">
       <Properties>
@@ -135,6 +138,9 @@
           <StringArray count="0"/>
         </Property>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new treintayplaya.ComboTabla()"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="jlblEquipamiento">
       <Properties>

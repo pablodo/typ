@@ -6,8 +6,10 @@ package treintayplaya;
 
 import java.awt.Color;
 import java.awt.Component;
+import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
@@ -15,8 +17,8 @@ import javax.swing.table.TableColumnModel;
  *
  * @author sergio
  */
-public class MiRender extends DefaultTableCellRenderer {
-    
+public class MiRender extends DefaultTableCellRenderer implements TableCellRenderer {
+
     @Override
     public Component getTableCellRendererComponent(JTable table,
                                                    Object value, 
@@ -26,15 +28,9 @@ public class MiRender extends DefaultTableCellRenderer {
                                                    int column) {
         
             setEnabled(table == null || table.isEnabled());
-            
             TableColumnModel tcm = table.getColumnModel();
             TableColumn columnaCero = tcm.getColumn(0);
             columnaCero.setPreferredWidth(600);
-            
-            for(int i = 0; i < table.getRowCount(); i++)
-                if(column == 0)
-                    table.setBackground(new Color(240, 240, 240));
-            
             
             if((row % 2) == 0)
                 setBackground(Color.white);
@@ -43,37 +39,37 @@ public class MiRender extends DefaultTableCellRenderer {
             
             table.setForeground(Color.black);
             setHorizontalAlignment(LEFT);
-            
-            if(String.valueOf(table.getValueAt(row, column)).equals(">>")) {
-                setBackground(Color.yellow);
-                table.setForeground(Color.black);
-                setHorizontalAlignment(0);
-            }
-            
-            if(String.valueOf(table.getValueAt(row, column)).equals("^^")) {
-                setBackground(Color.green);
-                table.setForeground(Color.black);
-                setHorizontalAlignment(0);
-            }
-            
-            if(String.valueOf(table.getValueAt(row, column)).equals("00")) {
-                setBackground(Color.blue);
-                table.setForeground(Color.white);
-                setHorizontalAlignment(0);
-            }
 
-            if(String.valueOf(table.getValueAt(row, column)).equals("")) {
-                if((row % 2) == 0)
-                    setBackground(Color.white);
-                else
-                    setBackground(new Color(240,240,240));
+            if (value instanceof Alquiler){
+                if(((Alquiler)value).isReserva()) {
+                    setBackground(Color.yellow);
+                    table.setForeground(Color.black);
+                }
 
-                table.setForeground(Color.black);
+                if(((Alquiler)value).isConfirmacion()) {
+                    setBackground(Color.green);
+                    table.setForeground(Color.black);
+                }
+
+                if(((Alquiler)value).isCancelacion()) {
+                    setBackground(Color.cyan);
+                    table.setForeground(Color.white);
+                }
                 setHorizontalAlignment(0);
+                setText("");
+                setToolTipText(((Alquiler)value).apellido + ", " + ((Alquiler)value).apellido );
+            }else{
+                setText(String.valueOf(value));
+                setToolTipText(null);
             }
-
+            
+            
+            for(int i = 0; i < table.getRowCount(); i++)
+                if(column == 1)
+                    table.setBackground(new Color(240, 240, 240));
+            
             super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);         
-        
+            
             return this;
     }
     

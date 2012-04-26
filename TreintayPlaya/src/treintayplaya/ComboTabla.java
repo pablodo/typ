@@ -41,4 +41,9 @@ public class ComboTabla extends JComboBox {
     public int getIdCount(){
         return ids.size();
     }
+    
+    public void removeAllItems(){
+        super.removeAllItems();
+        ids.clear();
+    }
 }

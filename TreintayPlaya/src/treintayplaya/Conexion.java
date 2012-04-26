@@ -13,14 +13,7 @@ import java.sql.SQLException;
  */
 public class Conexion {
     private static Conexion instance = null;
-    
-    static Conexion getInstance() {
-        if (instance == null) {
-            instance = new Conexion();
-        }
-        return instance;
-    }
-    public Connection cnx;
+    public Connection cnx = null;
     
     public Conexion(){
         updateConnection();
@@ -42,8 +35,18 @@ public class Conexion {
         }
 
     }
+    
+    public static synchronized Conexion getInstance() {
+        if (instance == null) {
+            instance = new Conexion();
+        }
+        return instance;
+    }
 
     public Connection getConnection() {
+        if (cnx == null) {
+            this.updateConnection();
+        }
         try {
             if (cnx.isClosed()) {
                 this.updateConnection();
