@@ -18,18 +18,7 @@ public class MantenimientoBancos extends javax.swing.JInternalFrame {
     
     public MantenimientoBancos() {
         modelo = new javax.swing.table.DefaultTableModel();
-
-        try {
-            Class.forName("org.gjt.mm.mysql.Driver");
-        
-            cnx = java.sql.DriverManager.getConnection("jdbc:mysql://sergioioppolo.com.ar/sdioppolo_typ", "sdioppolo_root", "sdi7346DB");
-            
-        } catch(ClassNotFoundException cnfe) {
-            cnfe.printStackTrace();
-        } catch(java.sql.SQLException sqle) {
-            sqle.printStackTrace();
-        }
-
+        cnx = Conexion.getInstance().getConnection();
         initComponents();
     }
 

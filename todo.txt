@@ -1,0 +1,101 @@
+    |O| Reserva = "Reserva Provisoria"
+    | | IMPUTACIONES:
+    |O| -Desayunos
+    |O| -Cuenta
+    |O| -Importe
+0.5 |O| (tooltiptext)En el alquiler, en planilla mostrar Apellido y Nombre del inquilino.
+    | | Poder configurar horas de vencimiento de la reserva provisoria.
+0.2 |O| Agregar boton para dar de alta inquilinos en la reserva.
+0.5 |O| Agregar observaciones.
+    | | Se manda un mail al inquilino con el contrato seleccionado (por defecto 1)
+    | | 
+    |O| Cargar Unidades Funcionales que tengan un tipo 
+    | | 
+2   |O| CARGAR ALQUILER EXISTENTE EN ALTAALQUILER
+    | |
+    | | Confirmar Reserva
+    |O| No permitir volver a confirmar reserva (se creo modelo con clase Alquiler)
+    |O| Se ingresa un movimiento con el monto de reserva (a mano)
+2   | | Se envia un mail al inquilino con copia al propietario con el contrato seleccionado (por defecto 2)
+1   |O| Mostrar saldo = Importe imputacion - importe reserva (agregar textfield con el importe de la reserva)
+    | | 
+    |O| Cerrar Contrato = "Cancelar Contrato"
+    |O| No permitir volver a cancelar el contrato (se creo modelo con clase Alquiler)
+1   |O| Se ingresa un movimiento saldando la reserva (a mano)
+0.5 | | Se envia un mail al inquilino con copia al propietario con el contrato seleccionado (por defecto 3... 4 es el full por si lo piden)
+    | | 
+    | | Anular Contrato
+0.5 | | Se envia un mail al inquilino con copia al propietario con el contrato seleccionado (por defecto 5)
+    | | 
+    | | Reserva Propietario:
+1.5 | | Se marca con naranja y solo se cargan los dias que la unidad va a estar en uso.
+    | | 
+4   | | Listado de deudores:
+    | | Dado una fecha de ingreso, muestra todos los inquilinos que entran en esa fecha y que aun no terminaron de pagar el alquiler
+    | | Poder seleccionar varios y mandar un mail diciendoles que deben
+    | | 
+1   | | Listado de vencimientos:
+    | | Dado una fecha de ingreso, muestra todos los inquilinos que no pagaron la reserva provisoria
+    | | 
+2   | | Listado de Inquilinos entrantes a una fecha:
+    | | Lista todos los inquilinos que tienen alquiler en una fecha mostrando: Apellido, Nombre, Código(Adultos, Menores, Bebes, Desayunos), Observaciones
+    | | 
+    | | USUARIOS:
+    | | Administrador: Todo
+0.5 | | Usuario Comun: Hace reservas provisorias, puede cancelarlas y puede hacer listado de inquilinos que entran a una fecha
+    | | 
+    | | ABM:
+    | | Inquilinos
+    | | * VER QUE HACER CON TEXTFIELDS FORMATEADOS (DNI, Celular y Telefono)
+    | | Propietarios
+1   | |  - Guardar PropUF
+0.5 | |  - Cargar Bancos
+0.5 | |  - Cargar Tipo de Cuentas
+0.5 | |  - Poder modificar propietarios
+0.5 | |  - Actualizar planilla despues de borrar
+    | | Unidades Funcionales 
+0.5 | | - Cargar unidades funcionales 
+0.5 | | - Guardar Unidades Funcionales
+0.5 | | - Borrar Unidades Funcionales
+0.5 | | - Borrar Unidades Funcionales
+    | | 
+    | | 
+    | | 
+    | | 
+    | | 
+    | | 
+    | | 
+    | | 
+    | | Propietarios:
+8   | | Tienen una pagina web de donde pueden consultar:
+    | | 1) Ocupacion de la UF:
+    | | Ejemplo
+    | | 12/4 al 15/4 alquilada
+    | | 18/4 al 20/4 reservada
+    | | 22/4 al 28/4 alquilada
+    | | 
+    | | 2) Liquidacion
+    | | Fecha de cierre
+    | | +-----+-------------------+------------------------+
+    | | |Fecha|Cobrado Propietario|Cobrado Comercializadora|
+    | | +-----+-------------------+------------------------+
+    | | |20/04|              7000 |                        |
+    | | +-----+-------------------+------------------------+
+    | | |22/04|                   |                  8000  |
+    | | +-----+-------------------+------------------------+
+    | | 
+    | | Saldo a favor del propietario
+    | | Saldo a favor comercializadora
+
+56.4
+
+
+
+
+
+Agregar unit test
+ComboTabla carga el combo pasandole algo (query, nombre tabla, etc) y agregar metodo "recargar" 
+Implementar logger verdadero y manejarlo con un messageDialog
+Hacer que todas las tablas no se puedan modificar:
+    VistaActividadMensual
+

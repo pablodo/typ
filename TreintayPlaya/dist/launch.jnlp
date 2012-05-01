@@ -22,6 +22,7 @@
 <jar href="lib/toplink-essentials.jar"/>
 <jar href="lib/toplink-essentials-agent.jar"/>
 <jar href="lib/jcalendar-1.4.jar"/>
+<jar href="lib/mail.jar"/>
 </resources>
     <applet-desc height="250" main-class="treintayplaya.AppWebLaunch" name="TreintayPlaya" width="580">
         

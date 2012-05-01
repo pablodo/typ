@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS `Alquileres` (
   `alqDesayunos` int(11) NOT NULL,
   `alqDesayunosImp` int(11) NOT NULL,
   `alqContrato` int(11) NOT NULL,
+  `alqImporteReserva` decimal(10,2) NOT NULL,
   `alqTotal` decimal(10,2) NOT NULL,
   `alqTotalImp` decimal(10,2) NOT NULL,
   `alqVencimiento` datetime NOT NULL,
@@ -117,6 +118,15 @@ CREATE TABLE IF NOT EXISTS `Contratos` (
   `conDetalle` varchar(1000) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+--
+-- Volcado de datos para la tabla `Conceptos`
+--
+INSERT INTO `Contratos` (`ID`, `conTipo`, `conDetalle`) VALUES
+(1, "Reserva",          ''),
+(2, "Cancelación",      ''),
+(3, "Ingreso",          ''),
+(4, "Ingreso Completo", ''),
+(5, "Anulación",      '');
 -- --------------------------------------------------------
 --
 -- Estructura de tabla para la tabla `DetAlquileres`
@@ -134,10 +144,9 @@ CREATE TABLE IF NOT EXISTS `DetAlquileres` (
 CREATE TABLE IF NOT EXISTS `Movimientos` (
   `movID` int(11) NOT NULL AUTO_INCREMENT,
   `movFecha` datetime NOT NULL,
-  `movTipo` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
+  `movTipoPago` int(11) NOT NULL,
   `movImporte` decimal(10,2) NOT NULL,
   `movUF` int(11) NOT NULL,
-  `movFPago` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
   `movImputacion` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
   `movImputacionValor` decimal(10,2) NOT NULL,
   PRIMARY KEY (`movID`)
@@ -298,7 +307,7 @@ CREATE TABLE IF NOT EXISTS `FormasPago` (
   `fpID` int(11) NOT NULL AUTO_INCREMENT,
   `fpNombre` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`fpID`),
-  UNIQUE KEY `bancoNombre` (`fpNombre`)
+  UNIQUE KEY `fpNombre` (`fpNombre`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=8 ;
 --
 -- Volcado de datos para la tabla `FormasPago`
@@ -306,6 +315,25 @@ CREATE TABLE IF NOT EXISTS `FormasPago` (
 INSERT INTO `FormasPago` (`fpNombre`) VALUES
 ('Contado'),
 ('30 dias');
+-- --------------------------------------------------------
+--
+-- Estructura de tabla para la tabla `FormasPago`
+--
+CREATE TABLE IF NOT EXISTS `TiposPago` (
+  `tpID` int(11) NOT NULL AUTO_INCREMENT,
+  `tpNombre` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `tpDestino` int(1) NOT NULL, /* A favor del propietario o a favor de la comercializadora */
+  PRIMARY KEY (`tpID`),
+  UNIQUE KEY `tpNombre` (`tpNombre`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+--
+-- Volcado de datos para la tabla `FormasPago`
+--
+INSERT INTO `TiposPago` (`tpNombre`, `tpDestino`) VALUES
+('Cta. Bancaria del Propietario', 1),
+('Efectivo en Oficinas', 2),
+('Efectivo en el Complejo', 2),
+('Otros', 1);
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

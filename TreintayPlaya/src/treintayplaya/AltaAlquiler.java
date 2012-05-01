@@ -10,7 +10,9 @@
  */
 package treintayplaya;
 
+import java.awt.Color;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,17 +34,18 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
     
     
     public AltaAlquiler(VistaActividadAdmin tabla, Alquiler alquiler, Integer operacion) {
-        initComponents();
         this.tabla = tabla;
         this.operacion = operacion;
+        this.alquiler = alquiler;
+        initComponents();
         cnx = Conexion.getInstance().getConnection();
         cargaCombos();
-        this.alquiler = alquiler;
         if (operacion == Alquiler.RESERVAR){
             setearFechas();
         }else{
             cargarAlquiler(alquiler.id);
         }
+        selectContrato();
         setTitle(titulos[operacion]);
     }
     
@@ -86,13 +89,13 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         jcbxDesayunos = new javax.swing.JComboBox();
         jlblDesayunos = new javax.swing.JLabel();
         jlblDesayunos1 = new javax.swing.JLabel();
-        jcbxDesayunos1 = new javax.swing.JComboBox();
+        jcbxDesayunosImp = new javax.swing.JComboBox();
         jlblContrato = new javax.swing.JLabel();
         jcbxContrato = new treintayplaya.ComboTabla();
         jlblvencimiento = new javax.swing.JLabel();
         jdcVencimiento = new com.toedter.calendar.JDateChooser();
         jlblImporte = new javax.swing.JLabel();
-        jftfImporte = new javax.swing.JFormattedTextField();
+        jftfImporteImp = new javax.swing.JFormattedTextField();
         jbtnAceptar = new javax.swing.JButton();
         jbtnCancelar = new javax.swing.JButton();
         jpnlDetPagos = new javax.swing.JPanel();
@@ -104,11 +107,36 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         jcbxCuentaImputacion = new ComboTabla();
         jbtnNuevoInquilino = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        jtaObservaciones = new javax.swing.JTextArea();
         jLabel3 = new javax.swing.JLabel();
+        jlblImporte1 = new javax.swing.JLabel();
+        jftfImporte = new javax.swing.JFormattedTextField();
+        jlblImporte2 = new javax.swing.JLabel();
+        jlblImporte2.setVisible(this.operacion > 0);
+        jftfImporteReserva = new javax.swing.JFormattedTextField();
+        jftfImporteReserva.setVisible(this.operacion > 0);
+        jlblSaldo = new javax.swing.JLabel();
+        jlblSaldo.setVisible(this.operacion > 0);
 
         setClosable(true);
         setTitle("Alta de Reserva Provisoria");
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameActivated(evt);
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
 
         jlblFecha.setText("Fecha:");
 
@@ -162,7 +190,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
 
         jlblDesayunos1.setText("Desayunos Imputados");
 
-        jcbxDesayunos1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" }));
+        jcbxDesayunosImp.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" }));
 
         org.jdesktop.layout.GroupLayout jpnlPaxLayout = new org.jdesktop.layout.GroupLayout(jpnlPax);
         jpnlPax.setLayout(jpnlPaxLayout);
@@ -185,7 +213,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jlblDesayunos)
                 .add(11, 11, 11)
-                .add(jcbxDesayunos1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 60, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(jcbxDesayunosImp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 60, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jlblDesayunos1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 152, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(22, 22, 22))
@@ -203,7 +231,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
                     .add(jlblBebes)
                     .add(jcbxDesayunos, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jlblDesayunos)
-                    .add(jcbxDesayunos1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jcbxDesayunosImp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jlblDesayunos1))
                 .addContainerGap())
         );
@@ -214,10 +242,16 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
 
         jdcVencimiento.setDateFormatString("dd-MM-yyyy");
 
-        jlblImporte.setText("Importe Total:");
+        jlblImporte.setText("Importe Imputado:");
 
-        jftfImporte.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
-        jftfImporte.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jftfImporteImp.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
+        jftfImporteImp.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jftfImporteImp.setValue(0);
+        jftfImporteImp.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jftfImporteImpFocusLost(evt);
+            }
+        });
 
         jbtnAceptar.setMnemonic('A');
         jbtnAceptar.setText("Aceptar");
@@ -285,9 +319,39 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
             }
         });
 
-        jScrollPane1.setViewportView(jTextArea1);
+        jScrollPane1.setViewportView(jtaObservaciones);
 
         jLabel3.setText("Observaciones:");
+
+        jlblImporte1.setText("Importe Total:");
+
+        jftfImporte.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
+        jftfImporte.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jftfImporte.setValue(0);
+        jftfImporte.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jftfImporteFocusLost(evt);
+            }
+        });
+
+        jlblImporte2.setText("Importe Reserva:");
+
+        jftfImporteReserva.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
+        jftfImporteReserva.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jftfImporteReserva.setValue(0);
+        jftfImporteReserva.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jftfImporteReservaFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jftfImporteReservaFocusLost(evt);
+            }
+        });
+
+        jlblSaldo.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
+        jlblSaldo.setForeground(new java.awt.Color(255, 0, 0));
+        jlblSaldo.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jlblSaldo.setText("Saldo:");
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -298,19 +362,40 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jpnlDetPagos, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(layout.createSequentialGroup()
+                        .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 451, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .add(jbtnAceptar)
+                        .add(18, 18, 18)
+                        .add(jbtnCancelar))
+                    .add(jLabel3)
+                    .add(jpnlPax, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 905, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(layout.createSequentialGroup()
+                        .add(jlblContrato, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 105, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(36, 36, 36)
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                            .add(jcbxContrato, 0, 263, Short.MAX_VALUE)
+                            .add(jftfImporteReserva)))
+                    .add(layout.createSequentialGroup()
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(layout.createSequentialGroup()
-                                .add(jlblUF, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 131, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .add(9, 9, 9)
                                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                    .add(jdcFIN, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 307, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                    .add(jcbxUF, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 127, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                            .add(jlblFIN, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 105, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(layout.createSequentialGroup()
-                                .add(jlblFecha, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 122, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .add(18, 18, 18)
-                                .add(jlblAlqFecha, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 307, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .add(layout.createSequentialGroup()
+                                        .add(jlblUF, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 131, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                        .add(9, 9, 9)
+                                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                            .add(jdcFIN, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 307, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                            .add(jcbxUF, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 127, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                                    .add(jlblFIN, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 105, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                    .add(layout.createSequentialGroup()
+                                        .add(jlblFecha, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 122, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                        .add(18, 18, 18)
+                                        .add(jlblAlqFecha, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 307, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                                    .add(jlblImporte2))
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                                .add(0, 0, Short.MAX_VALUE)
+                                .add(jlblSaldo)
+                                .add(74, 74, 74)))
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(layout.createSequentialGroup()
                                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -333,27 +418,13 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
                             .add(layout.createSequentialGroup()
                                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                                     .add(jlblvencimiento)
-                                    .add(jlblImporte, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 153, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                                    .add(jlblImporte, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 153, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                    .add(jlblImporte1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 153, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                    .add(jftfImporte)
-                                    .add(jdcVencimiento, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                        .add(layout.createSequentialGroup()
-                            .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 451, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .add(jbtnAceptar)
-                            .add(18, 18, 18)
-                            .add(jbtnCancelar))
-                        .add(layout.createSequentialGroup()
-                            .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                .add(jLabel3)
-                                .add(jpnlPax, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 905, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .add(layout.createSequentialGroup()
-                                    .add(jlblContrato, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 105, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                    .add(36, 36, 36)
-                                    .add(jcbxContrato, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 263, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                            .add(0, 0, Short.MAX_VALUE))))
+                                    .add(jftfImporteImp)
+                                    .add(jdcVencimiento, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .add(jftfImporte))))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -389,7 +460,16 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
                     .add(jlblImporte)
-                    .add(jftfImporte, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jftfImporteImp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                        .add(jlblImporte2)
+                        .add(jftfImporteReserva, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
+                        .add(jlblImporte1)
+                        .add(jftfImporte, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jlblSaldo))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(jpnlDetPagos, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
@@ -457,6 +537,47 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         inquilinos.toFront();
     }//GEN-LAST:event_jbtnNuevoInquilinoActionPerformed
 
+    private void jftfImporteImpFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jftfImporteImpFocusLost
+        try {
+            jftfImporteImp.commitEdit();
+            if (Double.valueOf(jftfImporte.getValue().toString()) == 0){
+                jftfImporte.setValue(jftfImporteImp.getValue());
+            }
+            calcularSaldo();
+        } catch (ParseException ex) {
+            Logger.getLogger(AltaAlquiler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_jftfImporteImpFocusLost
+
+    private void jftfImporteReservaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jftfImporteReservaFocusLost
+        try {
+            jftfImporteReserva.commitEdit();
+            calcularSaldo();
+        } catch (ParseException ex) {
+            Logger.getLogger(AltaAlquiler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jftfImporteReservaFocusLost
+
+    private void jftfImporteFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jftfImporteFocusLost
+        try {
+            jftfImporte.commitEdit();
+            calcularSaldo();
+        } catch (ParseException ex) {
+            Logger.getLogger(AltaAlquiler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jftfImporteFocusLost
+
+    private void formInternalFrameActivated(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameActivated
+        if (operacion != Alquiler.RESERVAR){
+            jftfImporteReserva.requestFocusInWindow();
+        }
+    }//GEN-LAST:event_formInternalFrameActivated
+
+    private void jftfImporteReservaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jftfImporteReservaFocusGained
+         
+    }//GEN-LAST:event_jftfImporteReservaFocusGained
+
     private void cargaCombos() {
         try {
             
@@ -466,7 +587,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
             
             java.sql.ResultSet rstUFs        = stmUFs.executeQuery("select ufNombre, ufID from UnidadesFuncionales where ufTipo > 0 order by ufNombre");
             java.sql.ResultSet rstFormasPago = stmFormasPago.executeQuery("select fpNombre, fpID from FormasPago order by fpID");
-            java.sql.ResultSet rstContratos  = stmContratos.executeQuery("select conTipo, ID from Contratos order by conTipo");
+            java.sql.ResultSet rstContratos  = stmContratos.executeQuery("select conTipo, ID from Contratos order by ID");
             
             while(rstUFs.next()){
                 int ufID = rstUFs.getInt("ufID");
@@ -502,7 +623,6 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JButton jbtnAceptar;
     private javax.swing.JButton jbtnCancelar;
     private javax.swing.JButton jbtnNuevoInquilino;
@@ -513,7 +633,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox jcbxCuentaImputacion;
     private javax.swing.JComboBox jcbxCuentaOperacion;
     private javax.swing.JComboBox jcbxDesayunos;
-    private javax.swing.JComboBox jcbxDesayunos1;
+    private javax.swing.JComboBox jcbxDesayunosImp;
     private javax.swing.JComboBox jcbxFormasPago;
     private javax.swing.JComboBox jcbxMenores;
     private javax.swing.JComboBox jcbxUF;
@@ -521,6 +641,8 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
     private com.toedter.calendar.JDateChooser jdcFOUT;
     private com.toedter.calendar.JDateChooser jdcVencimiento;
     private javax.swing.JFormattedTextField jftfImporte;
+    private javax.swing.JFormattedTextField jftfImporteImp;
+    private javax.swing.JFormattedTextField jftfImporteReserva;
     private javax.swing.JLabel jlblAdultos;
     private javax.swing.JLabel jlblAlqFecha;
     private javax.swing.JLabel jlblAlqOperador;
@@ -534,12 +656,16 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jlblFOUT;
     private javax.swing.JLabel jlblFecha;
     private javax.swing.JLabel jlblImporte;
+    private javax.swing.JLabel jlblImporte1;
+    private javax.swing.JLabel jlblImporte2;
     private javax.swing.JLabel jlblMenores;
     private javax.swing.JLabel jlblOperador;
+    private javax.swing.JLabel jlblSaldo;
     private javax.swing.JLabel jlblUF;
     private javax.swing.JLabel jlblvencimiento;
     private javax.swing.JPanel jpnlDetPagos;
     private javax.swing.JPanel jpnlPax;
+    private javax.swing.JTextArea jtaObservaciones;
     // End of variables declaration//GEN-END:variables
 
     void selectUF(Integer id) {
@@ -587,13 +713,14 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
 
     private boolean insertAlquiler() throws SQLException{
         String query = "INSERT INTO Alquileres (alqFecha, alqEstado, alqOperador, alqUF, alqCliente, alqFIN, alqFOUT, "
-                               + "alqOcupantesA, alqOcupantesM, alqOcupantesB, alqOcupantesD, alqContrato, alqTotal, "
-                               + "alqVencimiento, alqFormaPago, alqCuentaImp, alqCuentaOpe) VALUES "
-                               + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                               + "alqOcupantesA, alqOcupantesM, alqOcupantesB, alqDesayunos, alqDesayunosImp, alqContrato, alqTotal, "
+                               + "alqTotalImp, alqVencimiento, alqFormaPago, alqCuentaImp, alqCuentaOpe, alqObservaciones, alqImporteReserva) VALUES "
+                               + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)";
         if (alquiler.id > 0){
             query = "UPDATE Alquileres SET alqFecha=?, alqEstado=?, alqOperador=?, alqUF=?, alqCliente=?, alqFIN=?, alqFOUT=?, "
-                               + "alqOcupantesA=?, alqOcupantesM=?, alqOcupantesB=?, alqOcupantesD=?, alqContrato=?, alqTotal=?, "
-                               + "alqVencimiento=?, alqFormaPago=?, alqCuentaImp=?, alqCuentaOpe=?";
+                               + "alqOcupantesA=?, alqOcupantesM=?, alqOcupantesB=?, alqDesayunos=?, alqDesayunosImp=?, alqContrato=?, alqTotal=?, "
+                               + "alqTotalImp=?, alqVencimiento=?, alqFormaPago=?, alqCuentaImp=?, alqCuentaOpe=?, alqObservaciones=?, "
+                               + "alqImporteReserva=? WHERE alqID=?";
         }
 
         java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
@@ -615,12 +742,19 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         pstm.setInt   ( 9, Integer.valueOf(jcbxMenores.getSelectedItem().toString()));
         pstm.setInt   (10, Integer.valueOf(jcbxBebes.getSelectedItem().toString()));
         pstm.setInt   (11, Integer.valueOf(jcbxDesayunos.getSelectedItem().toString()));
-        pstm.setInt   (12, ((ComboTabla)jcbxContrato).getSelectedId());
-        pstm.setDouble(13, Double.valueOf(jftfImporte.getValue().toString()));
-        pstm.setString(14, vencimiento);
-        pstm.setInt   (15, ((ComboTabla)jcbxFormasPago).getSelectedId());
-        pstm.setInt   (16, ((ComboTabla)jcbxCuentaImputacion).getSelectedId());
-        pstm.setInt   (17, ((ComboTabla)jcbxCuentaOperacion).getSelectedId());
+        pstm.setInt   (12, Integer.valueOf(jcbxDesayunosImp.getSelectedItem().toString()));
+        pstm.setInt   (13, this.operacion == Alquiler.RESERVAR ? 0:((ComboTabla)jcbxContrato).getSelectedId());
+        pstm.setDouble(14, Double.valueOf(jftfImporte.getValue().toString()));
+        pstm.setDouble(15, Double.valueOf(jftfImporteImp.getValue().toString()));
+        pstm.setString(16, vencimiento);
+        pstm.setInt   (17, ((ComboTabla)jcbxFormasPago).getSelectedId());
+        pstm.setInt   (18, ((ComboTabla)jcbxCuentaImputacion).getSelectedId());
+        pstm.setInt   (19, ((ComboTabla)jcbxCuentaOperacion).getSelectedId());
+        pstm.setString(20, jtaObservaciones.getText());
+        if(alquiler.id > 0){
+            pstm.setDouble(21, Double.valueOf(jftfImporteReserva.getValue().toString()));
+            pstm.setInt   (22, this.alquiler.id);
+        }
 
         int result = pstm.executeUpdate();
         return result == 1;
@@ -691,7 +825,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
             rst.next();
             jlblAlqFecha.setText(rst.getString("alqFecha").substring(0, 19));
             jdcVencimiento.setCalendar(FechasFormatter.getFechaCalendar(rst.getString("alqVencimiento")));
-            jlblOperador.setText(rst.getString("usrEmail"));
+            jlblAlqOperador.setText(rst.getString("usrEmail"));
             selectUF(rst.getInt("alqUF"));
             ((ComboTabla)jcbxCliente).setSelectedItemById(rst.getInt("alqCliente"));
             jdcFIN.setCalendar(FechasFormatter.getFechaCalendar(rst.getString("alqFIN")));
@@ -699,12 +833,18 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
             jcbxAdultos.setSelectedItem(String.valueOf(rst.getInt("alqOcupantesA")));
             jcbxMenores.setSelectedItem(String.valueOf(rst.getInt("alqOcupantesM")));
             jcbxBebes.setSelectedItem(String.valueOf(rst.getInt("alqOcupantesB")));
-            jcbxDesayunos.setSelectedItem(String.valueOf(rst.getInt("alqOcupantesD")));
+            jcbxDesayunos.setSelectedItem(String.valueOf(rst.getInt("alqDesayunos")));
+            jcbxDesayunosImp.setSelectedItem(String.valueOf(rst.getInt("alqDesayunosImp")));
             ((ComboTabla)jcbxContrato).setSelectedItemById(rst.getInt("alqContrato"));
+            jftfImporteImp.setValue(rst.getDouble("alqTotalImp"));
             jftfImporte.setValue(rst.getDouble("alqTotal"));
             ((ComboTabla)jcbxFormasPago).setSelectedItemById(rst.getInt("alqFormaPago"));
             ((ComboTabla)jcbxCuentaImputacion).setSelectedItemById(rst.getInt("alqCuentaImp"));
             ((ComboTabla)jcbxCuentaOperacion).setSelectedItemById(rst.getInt("alqCuentaOpe"));
+            jtaObservaciones.setText(rst.getString("alqObservaciones"));
+            jftfImporteReserva.setValue(rst.getDouble("alqImporteReserva"));
+            
+            calcularSaldo();
         } catch (SQLException ex) {
             Logger.getLogger(AltaAlquiler.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -721,13 +861,54 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
     void cargarInquilinos() throws SQLException {
         jcbxCliente.removeAllItems();
         java.sql.Statement stmClientes   = cnx.createStatement();
-        java.sql.ResultSet rstClientes   = stmClientes.executeQuery("select cliID, cliApellido from Clientes order by cliApellido");
+        java.sql.ResultSet rstClientes   = stmClientes.executeQuery("select cliID, cliApellido, cliNombre from Clientes order by cliApellido");
         while(rstClientes.next()){
             int cliID = rstClientes.getInt("cliID");
-            ((ComboTabla)jcbxCliente).addItem(rstClientes.getString("cliApellido"), cliID);
+            String apellido = rstClientes.getString("cliApellido");
+            String nombre = rstClientes.getString("cliNombre");
+            ((ComboTabla)jcbxCliente).addItem(apellido + ", " + nombre, cliID);
         }
         rstClientes.close();
         stmClientes.close();
+    }
+
+    private void calcularSaldo() {
+        Double total = Double.valueOf(jftfImporteImp.getValue().toString());
+        Double reserva = Double.valueOf(jftfImporteReserva.getValue().toString());
+        Double saldo = total - reserva;
+        if (saldo == 0.0){
+            jlblSaldo.setForeground(new Color(10,250,10));
+            if (operacion == Alquiler.CANCELAR)
+                jbtnAceptar.setEnabled(true);
+        }else{
+            jlblSaldo.setForeground(Color.red);
+            if (operacion == Alquiler.CANCELAR)
+                jbtnAceptar.setEnabled(false);
+        }
+        String strSaldo= "";
+        try {
+            strSaldo = jftfImporteReserva.getFormatter().valueToString(saldo);
+            strSaldo = "Saldo: " + strSaldo;
+        } catch (ParseException ex) {
+            Logger.getLogger(AltaAlquiler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        jlblSaldo.setText(strSaldo);
+    }
+
+    private void selectContrato() {
+        switch(operacion){
+            case Alquiler.RESERVAR:
+                jcbxContrato.setSelectedIndex(-1);
+                jcbxContrato.setEnabled(false);
+                break;
+            case Alquiler.CONFIRMAR:
+                jcbxContrato.setSelectedIndex(0);
+                break;
+            case Alquiler.CANCELAR:
+                jcbxContrato.setSelectedIndex(1);
+                break;
+        }
+        
     }
 
 }

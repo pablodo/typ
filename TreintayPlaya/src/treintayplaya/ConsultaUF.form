@@ -77,7 +77,6 @@
             <Property name="gridColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="cc" green="cc" red="cc" type="rgb"/>
             </Property>
-            <Property name="showGrid" type="boolean" value="true"/>
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="modelo.addColumn(&quot;Uindad Funcional&quot;);&#xa;modelo.addColumn(&quot;Tipo de Unidad&quot;);&#xa;modelo.addColumn(&quot;Apellido&quot;);&#xa;modelo.addColumn(&quot;Nombre&quot;);&#xa;modelo.addColumn(&quot;Tel&#xe9;fono&quot;);&#xa;modelo.addColumn(&quot;Celular&quot;);&#xa;modelo.addColumn(&quot;Email&quot;);&#xa;&#xa;actualizaTablaUF();&#xa;"/>

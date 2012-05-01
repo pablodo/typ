@@ -81,7 +81,7 @@ public class AppPrincipal extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(879, Short.MAX_VALUE)
+                .addContainerGap(871, Short.MAX_VALUE)
                 .add(jlblAppUsuario)
                 .add(22, 22, 22))
         );
@@ -183,6 +183,11 @@ public class AppPrincipal extends javax.swing.JFrame {
         consultasMenu.add(jSeparator2);
 
         jmiMovimientos.setText("Movimientos");
+        jmiMovimientos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiMovimientosActionPerformed(evt);
+            }
+        });
         consultasMenu.add(jmiMovimientos);
 
         jmiReservas.setText("Alquileres");
@@ -293,7 +298,7 @@ public class AppPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_loginMenuItemActionPerformed
 
     private void jmiVistaMensualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiVistaMensualActionPerformed
-        if(DatosGlobales.usrNivel == 1 && DatosGlobales.usrEstado == 1 && DatosGlobales.appSesion) {
+        if(validaAdmin()) {
             VistaActividadAdmin vistaAdmin = new VistaActividadAdmin();
             desktopPane.add(vistaAdmin);
             vistaAdmin.show();
@@ -301,7 +306,7 @@ public class AppPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jmiVistaMensualActionPerformed
 
     private void jmiClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiClientesActionPerformed
-        if(DatosGlobales.usrNivel == 1 && DatosGlobales.usrEstado == 1 && DatosGlobales.appSesion) {
+        if(validaAdmin()) {
             ConsultaInquilinos listaCliente = new ConsultaInquilinos();
             desktopPane.add(listaCliente);
             listaCliente.show();
@@ -309,7 +314,7 @@ public class AppPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jmiClientesActionPerformed
 
     private void jmiPropietariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiPropietariosActionPerformed
-        if(DatosGlobales.usrNivel == 1 && DatosGlobales.usrEstado == 1 && DatosGlobales.appSesion) {
+        if(validaAdmin()) {
             ConsultaPropietarios listaPropietarios = new ConsultaPropietarios();
             desktopPane.add(listaPropietarios);
             listaPropietarios.show();
@@ -317,7 +322,7 @@ public class AppPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jmiPropietariosActionPerformed
 
     private void jmiUFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiUFActionPerformed
-        if(DatosGlobales.usrNivel == 1 && DatosGlobales.usrEstado == 1 && DatosGlobales.appSesion) {
+        if(validaAdmin()) {
             ConsultaUF cUF = new ConsultaUF();
             desktopPane.add(cUF);
             cUF.show();
@@ -337,7 +342,7 @@ public class AppPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_logoutMenuItemActionPerformed
 
     private void jmiReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiReservasActionPerformed
-        if(DatosGlobales.usrNivel == 1 && DatosGlobales.usrEstado == 1 && DatosGlobales.appSesion) {
+        if(validaAdmin()) {
             AltaAlquiler aAlquiler = new AltaAlquiler();
             desktopPane.add(aAlquiler);
             aAlquiler.show();
@@ -345,7 +350,7 @@ public class AppPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jmiReservasActionPerformed
 
     private void jmiBancosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiBancosActionPerformed
-        if(DatosGlobales.usrNivel == 1 && DatosGlobales.usrEstado == 1 && DatosGlobales.appSesion) {
+        if(validaAdmin()) {
             MantenimientoBancos mBancos = new MantenimientoBancos();
             desktopPane.add(mBancos);
             mBancos.show();
@@ -353,7 +358,7 @@ public class AppPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jmiBancosActionPerformed
 
     private void jmiTCuentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiTCuentasActionPerformed
-        if(DatosGlobales.usrNivel == 1 && DatosGlobales.usrEstado == 1 && DatosGlobales.appSesion) {
+        if(validaAdmin()) {
             MantenimientoTipoCuentas mTC = new MantenimientoTipoCuentas();
             desktopPane.add(mTC);
             mTC.show();
@@ -361,13 +366,24 @@ public class AppPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jmiTCuentasActionPerformed
 
     private void jmiTiposUFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiTiposUFActionPerformed
-        if(DatosGlobales.usrNivel == 1 && DatosGlobales.usrEstado == 1 && DatosGlobales.appSesion) {
+        if(validaAdmin()) {
             MantenimientoTipoUF mTUF = new MantenimientoTipoUF();
             desktopPane.add(mTUF);
             mTUF.show();
         }
     }//GEN-LAST:event_jmiTiposUFActionPerformed
 
+    private void jmiMovimientosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiMovimientosActionPerformed
+        if(validaAdmin()) {
+            Movimientos movimientos = new Movimientos();
+            desktopPane.add(movimientos);
+            movimientos.show();
+        }
+    }//GEN-LAST:event_jmiMovimientosActionPerformed
+
+    private boolean validaAdmin(){
+        return DatosGlobales.usrNivel == 1 && DatosGlobales.usrEstado == 1 && DatosGlobales.appSesion;
+    }
     /**
      * @param args the command line arguments
      */

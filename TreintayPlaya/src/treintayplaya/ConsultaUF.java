@@ -144,7 +144,7 @@ public class ConsultaUF extends javax.swing.JInternalFrame {
 
             java.sql.Statement stm = cnx.createStatement();
 
-            java.sql.ResultSet rst = stm.executeQuery("select ufNombre, ufTipo, propApellido, propNombre, propTelefono, propCelular, propEmail from UnidadFuncional, Propietarios where ufPropID = propID order by propID, ufNombre");
+            java.sql.ResultSet rst = stm.executeQuery("select ufNombre, tufDetalle, propApellido, propNombre, propTelefono, propCelular, propEmail from UnidadesFuncionales, Propietarios, TiposUF where ufPropietario = propID and ufTipo = tufID order by propID, ufNombre");
 
             while(rst.next()) {
 

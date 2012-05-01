@@ -120,6 +120,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Movimientos"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jmiMovimientosActionPerformed"/>
+                  </Events>
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="jmiReservas">
                   <Properties>
@@ -284,7 +287,7 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace pref="879" max="32767" attributes="0"/>
+                      <EmptySpace pref="871" max="32767" attributes="0"/>
                       <Component id="jlblAppUsuario" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
                   </Group>

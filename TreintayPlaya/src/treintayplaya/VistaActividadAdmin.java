@@ -37,7 +37,7 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
         this.year = this.calendar.get(GregorianCalendar.YEAR);
         this.month = this.calendar.get(GregorianCalendar.MONTH);
         initComponents();
-        //jtblVistaMensual.setDefaultRenderer(Alquiler.class, new MiRender());
+        actualizarMenu();
     }
 
     /** This method is called from within the constructor to
@@ -159,6 +159,9 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jtblVistaMensualMouseClicked(evt);
             }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jtblVistaMensualMousePressed(evt);
+            }
         });
         jScrollPane1.setViewportView(jtblVistaMensual);
         jtblVistaMensual.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
@@ -246,12 +249,12 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jbtnSiguienteActionPerformed
 
     private void jtblVistaMensualMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtblVistaMensualMouseClicked
-        reservarMenuItem.setEnabled(isReservaEnabled());
-        confirmarMenuItem.setEnabled(isConfirmarEnabled());
-        cerrarMenuItem.setEnabled(isCancelarEnabled());
-        anularMenuItem.setEnabled(isAnularEnabled());
-        reservaPropietarioMenuItem.setEnabled(isReservaEnabled());
+        actualizarMenu();
     }//GEN-LAST:event_jtblVistaMensualMouseClicked
+
+    private void jtblVistaMensualMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtblVistaMensualMousePressed
+        actualizarMenu();
+    }//GEN-LAST:event_jtblVistaMensualMousePressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem anularMenuItem;
@@ -435,7 +438,7 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
     }
 
     private boolean isReservaEnabled() {
-        if(jtblVistaMensual.getSelectedRow() < 0 && jtblVistaMensual.getSelectedColumn() <= 1){
+        if(jtblVistaMensual.getSelectedRow() < 0 || jtblVistaMensual.getSelectedColumn() <= 1){
             return false;
         }
         Alquiler alquiler = getSelectedAlquiler();
@@ -446,7 +449,7 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
     }
 
     private boolean isConfirmarEnabled() {
-        if(jtblVistaMensual.getSelectedRow() < 0 && jtblVistaMensual.getSelectedColumn() <= 1){
+        if(jtblVistaMensual.getSelectedRow() < 0 || jtblVistaMensual.getSelectedColumn() <= 1){
             return false;
         }
         Alquiler alquiler = getSelectedAlquiler();
@@ -460,7 +463,7 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
     }
 
     private boolean isCancelarEnabled() {
-        if(jtblVistaMensual.getSelectedRow() < 0 && jtblVistaMensual.getSelectedColumn() < 1){
+        if(jtblVistaMensual.getSelectedRow() < 0 || jtblVistaMensual.getSelectedColumn() < 1){
             return false;
         }
         Alquiler alquiler = getSelectedAlquiler();
@@ -474,7 +477,7 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
     }
 
     private boolean isAnularEnabled() {
-        if(jtblVistaMensual.getSelectedRow() < 0 && jtblVistaMensual.getSelectedColumn() < 1){
+        if(jtblVistaMensual.getSelectedRow() < 0 || jtblVistaMensual.getSelectedColumn() < 1){
             return false;
         }
         Alquiler alquiler = getSelectedAlquiler();
@@ -482,5 +485,13 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
             return false;
         }
         return true;
+    }
+
+    private void actualizarMenu() {
+        reservarMenuItem.setEnabled(isReservaEnabled());
+        confirmarMenuItem.setEnabled(isConfirmarEnabled());
+        cerrarMenuItem.setEnabled(isCancelarEnabled());
+        anularMenuItem.setEnabled(isAnularEnabled());
+        reservaPropietarioMenuItem.setEnabled(isReservaEnabled());
     }
 }

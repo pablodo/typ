@@ -8,6 +8,9 @@
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
   </SyntheticProperties>
+  <Events>
+    <EventHandler event="internalFrameActivated" listener="javax.swing.event.InternalFrameListener" parameters="javax.swing.event.InternalFrameEvent" handler="formInternalFrameActivated"/>
+  </Events>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -27,24 +30,51 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jpnlDetPagos" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="jScrollPane1" min="-2" pref="451" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="jbtnAceptar" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="jbtnCancelar" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jpnlPax" alignment="0" min="-2" pref="905" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="jlblContrato" min="-2" pref="105" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="jcbxContrato" pref="263" max="32767" attributes="0"/>
+                          <Component id="jftfImporteReserva" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jlblUF" min="-2" pref="131" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jdcFIN" min="-2" pref="307" max="-2" attributes="0"/>
-                                  <Component id="jcbxUF" min="-2" pref="127" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="jlblUF" min="-2" pref="131" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="jdcFIN" min="-2" pref="307" max="-2" attributes="0"/>
+                                          <Component id="jcbxUF" min="-2" pref="127" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <Component id="jlblFIN" alignment="0" min="-2" pref="105" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="jlblFecha" min="-2" pref="122" max="-2" attributes="0"/>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Component id="jlblAlqFecha" min="-2" pref="307" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="jlblImporte2" min="-2" max="-2" attributes="0"/>
                               </Group>
+                              <EmptySpace max="32767" attributes="0"/>
                           </Group>
-                          <Component id="jlblFIN" alignment="0" min="-2" pref="105" max="-2" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jlblFecha" min="-2" pref="122" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="jlblAlqFecha" min="-2" pref="307" max="-2" attributes="0"/>
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <Component id="jlblSaldo" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="74" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
@@ -75,34 +105,15 @@
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jlblvencimiento" min="-2" max="-2" attributes="0"/>
                                   <Component id="jlblImporte" min="-2" pref="153" max="-2" attributes="0"/>
+                                  <Component id="jlblImporte1" min="-2" pref="153" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jftfImporte" max="32767" attributes="0"/>
+                                  <Component id="jftfImporteImp" max="32767" attributes="0"/>
                                   <Component id="jdcVencimiento" max="32767" attributes="0"/>
+                                  <Component id="jftfImporte" max="32767" attributes="0"/>
                               </Group>
                           </Group>
-                      </Group>
-                  </Group>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="jScrollPane1" min="-2" pref="451" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
-                          <Component id="jbtnAceptar" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jbtnCancelar" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jpnlPax" alignment="0" min="-2" pref="905" max="-2" attributes="0"/>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="jlblContrato" min="-2" pref="105" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
-                                  <Component id="jcbxContrato" min="-2" pref="263" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -147,7 +158,19 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="2" attributes="0">
                   <Component id="jlblImporte" alignment="2" min="-2" max="-2" attributes="0"/>
-                  <Component id="jftfImporte" alignment="2" min="-2" max="-2" attributes="0"/>
+                  <Component id="jftfImporteImp" alignment="2" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" alignment="2" groupAlignment="3" attributes="0">
+                      <Component id="jlblImporte2" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jftfImporteReserva" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="103" groupAlignment="2" attributes="0">
+                      <Component id="jlblImporte1" alignment="2" min="-2" max="-2" attributes="0"/>
+                      <Component id="jftfImporte" alignment="2" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="jlblSaldo" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="jpnlDetPagos" max="32767" attributes="0"/>
@@ -286,7 +309,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jlblDesayunos" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
-                  <Component id="jcbxDesayunos1" min="-2" pref="60" max="-2" attributes="0"/>
+                  <Component id="jcbxDesayunosImp" min="-2" pref="60" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jlblDesayunos1" min="-2" pref="152" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
@@ -306,7 +329,7 @@
                       <Component id="jlblBebes" alignment="2" min="-2" max="-2" attributes="0"/>
                       <Component id="jcbxDesayunos" alignment="2" min="-2" max="-2" attributes="0"/>
                       <Component id="jlblDesayunos" alignment="2" min="-2" max="-2" attributes="0"/>
-                      <Component id="jcbxDesayunos1" alignment="2" min="-2" max="-2" attributes="0"/>
+                      <Component id="jcbxDesayunosImp" alignment="2" min="-2" max="-2" attributes="0"/>
                       <Component id="jlblDesayunos1" alignment="2" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -412,7 +435,7 @@
             <Property name="text" type="java.lang.String" value="Desayunos Imputados"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JComboBox" name="jcbxDesayunos1">
+        <Component class="javax.swing.JComboBox" name="jcbxDesayunosImp">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="10">
@@ -459,16 +482,22 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jlblImporte">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Importe Total:"/>
+        <Property name="text" type="java.lang.String" value="Importe Imputado:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JFormattedTextField" name="jftfImporte">
+    <Component class="javax.swing.JFormattedTextField" name="jftfImporteImp">
       <Properties>
         <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
           <Format format="#,##0.00" subtype="-1" type="0"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="value" type="java.lang.Object" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="0" type="code"/>
+        </Property>
       </Properties>
+      <Events>
+        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jftfImporteImpFocusLost"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jbtnAceptar">
       <Properties>
@@ -607,7 +636,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTextArea" name="jTextArea1">
+        <Component class="javax.swing.JTextArea" name="jtaObservaciones">
         </Component>
       </SubComponents>
     </Container>
@@ -615,6 +644,66 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Observaciones:"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jlblImporte1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Importe Total:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JFormattedTextField" name="jftfImporte">
+      <Properties>
+        <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
+          <Format format="#,##0.00" subtype="-1" type="0"/>
+        </Property>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="value" type="java.lang.Object" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="0" type="code"/>
+        </Property>
+      </Properties>
+      <Events>
+        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jftfImporteFocusLost"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jlblImporte2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Importe Reserva:"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="jlblImporte2.setVisible(this.operacion &gt; 0);"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JFormattedTextField" name="jftfImporteReserva">
+      <Properties>
+        <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
+          <Format format="#,##0.00" subtype="-1" type="0"/>
+        </Property>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="value" type="java.lang.Object" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="0" type="code"/>
+        </Property>
+      </Properties>
+      <Events>
+        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jftfImporteReservaFocusGained"/>
+        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jftfImporteReservaFocusLost"/>
+      </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="jftfImporteReserva.setVisible(this.operacion &gt; 0);"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jlblSaldo">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Ubuntu" size="15" style="1"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="0" red="ff" type="rgb"/>
+        </Property>
+        <Property name="horizontalAlignment" type="int" value="2"/>
+        <Property name="text" type="java.lang.String" value="Saldo:"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="jlblSaldo.setVisible(this.operacion &gt; 0);"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>
