@@ -2,6 +2,7 @@
 
 <Form version="1.5" maxVersion="1.8" type="org.netbeans.modules.form.forminfo.JInternalFrameFormInfo">
   <Properties>
+    <Property name="closable" type="boolean" value="true"/>
     <Property name="title" type="java.lang.String" value="Listado de Tipo de Unidades Funcionales"/>
   </Properties>
   <SyntheticProperties>
@@ -25,6 +26,7 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jScrollPane1" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       <Component id="jbtnAgregar" min="-2" pref="117" max="-2" attributes="0"/>
@@ -35,11 +37,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jbtnCerrar" min="-2" pref="117" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="jScrollPane1" max="32767" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="jpnlAltaTUF" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                  </Group>
+                  <Component id="jpnlAltaTUF" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -50,9 +48,9 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="246" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="jpnlAltaTUF" max="32767" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jpnlAltaTUF" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="18" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jbtnAgregar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jbtnBorrar" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -89,6 +87,7 @@
     </Container>
     <Component class="javax.swing.JButton" name="jbtnAgregar">
       <Properties>
+        <Property name="mnemonic" type="int" value="65"/>
         <Property name="text" type="java.lang.String" value="Agregar"/>
       </Properties>
       <Events>
@@ -97,16 +96,25 @@
     </Component>
     <Component class="javax.swing.JButton" name="jbtnBorrar">
       <Properties>
+        <Property name="mnemonic" type="int" value="66"/>
         <Property name="text" type="java.lang.String" value="Borrar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnBorrarActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jbtnActualizar">
       <Properties>
+        <Property name="mnemonic" type="int" value="84"/>
         <Property name="text" type="java.lang.String" value="Actualizar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnActualizarActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jbtnCerrar">
       <Properties>
+        <Property name="mnemonic" type="int" value="67"/>
         <Property name="text" type="java.lang.String" value="Cerrar"/>
       </Properties>
       <Events>
@@ -120,6 +128,7 @@
             <TitledBorder/>
           </Border>
         </Property>
+        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
 
       <Layout>
@@ -128,32 +137,29 @@
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
-                          <Component id="jlblUbicacion" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
+                      <Component id="jlblM2" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="jlblTUF" alignment="0" min="-2" pref="117" max="-2" attributes="0"/>
+                      <Component id="jlblUbicacion" alignment="0" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <Component id="jtxfUbicacion" min="-2" pref="343" max="-2" attributes="0"/>
+                          <EmptySpace pref="167" max="32767" attributes="0"/>
                           <Component id="jbtnOK" min="-2" pref="117" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="jtxfUbicacion" alignment="1" min="-2" pref="343" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="jlblTUF" min="-2" pref="117" max="-2" attributes="0"/>
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="jtxfTUF" min="-2" pref="344" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="jlblM2" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="jftfM2" min="-2" pref="67" max="-2" attributes="0"/>
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="jlblAmbientes" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="jcbxAmbientes" min="-2" pref="90" max="-2" attributes="0"/>
-                                  </Group>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Component id="jftfM2" min="-2" pref="67" max="-2" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
+                                  <Component id="jlblAmbientes" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="jcbxAmbientes" min="-2" pref="90" max="-2" attributes="0"/>
                               </Group>
+                              <Component id="jtxfTUF" min="-2" pref="344" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="0" pref="209" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -168,24 +174,25 @@
                       <Component id="jlblTUF" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jtxfTUF" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jlblM2" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jftfM2" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jlblAmbientes" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jcbxAmbientes" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           <Component id="jbtnOK" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" alignment="0" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jlblM2" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jftfM2" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jlblAmbientes" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jcbxAmbientes" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace pref="12" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jlblUbicacion" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jtxfUbicacion" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -221,13 +228,12 @@
         <Component class="javax.swing.JComboBox" name="jcbxAmbientes">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="6">
+              <StringArray count="5">
                 <StringItem index="0" value="1"/>
                 <StringItem index="1" value="2"/>
                 <StringItem index="2" value="3"/>
                 <StringItem index="3" value="4"/>
                 <StringItem index="4" value="5"/>
-                <StringItem index="5" value=" "/>
               </StringArray>
             </Property>
           </Properties>
@@ -241,6 +247,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="jbtnOK">
           <Properties>
+            <Property name="mnemonic" type="int" value="101"/>
             <Property name="text" type="java.lang.String" value="Aceptar"/>
           </Properties>
           <Events>

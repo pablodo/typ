@@ -24,6 +24,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="exitMenuItem">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+Q"/>
+                </Property>
                 <Property name="mnemonic" type="int" value="83"/>
                 <Property name="text" type="java.lang.String" value="Salir"/>
               </Properties>
@@ -53,7 +56,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="logoutMenuItem">
               <Properties>
+                <Property name="mnemonic" type="int" value="67"/>
                 <Property name="text" type="java.lang.String" value="Cerrar Sesi&#xf3;n"/>
+                <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="logoutMenuItemActionPerformed"/>
@@ -73,11 +78,13 @@
           <SubComponents>
             <Menu class="javax.swing.JMenu" name="consultasMenu">
               <Properties>
+                <Property name="mnemonic" type="int" value="67"/>
                 <Property name="text" type="java.lang.String" value="Consultas"/>
               </Properties>
               <SubComponents>
                 <MenuItem class="javax.swing.JMenuItem" name="jmiVistaMensual">
                   <Properties>
+                    <Property name="mnemonic" type="int" value="86"/>
                     <Property name="text" type="java.lang.String" value="Vista Mensual"/>
                   </Properties>
                   <Events>
@@ -86,6 +93,7 @@
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="jmiClientes">
                   <Properties>
+                    <Property name="mnemonic" type="int" value="73"/>
                     <Property name="text" type="java.lang.String" value="Inquilinos"/>
                   </Properties>
                   <Events>
@@ -94,6 +102,7 @@
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="jmiPropietarios">
                   <Properties>
+                    <Property name="mnemonic" type="int" value="80"/>
                     <Property name="text" type="java.lang.String" value="Propietarios"/>
                   </Properties>
                   <Events>
@@ -102,6 +111,7 @@
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="jmiUF">
                   <Properties>
+                    <Property name="mnemonic" type="int" value="70"/>
                     <Property name="text" type="java.lang.String" value="Unidades Funcionales"/>
                   </Properties>
                   <Events>
@@ -110,6 +120,7 @@
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="jmiUsrWeb">
                   <Properties>
+                    <Property name="mnemonic" type="int" value="85"/>
                     <Property name="text" type="java.lang.String" value="Usuarios Web"/>
                     <Property name="actionCommand" type="java.lang.String" value="UsuariosWeb"/>
                   </Properties>
@@ -118,6 +129,7 @@
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="jmiMovimientos">
                   <Properties>
+                    <Property name="mnemonic" type="int" value="77"/>
                     <Property name="text" type="java.lang.String" value="Movimientos"/>
                   </Properties>
                   <Events>
@@ -126,6 +138,7 @@
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="jmiReservas">
                   <Properties>
+                    <Property name="mnemonic" type="int" value="65"/>
                     <Property name="text" type="java.lang.String" value="Alquileres"/>
                   </Properties>
                   <Events>
@@ -136,6 +149,7 @@
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="jmiResumenes">
                   <Properties>
+                    <Property name="mnemonic" type="int" value="82"/>
                     <Property name="text" type="java.lang.String" value="Resumenes"/>
                   </Properties>
                 </MenuItem>
@@ -143,11 +157,13 @@
             </Menu>
             <Menu class="javax.swing.JMenu" name="mantenimientoMenu">
               <Properties>
+                <Property name="mnemonic" type="int" value="77"/>
                 <Property name="text" type="java.lang.String" value="Mantenimiento"/>
               </Properties>
               <SubComponents>
                 <MenuItem class="javax.swing.JMenuItem" name="jmiBancos">
                   <Properties>
+                    <Property name="mnemonic" type="int" value="66"/>
                     <Property name="text" type="java.lang.String" value="Bancos"/>
                   </Properties>
                   <Events>
@@ -156,6 +172,7 @@
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="jmiTCuentas">
                   <Properties>
+                    <Property name="mnemonic" type="int" value="67"/>
                     <Property name="text" type="java.lang.String" value="Tipos de Cuentas"/>
                     <Property name="actionCommand" type="java.lang.String" value="TiposCuentas"/>
                   </Properties>
@@ -165,13 +182,16 @@
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="jmiTarifas">
                   <Properties>
+                    <Property name="mnemonic" type="int" value="84"/>
                     <Property name="text" type="java.lang.String" value="Tarifas"/>
+                    <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                 </MenuItem>
                 <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator4">
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="jmiTiposUF">
                   <Properties>
+                    <Property name="mnemonic" type="int" value="85"/>
                     <Property name="text" type="java.lang.String" value="Tipos de Unidad Funcional"/>
                     <Property name="actionCommand" type="java.lang.String" value="TiposUF"/>
                   </Properties>
@@ -195,6 +215,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jmiPropResumenes">
               <Properties>
+                <Property name="mnemonic" type="int" value="82"/>
                 <Property name="text" type="java.lang.String" value="Resumenes"/>
               </Properties>
             </MenuItem>
@@ -233,7 +254,6 @@
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
       <Dimension value="[1024, 600]"/>
     </Property>
-    <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="menuBar" type="java.lang.String" value="AppMenuBar"/>
@@ -266,6 +286,7 @@
   <SubComponents>
     <Container class="javax.swing.JDesktopPane" name="desktopPane">
       <Properties>
+        <Property name="autoscrolls" type="boolean" value="true"/>
         <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[1024, 680]"/>
         </Property>

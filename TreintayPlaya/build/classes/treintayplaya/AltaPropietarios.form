@@ -53,7 +53,7 @@
                   <Component id="jbtnAceptar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jbtnCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace pref="15" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -137,7 +137,7 @@
                       <Component id="jlblTelefono" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jftfCelular" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="15" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -149,6 +149,11 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jtxfApellido">
+          <Properties>
+            <Property name="document" type="javax.swing.text.Document" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="new FixedLengthDocument(50)" type="code"/>
+            </Property>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jlblNombre">
           <Properties>
@@ -156,6 +161,11 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jtxfNombre">
+          <Properties>
+            <Property name="document" type="javax.swing.text.Document" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="new FixedLengthDocument(50)" type="code"/>
+            </Property>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jlblEmail">
           <Properties>
@@ -163,6 +173,11 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jtxfEmail">
+          <Properties>
+            <Property name="document" type="javax.swing.text.Document" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="new FixedLengthDocument(60)" type="code"/>
+            </Property>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jlblTelefono">
           <Properties>
@@ -219,20 +234,15 @@
                       <Component id="jlblUF" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jcbxUF" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="0" pref="11" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="16" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
         <Component class="javax.swing.JComboBox" name="jcbxUF">
-          <Properties>
-            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="0"/>
-            </Property>
-          </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="for(int i = 1; i &lt; 29; i++)&#xa;    jcbxUF.addItem(&quot;UF &quot; + i);&#xa;"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new ComboTabla()"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="jlblUF">
@@ -313,7 +323,7 @@
                       <Component id="jtxfCBU" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jlblCBU" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="14" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -337,11 +347,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="jcbxBanco">
-          <Properties>
-            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="0"/>
-            </Property>
-          </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new ComboTabla()"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="jlblTCuenta">
           <Properties>
@@ -349,11 +357,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="jcbxTCuenta">
-          <Properties>
-            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="0"/>
-            </Property>
-          </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new ComboTabla()"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="jlblNCuenta">
           <Properties>
@@ -361,6 +367,11 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jtxfNCuenta">
+          <Properties>
+            <Property name="document" type="javax.swing.text.Document" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="new FixedLengthDocument(20)" type="code"/>
+            </Property>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jlblCBU">
           <Properties>
@@ -368,6 +379,14 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jtxfCBU">
+          <Properties>
+            <Property name="document" type="javax.swing.text.Document" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="new FixedLengthDocument(25)" type="code"/>
+            </Property>
+            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+              <Color id="Cursor de Texto"/>
+            </Property>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>

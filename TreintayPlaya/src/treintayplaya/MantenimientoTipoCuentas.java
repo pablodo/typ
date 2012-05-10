@@ -4,6 +4,11 @@
  */
 package treintayplaya;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author sergio
@@ -16,11 +21,14 @@ public class MantenimientoTipoCuentas extends javax.swing.JInternalFrame {
 
     public static javax.swing.table.DefaultTableModel modelo;
     public static java.sql.Connection cnx;
+    private ArrayList<Integer> ids;
+    private boolean actualizar;
     
     public MantenimientoTipoCuentas() {
         modelo = new javax.swing.table.DefaultTableModel();
         cnx = Conexion.getInstance().getConnection();
         initComponents();
+        cargaTabla();
     }
 
     /**
@@ -46,16 +54,14 @@ public class MantenimientoTipoCuentas extends javax.swing.JInternalFrame {
 
         jtblTC.setModel(modelo);
         jtblTC.setGridColor(new java.awt.Color(204, 204, 204));
-        jtblTC.setShowGrid(true);
-        modelo.addColumn("Tipo de Cuenta");
 
-        cargaTabla();
         jScrollPane1.setViewportView(jtblTC);
 
         jlblTC.setText("Tipo de Cuenta:");
 
         jtxfTC.setEnabled(false);
 
+        jbtnAgregar.setMnemonic('A');
         jbtnAgregar.setText("Agregar");
         jbtnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -63,10 +69,23 @@ public class MantenimientoTipoCuentas extends javax.swing.JInternalFrame {
             }
         });
 
+        jbtnBorrar.setMnemonic('B');
         jbtnBorrar.setText("Borrar");
+        jbtnBorrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnBorrarActionPerformed(evt);
+            }
+        });
 
+        jbtnActualizar.setMnemonic('t');
         jbtnActualizar.setText("Actualizar");
+        jbtnActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnActualizarActionPerformed(evt);
+            }
+        });
 
+        jbtnCerrar.setMnemonic('C');
         jbtnCerrar.setText("Cerrar");
         jbtnCerrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -74,8 +93,14 @@ public class MantenimientoTipoCuentas extends javax.swing.JInternalFrame {
             }
         });
 
+        jbtnOK.setMnemonic('e');
         jbtnOK.setText("Aceptar");
         jbtnOK.setEnabled(false);
+        jbtnOK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnOKActionPerformed(evt);
+            }
+        });
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -131,26 +156,82 @@ public class MantenimientoTipoCuentas extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jbtnCerrarActionPerformed
 
     private void jbtnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnAgregarActionPerformed
-        jtxfTC.setEnabled(true);
-        jbtnOK.setEnabled(true);
-        jtxfTC.setText("");
+        actualizar = false;
+        altaTCuenta(true);
+        jtxfTC.requestFocus();
     }//GEN-LAST:event_jbtnAgregarActionPerformed
+
+    private void jbtnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnOKActionPerformed
+        String tcNombre = jtxfTC.getText().trim();
+        if ("".equals(tcNombre)){
+            altaTCuenta(false);
+            return;
+        }
+        try {
+            String query = "INSERT INTO TCuentas (tcNombre) VALUES (?)";
+            if (actualizar)
+                query = "UPDATE TCuentas SET tcNombre = ? WHERE tcID = ?";
+            java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
+            pstm.setString(1, tcNombre);
+            if (actualizar)
+                pstm.setInt(2, ids.get(jtblTC.getSelectedRow()));
+            pstm.execute();
+            pstm.close();
+            altaTCuenta(false);
+            cargaTabla();
+        } catch (SQLException ex) {
+            Logger.getLogger(MantenimientoTipoCuentas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jbtnOKActionPerformed
+
+    private void jbtnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnBorrarActionPerformed
+        int row =jtblTC.getSelectedRow();
+        if (row < 0){
+            return;
+        }
+        try {    
+            java.sql.PreparedStatement pstm = cnx.prepareStatement("DELETE FROM  TCuentas WHERE tcID = ?");
+            pstm.setInt(1, ids.get(row));
+            if (pstm.executeUpdate() > 0){
+                ids.remove(row);
+                modelo.removeRow(row);
+            }
+            pstm.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(MantenimientoTipoCuentas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jbtnBorrarActionPerformed
+
+    private void jbtnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnActualizarActionPerformed
+        if (jtblTC.getSelectedRow() < 0){
+            return;
+        }
+        actualizar = true;
+        altaTCuenta(true);
+        jtxfTC.requestFocus();
+    }//GEN-LAST:event_jbtnActualizarActionPerformed
 
     public void cargaTabla() {
         try {
 
             java.sql.Statement stm = cnx.createStatement();
 
-                java.sql.ResultSet rst = stm.executeQuery("select tcNombre from TCuentas order by tcNombre");
-
+            java.sql.ResultSet rst = stm.executeQuery("SELECT tcID, tcNombre FROM TCuentas ORDER BY tcNombre");
+            
+            ids = new ArrayList<Integer>();
+            modelo = new javax.swing.table.DefaultTableModel();
+            jtblTC.setModel(modelo);
+            Object[] headers = {"Tipo de Cuenta"};
+            modelo.setColumnIdentifiers(headers);
+            
             while(rst.next()) {
-
-                Object [] fila = new Object[1];
-
-                fila[0] = rst.getObject(1);
-
+                ids.add(rst.getInt("tcID"));
+                Object[] fila = {rst.getString("tcNombre")};
                 modelo.addRow(fila);
             }
+            
+            rst.close();
+            stm.close();
         } catch (java.sql.SQLException sqle) {
             sqle.printStackTrace();
         }
@@ -167,4 +248,11 @@ public class MantenimientoTipoCuentas extends javax.swing.JInternalFrame {
     private javax.swing.JTable jtblTC;
     private javax.swing.JTextField jtxfTC;
     // End of variables declaration//GEN-END:variables
+
+    private void altaTCuenta(boolean option) {
+        jtxfTC.setEnabled(option);
+        jbtnOK.setEnabled(option);
+        jtxfTC.setText("");
+    }
 }
+

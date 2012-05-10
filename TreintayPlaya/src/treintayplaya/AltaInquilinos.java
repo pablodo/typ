@@ -44,6 +44,7 @@ public class AltaInquilinos extends javax.swing.JInternalFrame {
             setTitle("Modificar inquilino");
             cargarCliente(cliID);
         }
+        getRootPane().setDefaultButton(jbtnAceptar);
     }
 
     /**
@@ -299,7 +300,10 @@ public class AltaInquilinos extends javax.swing.JInternalFrame {
     }
 
     private int insertCliente() throws SQLException {
-        java.sql.PreparedStatement pstm = cnx.prepareStatement("insert into Clientes (cliDNI, cliApellido, cliNombre, cliTelefono, cliCelular, cliEmail) values (?, ?, ?, ?, ?, ?)");
+        String query = "insert into Clientes (cliDNI, cliApellido, cliNombre, cliTelefono, cliCelular, cliEmail) values (?, ?, ?, ?, ?, ?)";
+        if (cliID > 0)
+            query = "UPDATE Clientes SET cliDNI=?, cliApellido=?, cliNombre=?, cliTelefono=?, cliCelular=?, cliEmail=? WHERE cliID=?";
+        java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
             
         pstm.setString(1, jftfDNI.getText());
         pstm.setString(2, jtxfApellido.getText());
@@ -307,7 +311,8 @@ public class AltaInquilinos extends javax.swing.JInternalFrame {
         pstm.setString(4, jftfTelefono.getText());
         pstm.setString(5, jftfCelular.getText());
         pstm.setString(6, jtxfEmail.getText());
-
+        if (cliID > 0)
+            pstm.setInt(7, cliID);
         return pstm.executeUpdate();
     }
 

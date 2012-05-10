@@ -23,6 +23,7 @@ public class LoginUsuarios extends javax.swing.JInternalFrame {
         /** Creates new form LoginUsuarios */
     public LoginUsuarios() {
         initComponents();
+        getRootPane().setDefaultButton(jbtnLogin);
     }
 
     /** This method is called from within the constructor to
@@ -43,6 +44,7 @@ public class LoginUsuarios extends javax.swing.JInternalFrame {
         jbtnCancelar = new javax.swing.JButton();
 
         setTitle("Iniciar Sesión");
+        setName("");
 
         jlblUsuario.setText("Usuario:");
 
@@ -50,6 +52,7 @@ public class LoginUsuarios extends javax.swing.JInternalFrame {
 
         jtxfUsuario.setToolTipText("Dirección de Correo Electrónico");
 
+        jbtnLogin.setMnemonic('A');
         jbtnLogin.setText("Acceder");
         jbtnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -57,6 +60,7 @@ public class LoginUsuarios extends javax.swing.JInternalFrame {
             }
         });
 
+        jbtnRegistrar.setMnemonic('R');
         jbtnRegistrar.setText("Registrar");
         jbtnRegistrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -64,6 +68,7 @@ public class LoginUsuarios extends javax.swing.JInternalFrame {
             }
         });
 
+        jbtnCancelar.setMnemonic('C');
         jbtnCancelar.setText("Cancelar");
         jbtnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -76,23 +81,24 @@ public class LoginUsuarios extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .addContainerGap()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                        .add(jbtnLogin)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                        .add(jbtnRegistrar)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                        .add(jbtnCancelar))
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
                     .add(layout.createSequentialGroup()
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-                            .add(org.jdesktop.layout.GroupLayout.LEADING, jlblPass, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .add(org.jdesktop.layout.GroupLayout.LEADING, jlblUsuario, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE))
-                        .add(18, 18, 18)
+                        .addContainerGap()
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                            .add(jlblPass, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(jlblUsuario, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(jtxfUsuario, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
-                            .add(jpfPass, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE))))
-                .addContainerGap())
+                            .add(jpfPass, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)
+                            .add(jtxfUsuario)))
+                    .add(layout.createSequentialGroup()
+                        .add(79, 79, 79)
+                        .add(jbtnLogin)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jbtnRegistrar)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jbtnCancelar)))
+                .addContainerGap(44, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -105,12 +111,12 @@ public class LoginUsuarios extends javax.swing.JInternalFrame {
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jlblPass)
                     .add(jpfPass, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(18, 18, 18)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 23, Short.MAX_VALUE)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jbtnCancelar)
+                    .add(jbtnLogin)
                     .add(jbtnRegistrar)
-                    .add(jbtnLogin))
-                .addContainerGap(27, Short.MAX_VALUE))
+                    .add(jbtnCancelar))
+                .addContainerGap())
         );
 
         pack();

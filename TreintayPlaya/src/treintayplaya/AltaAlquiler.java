@@ -47,6 +47,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         }
         selectContrato();
         setTitle(titulos[operacion]);
+        getRootPane().setDefaultButton(jbtnAceptar);
     }
     
     public AltaAlquiler() {

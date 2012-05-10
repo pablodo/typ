@@ -54,15 +54,10 @@ public class ConsultaInquilinos extends javax.swing.JInternalFrame {
         jTable1.setModel(modelo);
         jTable1.setGridColor(new java.awt.Color(204, 204, 204));
         jTable1.getTableHeader().setReorderingAllowed(false);
-        modelo.addColumn("Apellido");
-        modelo.addColumn("Nombre");
-        modelo.addColumn("Teléfono");
-        modelo.addColumn("Celular");
-        modelo.addColumn("Email");
-
         actualizaTablaClientes();
         jScrollPane1.setViewportView(jTable1);
 
+        jbtnAgregar.setMnemonic('A');
         jbtnAgregar.setText("Agregar");
         jbtnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -70,6 +65,7 @@ public class ConsultaInquilinos extends javax.swing.JInternalFrame {
             }
         });
 
+        jbtnBorrar.setMnemonic('B');
         jbtnBorrar.setText("Borrar");
         jbtnBorrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -77,6 +73,7 @@ public class ConsultaInquilinos extends javax.swing.JInternalFrame {
             }
         });
 
+        jbtnActualizar.setMnemonic('t');
         jbtnActualizar.setText("Actualizar");
         jbtnActualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -84,6 +81,7 @@ public class ConsultaInquilinos extends javax.swing.JInternalFrame {
             }
         });
 
+        jbtnCerrar.setMnemonic('C');
         jbtnCerrar.setText("Cerrar");
         jbtnCerrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -175,6 +173,14 @@ public class ConsultaInquilinos extends javax.swing.JInternalFrame {
 
             java.sql.ResultSet rst = stm.executeQuery("select cliID, cliApellido, cliNombre, cliTelefono, cliCelular, cliEmail from Clientes order by cliApellido");
             cliIDs = new ArrayList<Integer>();
+            modelo = new javax.swing.table.DefaultTableModel();
+            Object[] headers = {"Apellido",
+                                "Nombre",
+                                "Teléfono",
+                                "Celular",
+                                "Email"};
+            modelo.setColumnIdentifiers(headers);
+            jTable1.setModel(modelo);
             while(rst.next()) {
                 Vector row = new Vector();
                 row.add(rst.getString("cliApellido"));
@@ -192,7 +198,7 @@ public class ConsultaInquilinos extends javax.swing.JInternalFrame {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private static javax.swing.JTable jTable1;
     private javax.swing.JButton jbtnActualizar;
     private javax.swing.JButton jbtnAgregar;
     private javax.swing.JButton jbtnBorrar;

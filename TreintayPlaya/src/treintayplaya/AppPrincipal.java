@@ -69,8 +69,8 @@ public class AppPrincipal extends javax.swing.JFrame {
         setTitle("Treinta y Playa - Sistema de Gestión");
         setLocationByPlatform(true);
         setMinimumSize(new java.awt.Dimension(1024, 600));
-        setResizable(false);
 
+        desktopPane.setAutoscrolls(true);
         desktopPane.setMinimumSize(new java.awt.Dimension(1024, 680));
 
         jlblAppUsuario.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -105,6 +105,7 @@ public class AppPrincipal extends javax.swing.JFrame {
         fileMenu.add(saveMenuItem);
         fileMenu.add(jSeparator1);
 
+        exitMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
         exitMenuItem.setMnemonic('S');
         exitMenuItem.setText("Salir");
         exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -129,7 +130,9 @@ public class AppPrincipal extends javax.swing.JFrame {
         });
         usrMenu.add(loginMenuItem);
 
+        logoutMenuItem.setMnemonic('C');
         logoutMenuItem.setText("Cerrar Sesión");
+        logoutMenuItem.setToolTipText("");
         logoutMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 logoutMenuItemActionPerformed(evt);
@@ -143,8 +146,10 @@ public class AppPrincipal extends javax.swing.JFrame {
         admMenu.setText("Administradores");
         admMenu.setEnabled(false);
 
+        consultasMenu.setMnemonic('C');
         consultasMenu.setText("Consultas");
 
+        jmiVistaMensual.setMnemonic('V');
         jmiVistaMensual.setText("Vista Mensual");
         jmiVistaMensual.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -153,6 +158,7 @@ public class AppPrincipal extends javax.swing.JFrame {
         });
         consultasMenu.add(jmiVistaMensual);
 
+        jmiClientes.setMnemonic('I');
         jmiClientes.setText("Inquilinos");
         jmiClientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -161,6 +167,7 @@ public class AppPrincipal extends javax.swing.JFrame {
         });
         consultasMenu.add(jmiClientes);
 
+        jmiPropietarios.setMnemonic('P');
         jmiPropietarios.setText("Propietarios");
         jmiPropietarios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -169,6 +176,7 @@ public class AppPrincipal extends javax.swing.JFrame {
         });
         consultasMenu.add(jmiPropietarios);
 
+        jmiUF.setMnemonic('F');
         jmiUF.setText("Unidades Funcionales");
         jmiUF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -177,11 +185,13 @@ public class AppPrincipal extends javax.swing.JFrame {
         });
         consultasMenu.add(jmiUF);
 
+        jmiUsrWeb.setMnemonic('U');
         jmiUsrWeb.setText("Usuarios Web");
         jmiUsrWeb.setActionCommand("UsuariosWeb");
         consultasMenu.add(jmiUsrWeb);
         consultasMenu.add(jSeparator2);
 
+        jmiMovimientos.setMnemonic('M');
         jmiMovimientos.setText("Movimientos");
         jmiMovimientos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -190,6 +200,7 @@ public class AppPrincipal extends javax.swing.JFrame {
         });
         consultasMenu.add(jmiMovimientos);
 
+        jmiReservas.setMnemonic('A');
         jmiReservas.setText("Alquileres");
         jmiReservas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -199,13 +210,16 @@ public class AppPrincipal extends javax.swing.JFrame {
         consultasMenu.add(jmiReservas);
         consultasMenu.add(jSeparator3);
 
+        jmiResumenes.setMnemonic('R');
         jmiResumenes.setText("Resumenes");
         consultasMenu.add(jmiResumenes);
 
         admMenu.add(consultasMenu);
 
+        mantenimientoMenu.setMnemonic('M');
         mantenimientoMenu.setText("Mantenimiento");
 
+        jmiBancos.setMnemonic('B');
         jmiBancos.setText("Bancos");
         jmiBancos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -214,6 +228,7 @@ public class AppPrincipal extends javax.swing.JFrame {
         });
         mantenimientoMenu.add(jmiBancos);
 
+        jmiTCuentas.setMnemonic('C');
         jmiTCuentas.setText("Tipos de Cuentas");
         jmiTCuentas.setActionCommand("TiposCuentas");
         jmiTCuentas.addActionListener(new java.awt.event.ActionListener() {
@@ -223,10 +238,13 @@ public class AppPrincipal extends javax.swing.JFrame {
         });
         mantenimientoMenu.add(jmiTCuentas);
 
+        jmiTarifas.setMnemonic('T');
         jmiTarifas.setText("Tarifas");
+        jmiTarifas.setEnabled(false);
         mantenimientoMenu.add(jmiTarifas);
         mantenimientoMenu.add(jSeparator4);
 
+        jmiTiposUF.setMnemonic('U');
         jmiTiposUF.setText("Tipos de Unidad Funcional");
         jmiTiposUF.setActionCommand("TiposUF");
         jmiTiposUF.addActionListener(new java.awt.event.ActionListener() {
@@ -244,6 +262,7 @@ public class AppPrincipal extends javax.swing.JFrame {
         propMenu.setText("Propietarios");
         propMenu.setEnabled(false);
 
+        jmiPropResumenes.setMnemonic('R');
         jmiPropResumenes.setText("Resumenes");
         propMenu.add(jmiPropResumenes);
 
@@ -375,7 +394,7 @@ public class AppPrincipal extends javax.swing.JFrame {
 
     private void jmiMovimientosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiMovimientosActionPerformed
         if(validaAdmin()) {
-            Movimientos movimientos = new Movimientos();
+            ConsultaMovimientos movimientos = new ConsultaMovimientos();
             desktopPane.add(movimientos);
             movimientos.show();
         }

@@ -4,6 +4,8 @@
  */
 package treintayplaya;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author sergio
@@ -16,6 +18,7 @@ public class ConsultaUF extends javax.swing.JInternalFrame {
     
     public static javax.swing.table.DefaultTableModel modelo;
     public static java.sql.Connection cnx;
+    private static ArrayList<Integer> ids;
     
     public ConsultaUF() {
         modelo = new javax.swing.table.DefaultTableModel();
@@ -39,11 +42,11 @@ public class ConsultaUF extends javax.swing.JInternalFrame {
         jbtnActualizar = new javax.swing.JButton();
         jbtnCerrar = new javax.swing.JButton();
 
+        setClosable(true);
         setTitle("Consulta de Unidades Funcionales");
 
         jTable1.setModel(modelo);
         jTable1.setGridColor(new java.awt.Color(204, 204, 204));
-        jTable1.setShowGrid(true);
         modelo.addColumn("Uindad Funcional");
         modelo.addColumn("Tipo de Unidad");
         modelo.addColumn("Apellido");
@@ -55,6 +58,7 @@ public class ConsultaUF extends javax.swing.JInternalFrame {
         actualizaTablaUF();
         jScrollPane1.setViewportView(jTable1);
 
+        jbtnAgregar.setMnemonic('A');
         jbtnAgregar.setText("Agregar");
         jbtnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -62,10 +66,13 @@ public class ConsultaUF extends javax.swing.JInternalFrame {
             }
         });
 
+        jbtnBorrar.setMnemonic('B');
         jbtnBorrar.setText("Borrar");
 
+        jbtnActualizar.setMnemonic('t');
         jbtnActualizar.setText("Actualizar");
 
+        jbtnCerrar.setMnemonic('C');
         jbtnCerrar.setText("Cerrar");
         jbtnCerrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -131,7 +138,7 @@ public class ConsultaUF extends javax.swing.JInternalFrame {
             int result = pstm.executeUpdate();
             
             if(result == 1) {
-                modelo.removeRow(jTable1.getSelectedRow());
+                actualizaTablaUF();
             }
             
         } catch (java.sql.SQLException sqle) {
@@ -144,15 +151,22 @@ public class ConsultaUF extends javax.swing.JInternalFrame {
 
             java.sql.Statement stm = cnx.createStatement();
 
-            java.sql.ResultSet rst = stm.executeQuery("select ufNombre, tufDetalle, propApellido, propNombre, propTelefono, propCelular, propEmail from UnidadesFuncionales, Propietarios, TiposUF where ufPropietario = propID and ufTipo = tufID order by propID, ufNombre");
+            java.sql.ResultSet rst = stm.executeQuery("select ufID, ufNombre, tufDetalle, propApellido, propNombre, propTelefono, propCelular, propEmail from UnidadesFuncionales LEFT JOIN Propietarios ON propUF = ufID LEFT JOIN TiposUF ON ufTipo = tufID order by ufID, ufNombre");
 
+            ids = new ArrayList<Integer>();
+            modelo = new javax.swing.table.DefaultTableModel();
+            Object[] headers = {"Unidad Funcional", "Detalle", "Apellido", "Nombre", "Teléfono", "Celular", "Email"};
+            modelo.setColumnIdentifiers(headers);
+            jTable1.setModel(modelo);
             while(rst.next()) {
-
-                Object [] fila = new Object[7];
-
-                for(int i = 0; i < 7; i++)
-                    fila[i] = rst.getObject(i + 1);
-
+                ids.add(rst.getInt("ufID"));
+                Object [] fila = {rst.getString("ufNombre"),
+                                  rst.getString("tufDetalle"),
+                                  rst.getString("propApellido"),
+                                  rst.getString("propNombre"),
+                                  rst.getString("propTelefono"),
+                                  rst.getString("propCelular"),
+                                  rst.getString("propEmail")};
                 modelo.addRow(fila);
             }
         } catch (java.sql.SQLException sqle) {
@@ -162,7 +176,7 @@ public class ConsultaUF extends javax.swing.JInternalFrame {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private static javax.swing.JTable jTable1;
     private javax.swing.JButton jbtnActualizar;
     private javax.swing.JButton jbtnAgregar;
     private javax.swing.JButton jbtnBorrar;

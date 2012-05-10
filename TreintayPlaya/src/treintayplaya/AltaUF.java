@@ -20,6 +20,7 @@ public class AltaUF extends javax.swing.JInternalFrame {
         initComponents();
         cnx = Conexion.getInstance().getConnection();
         this.cargaCombos();
+        getRootPane().setDefaultButton(jbtnAceptar);
     }
 
     /**
@@ -174,22 +175,6 @@ public class AltaUF extends javax.swing.JInternalFrame {
             int result = pstm.executeUpdate();
             
             if(result == 1) {
-                /*
-                stm = cnx.createStatement();p
-                rst = stm.executeQuery("select propApellido, propNombre, propTelefono, propCelular, propEmail from Propietarios where propID = '" + propID + "'");
-
-                rst.next();
-                String propApe = rst.getString(1);
-                String propNom = rst.getString(2);
-                String propTel = rst.getString(3);
-                String propCel = rst.getString(4);
-                String propEma = rst.getString(5);
-
-                stm.close();
-
-                Object [] fila = {jtxfNombre.getText(), jcbxTUF.getSelectedItem().toString(), propApe, propNom, propTel, propCel, propEma};
-                ConsultaUF.modelo.addRow(fila);
-                */
                 ConsultaUF.actualizaTablaUF();
             }
             

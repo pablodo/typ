@@ -10,21 +10,20 @@
  */
 package treintayplaya;
 
-import java.sql.ResultSet;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
- * @author sergio
+ * @author Pablo
  */
 public class AltaPropietarios extends javax.swing.JInternalFrame {
     public final static int ACTUALIZAR=1;
     public final static int ALTA=0;
     private int estado;
-    private int propID;
+    private int propID;    
     java.sql.Connection cnx;
-    
     
     /** Creates new form AltaPropietarios */
     public AltaPropietarios(int propID) {
@@ -33,13 +32,14 @@ public class AltaPropietarios extends javax.swing.JInternalFrame {
             this.estado = ACTUALIZAR;
             this.propID = propID;
         }
-        initComponents();
         cnx = Conexion.getInstance().getConnection();
+        initComponents();
+        cargaCombos();
         if (estado == ACTUALIZAR){
             setTitle("Actualizar Propietario");
             cargarPropietario();
-        }
-        this.cargaCombos();
+        }  
+        getRootPane().setDefaultButton(jbtnAceptar);
     }
     
     public AltaPropietarios(){
@@ -69,15 +69,15 @@ public class AltaPropietarios extends javax.swing.JInternalFrame {
         jlblCelular = new javax.swing.JLabel();
         jftfCelular = new javax.swing.JFormattedTextField();
         jpnlUF = new javax.swing.JPanel();
-        jcbxUF = new javax.swing.JComboBox();
+        jcbxUF = new ComboTabla();
         jlblUF = new javax.swing.JLabel();
         jpnlBancario = new javax.swing.JPanel();
         jlblCUIT = new javax.swing.JLabel();
         jftfCUIT = new javax.swing.JFormattedTextField();
         jlblBanco = new javax.swing.JLabel();
-        jcbxBanco = new javax.swing.JComboBox();
+        jcbxBanco = new ComboTabla();
         jlblTCuenta = new javax.swing.JLabel();
-        jcbxTCuenta = new javax.swing.JComboBox();
+        jcbxTCuenta = new ComboTabla();
         jlblNCuenta = new javax.swing.JLabel();
         jtxfNCuenta = new javax.swing.JTextField();
         jlblCBU = new javax.swing.JLabel();
@@ -103,9 +103,15 @@ public class AltaPropietarios extends javax.swing.JInternalFrame {
 
         jlblApellido.setText("Apellido:");
 
+        jtxfApellido.setDocument(new FixedLengthDocument(50));
+
         jlblNombre.setText("Nombre:");
 
+        jtxfNombre.setDocument(new FixedLengthDocument(50));
+
         jlblEmail.setText("Email:");
+
+        jtxfEmail.setDocument(new FixedLengthDocument(60));
 
         jlblTelefono.setText("Teléfono:");
 
@@ -168,13 +174,10 @@ public class AltaPropietarios extends javax.swing.JInternalFrame {
                     .add(jlblCelular)
                     .add(jlblTelefono)
                     .add(jftfCelular, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         jpnlUF.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos de Propiedad"));
-
-        for(int i = 1; i < 29; i++)
-        jcbxUF.addItem("UF " + i);
 
         jlblUF.setText("Unidad Funcional:");
 
@@ -196,7 +199,7 @@ public class AltaPropietarios extends javax.swing.JInternalFrame {
                 .add(jpnlUFLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jlblUF)
                     .add(jcbxUF, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(0, 11, Short.MAX_VALUE))
+                .add(0, 16, Short.MAX_VALUE))
         );
 
         jpnlBancario.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Bancarios"));
@@ -215,7 +218,12 @@ public class AltaPropietarios extends javax.swing.JInternalFrame {
 
         jlblNCuenta.setText("Nro. Cuenta:");
 
+        jtxfNCuenta.setDocument(new FixedLengthDocument(20));
+
         jlblCBU.setText("CBU:");
+
+        jtxfCBU.setDocument(new FixedLengthDocument(25));
+        jtxfCBU.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
 
         org.jdesktop.layout.GroupLayout jpnlBancarioLayout = new org.jdesktop.layout.GroupLayout(jpnlBancario);
         jpnlBancario.setLayout(jpnlBancarioLayout);
@@ -267,7 +275,7 @@ public class AltaPropietarios extends javax.swing.JInternalFrame {
                 .add(jpnlBancarioLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jtxfCBU, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jlblCBU))
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
@@ -300,7 +308,7 @@ public class AltaPropietarios extends javax.swing.JInternalFrame {
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jbtnAceptar)
                     .add(jbtnCancelar))
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         pack();
@@ -312,48 +320,24 @@ public class AltaPropietarios extends javax.swing.JInternalFrame {
 
     private void jbtnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnAceptarActionPerformed
         if (validaFormulario()){
-            int result = 0;
             try {
-
-                String query = "INSERT INTO Propietarios (propApellido, propNombre, propTelefono, propCelular, propEmail, propCUIT, propBanco, propTCuenta, propNCuenta, propCBU) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; 
-                if (estado == ACTUALIZAR){
-                    query = "UPDATE Propietarios SET propApellido=?, propNombre=?, propTelefono=?, propCelular=?, propEmail=?, propCUIT=?, propBanco=?, propTCuenta=?, propNCuenta=?, propCBU=? WHERE propID = ?";
+                int result = insertPropietario();
+                if(result == 1) {
+                    ConsultaPropietarios.actualizaTablaPropietarios();
+                    dispose();
                 }
-                java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
-                
-                pstm.setString( 1, jtxfApellido.getText());
-                pstm.setString( 2, jtxfNombre.getText());
-                pstm.setString( 3, jftfTelefono.getText());
-                pstm.setString( 4, jftfCelular.getText());
-                pstm.setString( 5, jtxfEmail.getText());
-                pstm.setString( 6, jftfCUIT.getText());
-                pstm.setString( 7, String.valueOf(jcbxBanco.getSelectedItem()));
-                pstm.setString( 8, String.valueOf(jcbxTCuenta.getSelectedItem()));
-                pstm.setString( 9, jtxfNCuenta.getText());
-                pstm.setString(10, jtxfCBU.getText());
-                if (estado == ACTUALIZAR){
-                    pstm.setString(11, String.valueOf(propID));
-                }
-                
-                result = pstm.executeUpdate();
-
-            } catch(java.sql.SQLException sqle) {
-
-            }
-            
-            if(result == 1) {
-                ConsultaPropietarios.actualizaTablaPropietarios();
-                dispose();
+            } catch (SQLException ex) {
+                Logger.getLogger(AltaPropietarios.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_jbtnAceptarActionPerformed
 
     private void cargarPropietario() {
         try{    
-            String query = "SELECT propApellido, propNombre, propTelefono, propCelular, propEmail, propCUIT, propBanco, propTCuenta, propNCuenta, propCBU FROM Propietarios WHERE propID =";
+            String query = "SELECT propApellido, propNombre, propTelefono, propCelular, propEmail, propCUIT, propBanco, propTCuenta, propNCuenta, propCBU, propUF FROM Propietarios WHERE propID =";
             query = query + " " + String.valueOf(propID);
             java.sql.Statement pstm = cnx.createStatement();
-            ResultSet rst = pstm.executeQuery(query);
+            java.sql.ResultSet rst = pstm.executeQuery(query);
             
             rst.next();
             jtxfApellido.setText(rst.getString("propApellido"));
@@ -363,48 +347,26 @@ public class AltaPropietarios extends javax.swing.JInternalFrame {
             jtxfEmail.setText(rst.getString("propEmail"));
             jftfCUIT.setText(rst.getString("propCUIT"));
             Integer banco = rst.getInt("propBanco");
-            if (banco != null && banco >= 0)
-                jcbxBanco.setSelectedIndex(banco);
-            Integer tCuenta = rst.getInt("propTCuenta");
-            if (tCuenta != null && tCuenta >= 0)
-                jcbxTCuenta.setSelectedIndex(tCuenta);
-            jcbxTCuenta.setSelectedIndex(rst.getInt("propTCuenta"));
+            ((ComboTabla)jcbxBanco).setSelectedItemById(banco);
+            Integer tCuenta = rst.getInt("propTCuenta");            
+            ((ComboTabla)jcbxTCuenta).setSelectedItemById(tCuenta);
             jtxfNCuenta.setText(rst.getString("propNCuenta"));
             jtxfCBU.setText(rst.getString("propCBU"));
+            ((ComboTabla) jcbxUF).setSelectedItemById(rst.getInt("propUF"));
 
         } catch(java.sql.SQLException sqle) {
-
+            sqle.printStackTrace();
         }    
     }
     
-    public void cargaCombos() {
-        try {
-            
-            java.sql.Statement stmBancos = cnx.createStatement();
-            java.sql.Statement stmTCuentas = cnx.createStatement();
-            java.sql.Statement stmUF = cnx.createStatement();
-            
-            java.sql.ResultSet rstBancos = stmBancos.executeQuery("select bancoNombre from Bancos order by bancoNombre");
-            java.sql.ResultSet rstTCuentas = stmTCuentas.executeQuery("select tcNombre from TCuentas order by tcNombre");
-            java.sql.ResultSet rstUF = stmUF.executeQuery("SELECT ufNombre, ufID FROM UnidadFuncional");
-            
-            while(rstBancos.next())
-                jcbxBanco.addItem(rstBancos.getString("bancoNombre"));
- 
-            while(rstTCuentas.next())
-                jcbxTCuenta.addItem(rstTCuentas.getString("tcNombre"));
-            
-            /*
-            while(rstUF.next()){
-                UFitem item = new UFitem(rstUF.getString("ufNombre"), rstUF.getInt("ufID"));
-                jcbxUF.addItem(item);
-            }*/
-            rstBancos.close();
-            rstTCuentas.close();
-            rstUF.close();
-        } catch(java.sql.SQLException sqle) {
-            
-        }
+    private void cargaCombos() {
+        String sqlBancos = "SELECT bancoNombre, bancoID from Bancos order by bancoNombre";
+        String sqlTCuentas = "SELECT tcNombre, tcID from TCuentas order by tcNombre";
+        String sqlUF = "SELECT ufNombre, ufID FROM UnidadesFuncionales order by ufNombre";
+        
+        Funciones.cargarComboTabla((ComboTabla)jcbxBanco, sqlBancos, "bancoNombre", "bancoID");
+        Funciones.cargarComboTabla((ComboTabla)jcbxTCuenta, sqlTCuentas, "tcNombre", "tcID");
+        Funciones.cargarComboTabla((ComboTabla)jcbxUF, sqlUF, "ufNombre", "ufID");
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -438,20 +400,38 @@ public class AltaPropietarios extends javax.swing.JInternalFrame {
     // End of variables declaration//GEN-END:variables
 
     private boolean validaFormulario() {
-        if ( ! validaTextField(jtxfApellido, "Apellido")) 
+        if ( ! Funciones.validaTextField(this, jtxfApellido, "Apellido")) {
             return false;
-        if ( ! validaTextField(jtxfNombre, "Nombre")) 
-            return false;
-        return true;
-    }
-    
-    private boolean validaTextField(JTextField obj, String name){
-        if (obj.getText() == null || "".equals(obj.getText())){
-            String msg = "Ingrese " + name + '.';
-            String msgTitle = "Error en " + name + '.';
-            JOptionPane.showMessageDialog(this, msg, msgTitle, JOptionPane.ERROR_MESSAGE);
+        }
+        if ( ! Funciones.validaTextField(this, jtxfNombre, "Nombre")) {
             return false;
         }
         return true;
+    }
+
+    private int insertPropietario() throws SQLException {
+        String query = "INSERT INTO Propietarios (propApellido, propNombre, propTelefono, propCelular, propEmail, propCUIT, propBanco, propTCuenta, propNCuenta, propCBU, propUF) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; 
+        if (estado == ACTUALIZAR){
+            query = "UPDATE Propietarios SET propApellido=?, propNombre=?, propTelefono=?, propCelular=?, propEmail=?, propCUIT=?, propBanco=?, propTCuenta=?, propNCuenta=?, propCBU=?, propUF=? WHERE propID = ?";
+        }
+        java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
+
+        pstm.setString( 1, jtxfApellido.getText());
+        pstm.setString( 2, jtxfNombre.getText());
+        pstm.setString( 3, jftfTelefono.getText());
+        pstm.setString( 4, jftfCelular.getText());
+        pstm.setString( 5, jtxfEmail.getText());
+        pstm.setString( 6, jftfCUIT.getText());
+        pstm.setInt   ( 7, ((ComboTabla)jcbxBanco).getSelectedId());
+        pstm.setInt   ( 8, ((ComboTabla)jcbxTCuenta).getSelectedId());
+        pstm.setString( 9, jtxfNCuenta.getText());
+        pstm.setString(10, jtxfCBU.getText());
+        pstm.setInt   (11, ((ComboTabla)jcbxUF).getSelectedId());
+        if (estado == ACTUALIZAR){
+            pstm.setString(12, String.valueOf(propID));
+        }
+        int result = pstm.executeUpdate();
+        pstm.close();
+        return result;
     }
 }

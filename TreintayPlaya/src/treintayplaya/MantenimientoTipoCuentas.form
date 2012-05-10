@@ -94,7 +94,7 @@
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="modelo.addColumn(&quot;Tipo de Cuenta&quot;);&#xa;&#xa;cargaTabla();&#xa;"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value=" "/>
           </AuxValues>
         </Component>
       </SubComponents>
@@ -111,6 +111,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="jbtnAgregar">
       <Properties>
+        <Property name="mnemonic" type="int" value="65"/>
         <Property name="text" type="java.lang.String" value="Agregar"/>
       </Properties>
       <Events>
@@ -119,16 +120,25 @@
     </Component>
     <Component class="javax.swing.JButton" name="jbtnBorrar">
       <Properties>
+        <Property name="mnemonic" type="int" value="66"/>
         <Property name="text" type="java.lang.String" value="Borrar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnBorrarActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jbtnActualizar">
       <Properties>
+        <Property name="mnemonic" type="int" value="116"/>
         <Property name="text" type="java.lang.String" value="Actualizar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnActualizarActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jbtnCerrar">
       <Properties>
+        <Property name="mnemonic" type="int" value="67"/>
         <Property name="text" type="java.lang.String" value="Cerrar"/>
       </Properties>
       <Events>
@@ -137,9 +147,13 @@
     </Component>
     <Component class="javax.swing.JButton" name="jbtnOK">
       <Properties>
+        <Property name="mnemonic" type="int" value="101"/>
         <Property name="text" type="java.lang.String" value="Aceptar"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnOKActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

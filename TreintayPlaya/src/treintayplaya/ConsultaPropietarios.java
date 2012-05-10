@@ -134,15 +134,14 @@ public class ConsultaPropietarios extends javax.swing.JInternalFrame {
     private void jbtnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnBorrarActionPerformed
         try {
             
-            java.sql.PreparedStatement pstm = cnx.prepareStatement("delete from Propietarios where propApellido = ? and propNombre = ? and propEmail = ?");
+            java.sql.PreparedStatement pstm = cnx.prepareStatement("DELETE from Propietarios WHERE propID = ?");
 
-            pstm.setString(1, (String) jTable1.getValueAt(jTable1.getSelectedRow(), 0));
-            pstm.setString(2, (String) jTable1.getValueAt(jTable1.getSelectedRow(), 1));
-            pstm.setString(3, (String) jTable1.getValueAt(jTable1.getSelectedRow(), 4));
+            pstm.setInt(1, IDs.get(jTable1.getSelectedRow()));
             
             int result = pstm.executeUpdate();
             
             if(result == 1) {
+                IDs.remove(jTable1.getSelectedRow());
                 modelo.removeRow(jTable1.getSelectedRow());
             }
             
@@ -165,11 +164,10 @@ public class ConsultaPropietarios extends javax.swing.JInternalFrame {
             
             while (modelo.getRowCount() > 0)
                 modelo.removeRow(0);
+            IDs = new ArrayList<Integer>();
             
             java.sql.Statement stm = cnx.createStatement();
-
             java.sql.ResultSet rst = stm.executeQuery("select propID, propApellido, propNombre, propTelefono, propCelular, propEmail from Propietarios");
-            IDs = new ArrayList<Integer>();
             
             while(rst.next()) {
                 IDs.add(rst.getInt("propID"));

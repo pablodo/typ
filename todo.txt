@@ -30,6 +30,8 @@
     | | Reserva Propietario:
 1.5 | | Se marca con naranja y solo se cargan los dias que la unidad va a estar en uso.
     | | 
+    | | Modificar alquiler 
+    | | 
 4   | | Listado de deudores:
     | | Dado una fecha de ingreso, muestra todos los inquilinos que entran en esa fecha y que aun no terminaron de pagar el alquiler
     | | Poder seleccionar varios y mandar un mail diciendoles que deben
@@ -48,21 +50,28 @@
     | | Inquilinos
     | | * VER QUE HACER CON TEXTFIELDS FORMATEADOS (DNI, Celular y Telefono)
     | | Propietarios
-1   | |  - Guardar PropUF
-0.5 | |  - Cargar Bancos
-0.5 | |  - Cargar Tipo de Cuentas
-0.5 | |  - Poder modificar propietarios
-0.5 | |  - Actualizar planilla despues de borrar
+    | | * VER QUE HACER CON TEXTFIELDS FORMATEADOS (Celular y Telefono)
+1   |O|  - Guardar PropUF
+0.5 |O|  - Cargar Bancos
+0.5 |O|  - Cargar Tipo de Cuentas
+0.5 |O|  - Poder modificar propietarios
+0.5 |O|  - Actualizar planilla despues de borrar
     | | Unidades Funcionales 
 0.5 | | - Cargar unidades funcionales 
 0.5 | | - Guardar Unidades Funcionales
 0.5 | | - Borrar Unidades Funcionales
 0.5 | | - Borrar Unidades Funcionales
-    | | 
-    | | 
-    | | 
-    | | 
-    | | 
+    | | Usuarios
+    |O| Bancos / Tipos de Cuenta
+    |O| - Aceptar no guarda
+    |O| - Borrar 
+    |O| - Modificar 
+    |O| Tipos de UF: 
+    |O| - Validar antes de agregar
+    |O| - Poder seguir agregando
+    |O| - Actualizar
+    |O| - Borrar
+    | | Contratos
     | | 
     | | 
     | | 
@@ -94,8 +103,9 @@
 
 
 Agregar unit test
-ComboTabla carga el combo pasandole algo (query, nombre tabla, etc) y agregar metodo "recargar" 
+ComboTabla carga el combo pasandole algo (query, nombre tabla, etc) y agregar metodo "recargar" (Funciones.cargarComboTabla)
 Implementar logger verdadero y manejarlo con un messageDialog
 Hacer que todas las tablas no se puedan modificar:
     VistaActividadMensual
-
+Ver como poner Botones en default
+Al querer borrar TCuentas, que busque si algun propietario tiene esa cuenta y advierta

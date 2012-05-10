@@ -4,6 +4,11 @@
  */
 package treintayplaya;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author sergio
@@ -15,6 +20,8 @@ public class MantenimientoBancos extends javax.swing.JInternalFrame {
      */
     public static javax.swing.table.DefaultTableModel modelo;
     public static java.sql.Connection cnx;
+    private boolean actualizar;
+    private ArrayList<Integer> ids;
     
     public MantenimientoBancos() {
         modelo = new javax.swing.table.DefaultTableModel();
@@ -45,9 +52,6 @@ public class MantenimientoBancos extends javax.swing.JInternalFrame {
 
         jtblBancos.setModel(modelo);
         jtblBancos.setGridColor(new java.awt.Color(204, 204, 204));
-        jtblBancos.setShowGrid(true);
-        modelo.addColumn("Banco");
-
         cargaTabla();
         jScrollPane1.setViewportView(jtblBancos);
 
@@ -55,6 +59,7 @@ public class MantenimientoBancos extends javax.swing.JInternalFrame {
 
         jtxfBanco.setEnabled(false);
 
+        jbtnAgregar.setMnemonic('A');
         jbtnAgregar.setText("Agregar");
         jbtnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -62,10 +67,23 @@ public class MantenimientoBancos extends javax.swing.JInternalFrame {
             }
         });
 
+        jbtnBorrar.setMnemonic('B');
         jbtnBorrar.setText("Borrar");
+        jbtnBorrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnBorrarActionPerformed(evt);
+            }
+        });
 
+        jbtnActualizar.setMnemonic('t');
         jbtnActualizar.setText("Actualizar");
+        jbtnActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnActualizarActionPerformed(evt);
+            }
+        });
 
+        jbtnCerrar.setMnemonic('C');
         jbtnCerrar.setText("Cerrar");
         jbtnCerrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -73,8 +91,14 @@ public class MantenimientoBancos extends javax.swing.JInternalFrame {
             }
         });
 
+        jbtnOK.setMnemonic('e');
         jbtnOK.setText("Aceptar");
         jbtnOK.setEnabled(false);
+        jbtnOK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnOKActionPerformed(evt);
+            }
+        });
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -129,26 +153,78 @@ public class MantenimientoBancos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jbtnCerrarActionPerformed
 
     private void jbtnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnAgregarActionPerformed
-        jtxfBanco.setEnabled(true);
-        jbtnOK.setEnabled(true);
-        jtxfBanco.setText("");
+        actualizar = false;
+        altaBanco(true);
+        jtxfBanco.requestFocus();
     }//GEN-LAST:event_jbtnAgregarActionPerformed
+
+    private void jbtnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnBorrarActionPerformed
+        int row = jtblBancos.getSelectedRow();
+        if (row < 0){
+            return;
+        }
+        try {
+            java.sql.PreparedStatement pstm = cnx.prepareStatement("DELETE FROM Bancos WHERE bancoID = ?");
+            pstm.setInt(1, ids.get(row));
+            pstm.executeUpdate();
+            cargaTabla();
+        } catch (SQLException ex) {
+            Logger.getLogger(MantenimientoBancos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jbtnBorrarActionPerformed
+
+    private void jbtnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnActualizarActionPerformed
+        if (jtblBancos.getSelectedRow() < 0){
+            return;
+        }
+        actualizar = true;
+        altaBanco(true);
+        jtxfBanco.requestFocus();
+    }//GEN-LAST:event_jbtnActualizarActionPerformed
+
+    private void jbtnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnOKActionPerformed
+        String nombre = jtxfBanco.getText().trim();
+        if (nombre.equals("")){
+            altaBanco(false);
+            return;
+        }
+        try {
+            String query = "INSERT INTO Bancos (bancoNombre) VALUES (?)";
+            if (actualizar)
+                query = "UPDATE Bancos SET bancoNombre = ? WHERE bancoID = ?";
+            java.sql.PreparedStatement pstm = cnx.prepareCall(query);
+            pstm.setString(1, nombre);
+            if (actualizar)
+                pstm.setInt(2, ids.get(jtblBancos.getSelectedRow()));
+            pstm.execute();
+            pstm.close();
+            altaBanco(false);
+            cargaTabla();
+        } catch (SQLException ex) {
+            Logger.getLogger(MantenimientoBancos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jbtnOKActionPerformed
 
     public void cargaTabla() {
         try {
 
             java.sql.Statement stm = cnx.createStatement();
 
-                java.sql.ResultSet rst = stm.executeQuery("select bancoNombre from Bancos order by bancoNombre");
+            java.sql.ResultSet rst = stm.executeQuery("SELECT bancoID, bancoNombre FROM Bancos ORDER BY bancoNombre");
 
+            ids = new ArrayList<Integer>();
+            modelo = new javax.swing.table.DefaultTableModel();
+            jtblBancos.setModel(modelo);
+            Object[] headers = {"Banco"};
+            modelo.setColumnIdentifiers(headers);
+            
             while(rst.next()) {
-
-                Object [] fila = new Object[1];
-
-                fila[0] = rst.getObject(1);
-
+                ids.add(rst.getInt("bancoID"));
+                Object[] fila = {rst.getString("bancoNombre")};
                 modelo.addRow(fila);
             }
+            rst.close();
+            stm.close();
         } catch (java.sql.SQLException sqle) {
             sqle.printStackTrace();
         }
@@ -165,4 +241,11 @@ public class MantenimientoBancos extends javax.swing.JInternalFrame {
     private javax.swing.JTable jtblBancos;
     private javax.swing.JTextField jtxfBanco;
     // End of variables declaration//GEN-END:variables
+
+    private void altaBanco(boolean option) {
+        jtxfBanco.setEnabled(option);
+        jbtnOK.setEnabled(option);
+        jtblBancos.setEnabled(! option);
+        jtxfBanco.setText("");
+    }
 }

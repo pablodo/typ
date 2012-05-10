@@ -31,7 +31,10 @@ public class ComboTabla extends JComboBox {
         ids.remove(index);
     }
     public Integer getSelectedId(){
-        return ids.get(this.getSelectedIndex());
+        int selectedIndex = this.getSelectedIndex();
+        if (ids.isEmpty() || !ids.contains(selectedIndex))
+            return 0;
+        return ids.get(selectedIndex);
     }
     
     public void setSelectedItemById(Integer id){
@@ -42,6 +45,7 @@ public class ComboTabla extends JComboBox {
         return ids.size();
     }
     
+    @Override
     public void removeAllItems(){
         super.removeAllItems();
         ids.clear();

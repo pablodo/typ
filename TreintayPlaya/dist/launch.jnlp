@@ -2,7 +2,7 @@
 <jnlp href="launch.jnlp" spec="1.0+">
     <information>
         <title>TreintayPlaya</title>
-        <vendor>sergio</vendor>
+        <vendor>Pablo</vendor>
         <homepage href=""/>
         <description>TreintayPlaya</description>
         <description kind="short">TreintayPlaya</description>
