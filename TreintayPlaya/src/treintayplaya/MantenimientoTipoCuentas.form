@@ -94,6 +94,7 @@
             </Property>
           </Properties>
           <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTable(){     public boolean isCellEditable(int row, int col){         return false;     } }"/>
             <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value=" "/>
           </AuxValues>
         </Component>

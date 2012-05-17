@@ -55,6 +55,7 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
         cerrarMenuItem = new javax.swing.JMenuItem();
         anularMenuItem = new javax.swing.JMenuItem();
         reservaPropietarioMenuItem = new javax.swing.JMenuItem();
+        modificarMenuItem = new javax.swing.JMenuItem();
         jToolBar1 = new javax.swing.JToolBar();
         jbtnAnterior = new javax.swing.JButton();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
@@ -109,6 +110,15 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
         reservaPropietarioMenuItem.setText("Reserva Propietario");
         reservaPropietarioMenuItem.setEnabled(false);
         jpmEstado.add(reservaPropietarioMenuItem);
+
+        modificarMenuItem.setMnemonic('M');
+        modificarMenuItem.setText("Modificar");
+        modificarMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modificarMenuItemActionPerformed(evt);
+            }
+        });
+        jpmEstado.add(modificarMenuItem);
 
         jpmEstado.getAccessibleContext().setAccessibleParent(jtblVistaMensual);
 
@@ -256,6 +266,16 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
         actualizarMenu();
     }//GEN-LAST:event_jtblVistaMensualMousePressed
 
+    private void modificarMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarMenuItemActionPerformed
+        Alquiler alquiler = getSelectedAlquiler();
+        if (alquiler.id > 0){
+            AltaAlquiler aAlquiler = new AltaAlquiler(this, alquiler);
+            AppPrincipal.desktopPane.add(aAlquiler);
+            aAlquiler.show();
+            aAlquiler.toFront();
+        }
+    }//GEN-LAST:event_modificarMenuItemActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem anularMenuItem;
     private javax.swing.JMenuItem cerrarMenuItem;
@@ -269,6 +289,7 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jlblMesActual;
     private javax.swing.JPopupMenu jpmEstado;
     private javax.swing.JTable jtblVistaMensual;
+    private javax.swing.JMenuItem modificarMenuItem;
     private javax.swing.JMenuItem reservaPropietarioMenuItem;
     private javax.swing.JMenuItem reservarMenuItem;
     // End of variables declaration//GEN-END:variables
@@ -366,7 +387,7 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
             for (int row = 0; row < modelo.getRowCount(); row++){
                 int ufID = ufIDs.get(row);
                 if (ufID > 0){
-                    String query = "SELECT dalqFecha, alqID, alqEstado, cliApellido, cliNombre FROM DetAlquileres INNER JOIN Alquileres ON dalqAlq = alqID INNER JOIN Clientes ON alqCliente = cliID WHERE alqUF = ? ";
+                    String query = "SELECT dalqFecha, alqID FROM DetAlquileres INNER JOIN Alquileres ON dalqAlq = alqID WHERE alqUF = ? ";
                     PreparedStatement pstm = cnx.prepareStatement(query);
                     pstm.setInt(1, ufID);
                     ResultSet rst = pstm.executeQuery();
@@ -375,12 +396,9 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
                         String fecha = rst.getString("dalqFecha");
                         int dia = Integer.parseInt(fecha.substring(8, 10));
                         int mes = Integer.parseInt(fecha.substring(5, 7));
+                        
                         if (mes == month + 1) {
-                            Alquiler alquiler = new Alquiler();
-                            alquiler.id = rst.getInt("alqID");
-                            alquiler.tipo = rst.getInt("alqEstado");
-                            alquiler.apellido = rst.getString("cliApellido");
-                            alquiler.nombre = rst.getString("cliNombre");
+                            Alquiler alquiler = new Alquiler(rst.getInt("alqID"));
                             modelo.setValueAt(alquiler, row, dia);
                         }
                     }
@@ -486,12 +504,13 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
         }
         return true;
     }
-
+    
     private void actualizarMenu() {
         reservarMenuItem.setEnabled(isReservaEnabled());
         confirmarMenuItem.setEnabled(isConfirmarEnabled());
         cerrarMenuItem.setEnabled(isCancelarEnabled());
         anularMenuItem.setEnabled(isAnularEnabled());
         reservaPropietarioMenuItem.setEnabled(isReservaEnabled());
+        modificarMenuItem.setEnabled(isAnularEnabled());
     }
 }

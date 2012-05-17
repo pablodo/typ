@@ -30,7 +30,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
     Thread fechas;
     private Alquiler alquiler;
     private Integer operacion;
-    String[] titulos = {"Reserva Provisoria", "Confirmar Reserva", "Cancelar Reserva"};
+    String[] titulos = {"Reserva Provisoria", "Confirmar Reserva", "Cancelar Reserva", "Modificar Alquiler"};
     
     
     public AltaAlquiler(VistaActividadAdmin tabla, Alquiler alquiler, Integer operacion) {
@@ -56,6 +56,10 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
     
     public AltaAlquiler(VistaActividadAdmin tabla){
         this(tabla, new Alquiler(), 0);
+    }
+    
+    public AltaAlquiler(VistaActividadAdmin tabla, Alquiler alquiler){
+        this(tabla, alquiler, Alquiler.MODIFICAR);
     }
 
     /** This method is called from within the constructor to
@@ -122,6 +126,8 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         setClosable(true);
         setTitle("Alta de Reserva Provisoria");
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
                 formInternalFrameActivated(evt);
             }
@@ -132,8 +138,6 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
             public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
             }
             public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
-            }
-            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
             }
             public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
             }
@@ -164,11 +168,11 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
 
         jlblFIN.setText("Fecha IN:");
 
-        jdcFIN.setDateFormatString("dd-MM-yyyy");
+        jdcFIN.setDateFormatString("dd-MM-yyyy HH:mm");
 
         jlblFOUT.setText("Fecha OUT:");
 
-        jdcFOUT.setDateFormatString("dd-MM-yyyy");
+        jdcFOUT.setDateFormatString("dd-MM-yyyy HH:mm");
 
         jpnlPax.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Ocupantes", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(255, 0, 0)));
         jpnlPax.setName("");
@@ -434,7 +438,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
                     .add(jlblOperador, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(jlblAlqOperador, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(jlblAlqOperador, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
                     .add(jlblAlqFecha, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 28, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jlblFecha, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
@@ -503,12 +507,15 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
                 insert1 = insertAlquiler();
                 if (insert1){
                     if (alquiler.id == 0){
-                        alquiler.id = getUltimoAlquiler();
+                        alquiler = new Alquiler(getUltimoAlquiler());
                     }else{
+                        alquiler = new Alquiler(alquiler.id);
                         deleteDetalleAlquiler(alquiler.id);
                     }
                     insertDetalleAlquiler(alquiler.id);
                 }
+                if (((ComboTabla)jcbxContrato).getSelectedId() > 0 && operacion != alquiler.MODIFICAR)
+                    enviarContrato();
             } catch(java.sql.SQLException sqle) {
                 sqle.printStackTrace();
                 try {
@@ -570,7 +577,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jftfImporteFocusLost
 
     private void formInternalFrameActivated(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameActivated
-        if (operacion != Alquiler.RESERVAR){
+        if (operacion != Alquiler.RESERVAR && operacion != Alquiler.MODIFICAR){
             jftfImporteReserva.requestFocusInWindow();
         }
     }//GEN-LAST:event_formInternalFrameActivated
@@ -580,43 +587,10 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jftfImporteReservaFocusGained
 
     private void cargaCombos() {
-        try {
-            
-            java.sql.Statement stmUFs        = cnx.createStatement();
-            java.sql.Statement stmFormasPago = cnx.createStatement();
-            java.sql.Statement stmContratos  = cnx.createStatement();
-            
-            java.sql.ResultSet rstUFs        = stmUFs.executeQuery("select ufNombre, ufID from UnidadesFuncionales where ufTipo > 0 order by ufNombre");
-            java.sql.ResultSet rstFormasPago = stmFormasPago.executeQuery("select fpNombre, fpID from FormasPago order by fpID");
-            java.sql.ResultSet rstContratos  = stmContratos.executeQuery("select conTipo, ID from Contratos order by ID");
-            
-            while(rstUFs.next()){
-                int ufID = rstUFs.getInt("ufID");
-                ((ComboTabla)jcbxUF).addItem(rstUFs.getString("ufNombre"), ufID);
-            }
-            
-            while(rstFormasPago.next()){
-                int fpID = rstFormasPago.getInt("fpID");
-                ((ComboTabla)jcbxFormasPago).addItem(rstFormasPago.getString("fpNombre"), fpID);
-            }
-
-            while(rstContratos.next()){
-                int conID = rstContratos.getInt("ID");
-                ((ComboTabla)jcbxContrato).addItem(rstContratos.getString("conTipo"), conID);
-            }
-            
-            rstUFs.close();
-            rstFormasPago.close();
-            rstContratos.close();
-            
-            stmUFs.close();
-            stmFormasPago.close();
-            stmContratos.close();
-            
-            this.cargarInquilinos();
-        } catch(java.sql.SQLException sqle) {
-            sqle.printStackTrace();
-        }        
+        Funciones.cargarComboTabla((ComboTabla)jcbxUF, "select ufNombre, ufID from UnidadesFuncionales where ufTipo > 0 order by ufNombre", "ufNombre", "ufID");
+        Funciones.cargarComboTabla((ComboTabla)jcbxFormasPago, "select fpNombre, fpID from FormasPago order by fpID", "fpNombre", "fpID");
+        Funciones.cargarComboTabla((ComboTabla)jcbxContrato, "select conTipo, ID from Contratos order by ID", "conTipo", "ID");
+        this.cargarInquilinos();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -731,9 +705,10 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         String fIN = FechasFormatter.getFechaString(jdcFIN.getCalendar());
         String fOUT = FechasFormatter.getFechaString(jdcFOUT.getCalendar());
         String vencimiento = FechasFormatter.getFechaString(jdcVencimiento.getCalendar());
+        Integer estado = this.operacion == Alquiler.MODIFICAR ? alquiler.tipo : this.operacion;
 
         pstm.setString( 1, jlblAlqFecha.getText());
-        pstm.setInt   ( 2, operacion); 
+        pstm.setInt   ( 2, estado); 
         pstm.setInt   ( 3, DatosGlobales.usrID);
         pstm.setInt   ( 4, ufID);
         pstm.setInt   ( 5, cliID);
@@ -744,7 +719,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         pstm.setInt   (10, Integer.valueOf(jcbxBebes.getSelectedItem().toString()));
         pstm.setInt   (11, Integer.valueOf(jcbxDesayunos.getSelectedItem().toString()));
         pstm.setInt   (12, Integer.valueOf(jcbxDesayunosImp.getSelectedItem().toString()));
-        pstm.setInt   (13, this.operacion == Alquiler.RESERVAR ? 0:((ComboTabla)jcbxContrato).getSelectedId());
+        pstm.setInt   (13, this.operacion == Alquiler.RESERVAR ? 0 : ((ComboTabla)jcbxContrato).getSelectedId());
         pstm.setDouble(14, Double.valueOf(jftfImporte.getValue().toString()));
         pstm.setDouble(15, Double.valueOf(jftfImporteImp.getValue().toString()));
         pstm.setString(16, vencimiento);
@@ -859,18 +834,22 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         pstm.executeUpdate();
     }
 
-    void cargarInquilinos() throws SQLException {
-        jcbxCliente.removeAllItems();
-        java.sql.Statement stmClientes   = cnx.createStatement();
-        java.sql.ResultSet rstClientes   = stmClientes.executeQuery("select cliID, cliApellido, cliNombre from Clientes order by cliApellido");
-        while(rstClientes.next()){
-            int cliID = rstClientes.getInt("cliID");
-            String apellido = rstClientes.getString("cliApellido");
-            String nombre = rstClientes.getString("cliNombre");
-            ((ComboTabla)jcbxCliente).addItem(apellido + ", " + nombre, cliID);
+    void cargarInquilinos() {
+        try {
+            jcbxCliente.removeAllItems();
+            java.sql.Statement stmClientes   = cnx.createStatement();
+            java.sql.ResultSet rstClientes   = stmClientes.executeQuery("select cliID, cliApellido, cliNombre from Clientes order by cliApellido");
+            while(rstClientes.next()){
+                int cliID = rstClientes.getInt("cliID");
+                String apellido = rstClientes.getString("cliApellido");
+                String nombre = rstClientes.getString("cliNombre");
+                ((ComboTabla)jcbxCliente).addItem(apellido + ", " + nombre, cliID);
+            }
+            rstClientes.close();
+            stmClientes.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(AltaAlquiler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        rstClientes.close();
-        stmClientes.close();
     }
 
     private void calcularSaldo() {
@@ -910,6 +889,13 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
                 break;
         }
         
+    }
+
+    private void enviarContrato() {
+        System.out.println("Paso");
+        Integer contratoID = ((ComboTabla)jcbxContrato).getSelectedId();
+        String contrato = ContratosFactory.createContrato(contratoID, alquiler);
+        System.out.println(contrato);
     }
 
 }

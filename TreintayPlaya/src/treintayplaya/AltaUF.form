@@ -37,7 +37,6 @@
                           <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
                               <Component id="jlblNombre" max="32767" attributes="0"/>
                               <Component id="jlblTUF" max="32767" attributes="0"/>
-                              <Component id="jlblPropietario" max="32767" attributes="0"/>
                               <Component id="jlblEquipamiento" max="32767" attributes="0"/>
                               <Component id="jlblTarifa" max="32767" attributes="0"/>
                           </Group>
@@ -48,7 +47,6 @@
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="jtxfNombre" min="-2" pref="128" max="-2" attributes="0"/>
                               <Component id="jcbxTUF" max="32767" attributes="0"/>
-                              <Component id="jcbxPropietarios" alignment="0" max="32767" attributes="0"/>
                               <Component id="jScrollPane2" pref="282" max="32767" attributes="0"/>
                               <Component id="jcbxTarifa" max="32767" attributes="0"/>
                           </Group>
@@ -74,12 +72,7 @@
                   <Component id="jlblTUF" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jcbxTUF" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jlblPropietario" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jcbxPropietarios" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jlblEquipamiento" min="-2" max="-2" attributes="0"/>
                   <Component id="jScrollPane2" min="-2" pref="126" max="-2" attributes="0"/>
@@ -111,6 +104,11 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jtxfNombre">
+      <Properties>
+        <Property name="document" type="javax.swing.text.Document" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="new FixedLengthDocument(10)" type="code"/>
+        </Property>
+      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jlblTUF">
       <Properties>
@@ -118,21 +116,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="jcbxTUF">
-      <Properties>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="0"/>
-        </Property>
-      </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new treintayplaya.ComboTabla()"/>
-      </AuxValues>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jlblPropietario">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Propietario:"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JComboBox" name="jcbxPropietarios">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="0"/>
@@ -157,6 +140,9 @@
         <Component class="javax.swing.JTextArea" name="jtxaEquipamiento">
           <Properties>
             <Property name="columns" type="int" value="20"/>
+            <Property name="document" type="javax.swing.text.Document" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="new FixedLengthDocument(200)" type="code"/>
+            </Property>
             <Property name="rows" type="int" value="5"/>
           </Properties>
         </Component>
@@ -198,6 +184,9 @@
     </Component>
     <Component class="javax.swing.JFormattedTextField" name="jftfComision">
       <Properties>
+        <Property name="document" type="javax.swing.text.Document" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="new FixedLengthDocument(3)" type="code"/>
+        </Property>
         <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
           <Format format="###" subtype="-1" type="0"/>
         </Property>

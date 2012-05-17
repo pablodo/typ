@@ -37,7 +37,7 @@ public class ConsultaPropietarios extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTable1 = new javax.swing.JTable(){     public boolean isCellEditable(int row, int col){         return false;     } };
         jbtnAgregar = new javax.swing.JButton();
         jbtnBorrar = new javax.swing.JButton();
         jbtnActualizar = new javax.swing.JButton();

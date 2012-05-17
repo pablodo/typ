@@ -59,8 +59,11 @@ public class AppPrincipal extends javax.swing.JFrame {
         jmiTarifas = new javax.swing.JMenuItem();
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
         jmiTiposUF = new javax.swing.JMenuItem();
+        jmiContratos = new javax.swing.JMenuItem();
         propMenu = new javax.swing.JMenu();
         jmiPropResumenes = new javax.swing.JMenuItem();
+        deudoresMenu = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         contentMenuItem = new javax.swing.JMenuItem();
         aboutMenuItem = new javax.swing.JMenuItem();
@@ -254,6 +257,15 @@ public class AppPrincipal extends javax.swing.JFrame {
         });
         mantenimientoMenu.add(jmiTiposUF);
 
+        jmiContratos.setMnemonic('o');
+        jmiContratos.setText("Contratos");
+        jmiContratos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiContratosActionPerformed(evt);
+            }
+        });
+        mantenimientoMenu.add(jmiContratos);
+
         admMenu.add(mantenimientoMenu);
 
         AppMenuBar.add(admMenu);
@@ -267,6 +279,21 @@ public class AppPrincipal extends javax.swing.JFrame {
         propMenu.add(jmiPropResumenes);
 
         AppMenuBar.add(propMenu);
+
+        deudoresMenu.setMnemonic('L');
+        deudoresMenu.setText("Listados");
+        deudoresMenu.setEnabled(false);
+
+        jMenuItem1.setMnemonic('D');
+        jMenuItem1.setText("Deudores");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        deudoresMenu.add(jMenuItem1);
+
+        AppMenuBar.add(deudoresMenu);
 
         helpMenu.setMnemonic('y');
         helpMenu.setText("Ayuda");
@@ -400,6 +427,22 @@ public class AppPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jmiMovimientosActionPerformed
 
+    private void jmiContratosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiContratosActionPerformed
+        if(validaAdmin()) {
+            MantenimientoContratos contratos = new MantenimientoContratos();
+            desktopPane.add(contratos);
+            contratos.show();
+        }
+    }//GEN-LAST:event_jmiContratosActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        if(validaAdmin()) {
+            ListadoAlquileres listado = new ListadoAlquileres(ListadoAlquileres.DEUDORES);
+            desktopPane.add(listado);
+            listado.show();
+        }
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     private boolean validaAdmin(){
         return DatosGlobales.usrNivel == 1 && DatosGlobales.usrEstado == 1 && DatosGlobales.appSesion;
     }
@@ -446,9 +489,11 @@ public class AppPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu consultasMenu;
     private javax.swing.JMenuItem contentMenuItem;
     public static javax.swing.JDesktopPane desktopPane;
+    public static javax.swing.JMenu deudoresMenu;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
@@ -457,6 +502,7 @@ public class AppPrincipal extends javax.swing.JFrame {
     public static javax.swing.JLabel jlblAppUsuario;
     private javax.swing.JMenuItem jmiBancos;
     private javax.swing.JMenuItem jmiClientes;
+    private javax.swing.JMenuItem jmiContratos;
     private javax.swing.JMenuItem jmiMovimientos;
     private javax.swing.JMenuItem jmiPropResumenes;
     private javax.swing.JMenuItem jmiPropietarios;

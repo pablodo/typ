@@ -41,7 +41,7 @@ public class MantenimientoTipoCuentas extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jtblTC = new javax.swing.JTable();
+        jtblTC = new javax.swing.JTable(){     public boolean isCellEditable(int row, int col){         return false;     } };
         jlblTC = new javax.swing.JLabel();
         jtxfTC = new javax.swing.JTextField();
         jbtnAgregar = new javax.swing.JButton();

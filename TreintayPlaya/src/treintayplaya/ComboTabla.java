@@ -32,7 +32,8 @@ public class ComboTabla extends JComboBox {
     }
     public Integer getSelectedId(){
         int selectedIndex = this.getSelectedIndex();
-        if (ids.isEmpty() || !ids.contains(selectedIndex))
+        if (selectedIndex < 0) return 0;
+        if (ids.isEmpty() || ids.size() <= selectedIndex)
             return 0;
         return ids.get(selectedIndex);
     }

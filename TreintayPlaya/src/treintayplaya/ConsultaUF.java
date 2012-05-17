@@ -36,7 +36,7 @@ public class ConsultaUF extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTable1 = new javax.swing.JTable(){     public boolean isCellEditable(int row, int col){         return false;     } };
         jbtnAgregar = new javax.swing.JButton();
         jbtnBorrar = new javax.swing.JButton();
         jbtnActualizar = new javax.swing.JButton();
@@ -68,9 +68,19 @@ public class ConsultaUF extends javax.swing.JInternalFrame {
 
         jbtnBorrar.setMnemonic('B');
         jbtnBorrar.setText("Borrar");
+        jbtnBorrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnBorrarActionPerformed(evt);
+            }
+        });
 
         jbtnActualizar.setMnemonic('t');
         jbtnActualizar.setText("Actualizar");
+        jbtnActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnActualizarActionPerformed(evt);
+            }
+        });
 
         jbtnCerrar.setMnemonic('C');
         jbtnCerrar.setText("Cerrar");
@@ -128,23 +138,31 @@ public class ConsultaUF extends javax.swing.JInternalFrame {
         aUF.show();
     }//GEN-LAST:event_jbtnAgregarActionPerformed
 
-    private void jbtnBorrarActionPerformed(java.awt.event.ActionEvent evt) {
+    private void jbtnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnActualizarActionPerformed
+        int row = jTable1.getSelectedRow();
+        if (row < 0) return;
+        AltaUF aUF = new AltaUF(ids.get(row));
+        AppPrincipal.desktopPane.add(aUF);
+        aUF.show();
+    }//GEN-LAST:event_jbtnActualizarActionPerformed
+
+    private void jbtnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnBorrarActionPerformed
+        int row = jTable1.getSelectedRow();
+        if (row < 0) return;
         try {
 
-            java.sql.PreparedStatement pstm = cnx.prepareStatement("delete from UnidadesFuncionales where ufNombre = ?");
+            java.sql.PreparedStatement pstm = cnx.prepareStatement("delete from UnidadesFuncionales where ufID = ?");
 
-            pstm.setString(1, (String) jTable1.getValueAt(jTable1.getSelectedRow(), 0));
+            pstm.setInt(1, ids.get(row));
             
-            int result = pstm.executeUpdate();
+            pstm.executeUpdate();
             
-            if(result == 1) {
-                actualizaTablaUF();
-            }
-            
+            pstm.close();
+            actualizaTablaUF();
         } catch (java.sql.SQLException sqle) {
             sqle.printStackTrace();
         }
-    }
+    }//GEN-LAST:event_jbtnBorrarActionPerformed
 
     public static void actualizaTablaUF() {
         try {

@@ -38,11 +38,14 @@ class FechasFormatter {
         
         return (anio + "-" + mes + "-" + dia);
     }
+    
+    static String getFechaSimpleString(String fecha) {
+        fecha = getFechaFromMySQL(fecha);
+        return fecha.split(" ")[0];
+    }
 
     static Calendar getFechaCalendar(String fecha) {
-        if(fecha.endsWith(".0")){
-            fecha = fecha.substring(0, fecha.length()-2);
-        }
+        fecha = getFechaFromMySQL(fecha);
         int dia, mes, anio, hr, min, seg;
         String[] fechaSplit = fecha.split(" ")[0].split("-");
         String[] horaSplit = fecha.split(" ")[1].split(":");
@@ -53,5 +56,28 @@ class FechasFormatter {
         min  = Integer.parseInt(horaSplit[1]);
         seg  = Integer.parseInt(horaSplit[2]);
         return new GregorianCalendar(anio, mes, dia, hr, min ,seg);
+    }
+    
+    static String getFechaFromMySQL(String fecha){
+        if(fecha.endsWith(".0")){
+            fecha = fecha.substring(0, fecha.length()-2);
+        }
+        return fecha;
+    }
+    
+    static long getTimeFromFecha(String fecha) {
+        fecha = getFechaFromMySQL(fecha);
+        Calendar calendar = getFechaCalendar(fecha);
+        return calendar.getTimeInMillis();
+    }
+
+    static GregorianCalendar getMaxToday() {
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar = new GregorianCalendar(calendar.get(Calendar.YEAR),
+                                         calendar.get(Calendar.MONTH),
+                                         calendar.get(Calendar.DAY_OF_MONTH));
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+        calendar.add(Calendar.SECOND, -1);
+        return calendar;
     }
 }

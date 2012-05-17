@@ -80,6 +80,7 @@
             </Property>
           </Properties>
           <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTable(){     public boolean isCellEditable(int row, int col){         return false;     } }"/>
             <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="modelo.addColumn(&quot;Tipo de Unidad Funcional&quot;);&#xa;modelo.addColumn(&quot;M2.&quot;);&#xa;modelo.addColumn(&quot;Ambientes&quot;);&#xa;modelo.addColumn(&quot;Ubicaci&#xf3;n&quot;);&#xa;&#xa;cargaTabla();&#xa;"/>
           </AuxValues>
         </Component>

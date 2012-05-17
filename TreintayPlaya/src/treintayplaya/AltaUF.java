@@ -4,6 +4,10 @@
  */
 package treintayplaya;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author sergio
@@ -13,14 +17,23 @@ public class AltaUF extends javax.swing.JInternalFrame {
     /**
      * Creates new form AltaUF
      */
-    
+    private int ufID;
     java.sql.Connection cnx;
         
     public AltaUF() {
+        this(0);
+    }
+
+    public AltaUF(Integer ufID) {
         initComponents();
         cnx = Conexion.getInstance().getConnection();
         this.cargaCombos();
         getRootPane().setDefaultButton(jbtnAceptar);
+        this.ufID = ufID;
+        if (ufID > 0){
+            cargarUF();
+            setTitle("Actualizar Unidad Funcional");
+        }
     }
 
     /**
@@ -35,9 +48,7 @@ public class AltaUF extends javax.swing.JInternalFrame {
         jlblNombre = new javax.swing.JLabel();
         jtxfNombre = new javax.swing.JTextField();
         jlblTUF = new javax.swing.JLabel();
-        jcbxTUF = new ComboTabla();
-        jlblPropietario = new javax.swing.JLabel();
-        jcbxPropietarios = new ComboTabla();
+        jcbxTUF = new treintayplaya.ComboTabla();
         jlblEquipamiento = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jtxaEquipamiento = new javax.swing.JTextArea();
@@ -53,13 +64,14 @@ public class AltaUF extends javax.swing.JInternalFrame {
 
         jlblNombre.setText("Nombre:");
 
-        jlblTUF.setText("Tipo de Unidad:");
+        jtxfNombre.setDocument(new FixedLengthDocument(10));
 
-        jlblPropietario.setText("Propietario:");
+        jlblTUF.setText("Tipo de Unidad:");
 
         jlblEquipamiento.setText("Equipamiento:");
 
         jtxaEquipamiento.setColumns(20);
+        jtxaEquipamiento.setDocument(new FixedLengthDocument(200));
         jtxaEquipamiento.setRows(5);
         jScrollPane2.setViewportView(jtxaEquipamiento);
 
@@ -83,6 +95,7 @@ public class AltaUF extends javax.swing.JInternalFrame {
 
         jlblComision.setText("Comisión:");
 
+        jftfComision.setDocument(new FixedLengthDocument(3));
         jftfComision.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("###"))));
         jftfComision.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
@@ -103,7 +116,6 @@ public class AltaUF extends javax.swing.JInternalFrame {
                             .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
                                 .add(jlblNombre, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .add(jlblTUF, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .add(jlblPropietario, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .add(jlblEquipamiento, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .add(jlblTarifa, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .add(jlblComision))
@@ -112,7 +124,6 @@ public class AltaUF extends javax.swing.JInternalFrame {
                             .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
                                 .add(jtxfNombre, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 128, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                                 .add(jcbxTUF, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .add(jcbxPropietarios, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
                                 .add(jcbxTarifa, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .add(jftfComision, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 67, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
@@ -130,11 +141,7 @@ public class AltaUF extends javax.swing.JInternalFrame {
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jlblTUF)
                     .add(jcbxTUF, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(18, 18, 18)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jlblPropietario)
-                    .add(jcbxPropietarios, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(18, 18, 18)
+                .add(60, 60, 60)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jlblEquipamiento)
                     .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 126, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
@@ -162,21 +169,24 @@ public class AltaUF extends javax.swing.JInternalFrame {
 
     private void jbtnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnAceptarActionPerformed
         try {
+            String query = "insert into UnidadesFuncionales (ufNombre, ufTipo, ufDetalles, ufPrecio) values (?, ?, ?, ?)";
+            if (ufID > 0)
+                query = "UPDATE UnidadesFuncionales SET ufNombre=?, ufTipo=?, ufDetalles=?, ufPrecio=? WHERE ufID=?";
             
-            java.sql.PreparedStatement pstm = cnx.prepareStatement("insert into UnidadFuncional (ufNombre, ufTipo, ufPropID, ufDetalle) values (?, ?, ?, ?)");
-
-            Integer propID = ((ComboTabla)jcbxPropietarios).getSelectedId();
-            Integer tuID = ((ComboTabla)jcbxTUF).getSelectedId();
-            pstm.setInt(1, tuID);
-            pstm.setString(2, jcbxTUF.getSelectedItem().toString());
-            pstm.setInt(3, propID);
-            pstm.setString(4, jtxaEquipamiento.getText());
+            java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
             
-            int result = pstm.executeUpdate();
+            Integer tufID = ((ComboTabla)jcbxTUF).getSelectedId();
+            pstm.setString(1, jtxfNombre.getText().trim());
+            pstm.setInt   (2, tufID);
+            pstm.setString(3, jtxaEquipamiento.getText().trim());
+            pstm.setInt   (4, Integer.valueOf(jftfComision.getValue().toString()));
+            if (ufID > 0)
+                pstm.setInt(5, ufID);
             
-            if(result == 1) {
-                ConsultaUF.actualizaTablaUF();
-            }
+            pstm.executeUpdate();
+            pstm.close();
+            
+            ConsultaUF.actualizaTablaUF();
             
             dispose();
             
@@ -185,48 +195,44 @@ public class AltaUF extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jbtnAceptarActionPerformed
 
-    public void cargaCombos() {
+    
+    private void cargarUF() {
         try {
+            java.sql.PreparedStatement pstm = cnx.prepareStatement("SELECT * FROM UnidadesFuncionales WHERE ufID = ?");
+            pstm.setInt(1, ufID);
+            java.sql.ResultSet rst = pstm.executeQuery();
             
-            java.sql.Statement stmPropietarios  = cnx.createStatement();
-            java.sql.Statement stmTUF           = cnx.createStatement();
-            java.sql.Statement stmTarifas       = cnx.createStatement();
-            
-            java.sql.ResultSet rstPropietarios  = stmPropietarios.executeQuery("select propID, propApellido, propNombre from Propietarios order by propID");
-            java.sql.ResultSet rstTUF           = stmTUF.executeQuery("select tuID, tuNombre from TipoUnidad order by tuNombre");
-            //java.sql.ResultSet rstTarifas       = stmTarifas.executeQuery("select tcNombre from TCuentas order by tcNombre");
-            
-            while(rstPropietarios.next()){
-                String item = rstPropietarios.getString("propApellido") + ", " + rstPropietarios.getString("propNombre");
-                ((ComboTabla)jcbxPropietarios).addItem(item, rstPropietarios.getInt("propID"));
-            }
-            
-            while(rstTUF.next())
-                ((ComboTabla)jcbxTUF).addItem(rstTUF.getString("tuNombre"), rstTUF.getInt("tuID"));
-            
-            rstPropietarios.close();
-            rstTUF.close();
-            
-        } catch(java.sql.SQLException sqle) {
-            sqle.printStackTrace();
+            rst.next();
+            jtxfNombre.setText(rst.getString("ufNombre"));
+            ((ComboTabla)jcbxTUF).setSelectedItemById(rst.getInt("ufTipo"));
+            jtxaEquipamiento.setText(rst.getString("ufDetalles"));
+            jftfComision.setValue(rst.getInt("ufPrecio"));
+            rst.close();
+            pstm.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(AltaUF.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public void cargaCombos() {
+        String query = "SELECT tufDetalle, tufID FROM TiposUF";
+        Funciones.cargarComboTabla((ComboTabla)jcbxTUF, query, "tufDetalle", "tufID");   
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton jbtnAceptar;
     private javax.swing.JButton jbtnCancelar;
-    private javax.swing.JComboBox jcbxPropietarios;
     private javax.swing.JComboBox jcbxTUF;
     private javax.swing.JComboBox jcbxTarifa;
     private javax.swing.JFormattedTextField jftfComision;
     private javax.swing.JLabel jlblComision;
     private javax.swing.JLabel jlblEquipamiento;
     private javax.swing.JLabel jlblNombre;
-    private javax.swing.JLabel jlblPropietario;
     private javax.swing.JLabel jlblTUF;
     private javax.swing.JLabel jlblTarifa;
     private javax.swing.JTextArea jtxaEquipamiento;
     private javax.swing.JTextField jtxfNombre;
     // End of variables declaration//GEN-END:variables
+
 }

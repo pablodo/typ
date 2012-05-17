@@ -65,7 +65,7 @@ public class ConsultaMovimientos extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jtblMovimientos = new javax.swing.JTable();
+        jtblMovimientos = new javax.swing.JTable(){     public boolean isCellEditable(int row, int col){         return false;     } };
         jbtnAgregar = new javax.swing.JButton();
         jbtnBorrar = new javax.swing.JButton();
         jbtnActualizar = new javax.swing.JButton();

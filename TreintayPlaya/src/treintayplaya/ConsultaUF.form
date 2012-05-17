@@ -80,6 +80,7 @@
             </Property>
           </Properties>
           <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTable(){     public boolean isCellEditable(int row, int col){         return false;     } }"/>
             <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="modelo.addColumn(&quot;Uindad Funcional&quot;);&#xa;modelo.addColumn(&quot;Tipo de Unidad&quot;);&#xa;modelo.addColumn(&quot;Apellido&quot;);&#xa;modelo.addColumn(&quot;Nombre&quot;);&#xa;modelo.addColumn(&quot;Tel&#xe9;fono&quot;);&#xa;modelo.addColumn(&quot;Celular&quot;);&#xa;modelo.addColumn(&quot;Email&quot;);&#xa;&#xa;actualizaTablaUF();&#xa;"/>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="10"/>
           </AuxValues>
@@ -100,12 +101,18 @@
         <Property name="mnemonic" type="int" value="66"/>
         <Property name="text" type="java.lang.String" value="Borrar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnBorrarActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jbtnActualizar">
       <Properties>
         <Property name="mnemonic" type="int" value="116"/>
         <Property name="text" type="java.lang.String" value="Actualizar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnActualizarActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jbtnCerrar">
       <Properties>
