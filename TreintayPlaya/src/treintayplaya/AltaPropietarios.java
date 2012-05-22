@@ -120,6 +120,7 @@ public class AltaPropietarios extends javax.swing.JInternalFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        jftfTelefono.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);
 
         jlblCelular.setText("Celular:");
 
@@ -128,6 +129,7 @@ public class AltaPropietarios extends javax.swing.JInternalFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        jftfCelular.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);
 
         org.jdesktop.layout.GroupLayout jpnlPersonalLayout = new org.jdesktop.layout.GroupLayout(jpnlPersonal);
         jpnlPersonal.setLayout(jpnlPersonalLayout);
@@ -211,6 +213,7 @@ public class AltaPropietarios extends javax.swing.JInternalFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        jftfCUIT.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);
 
         jlblBanco.setText("Banco:");
 
@@ -308,7 +311,7 @@ public class AltaPropietarios extends javax.swing.JInternalFrame {
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jbtnAceptar)
                     .add(jbtnCancelar))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         pack();

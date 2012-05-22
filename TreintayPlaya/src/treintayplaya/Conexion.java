@@ -23,10 +23,10 @@ public class Conexion {
         try {
             Class.forName("org.gjt.mm.mysql.Driver");
             
-            Configuracion conf = new Configuracion();
-            String baseURL = conf.baseURL;
-            String baseUsr = conf.baseUsr;
-            String basePass = conf.basePass;
+            Configuracion.cargarDatosDB();
+            String baseURL = Configuracion.baseURL;
+            String baseUsr = Configuracion.baseUsr;
+            String basePass = Configuracion.basePass;
             cnx = java.sql.DriverManager.getConnection("jdbc:mysql://" + baseURL, baseUsr, basePass);
         } catch (SQLException ex) {
             

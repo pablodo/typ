@@ -144,6 +144,7 @@ public class ConsultaUF extends javax.swing.JInternalFrame {
         AltaUF aUF = new AltaUF(ids.get(row));
         AppPrincipal.desktopPane.add(aUF);
         aUF.show();
+        
     }//GEN-LAST:event_jbtnActualizarActionPerformed
 
     private void jbtnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnBorrarActionPerformed
@@ -190,6 +191,7 @@ public class ConsultaUF extends javax.swing.JInternalFrame {
         } catch (java.sql.SQLException sqle) {
             sqle.printStackTrace();
         }
+        VistaActividadAdmin.updateTable();
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

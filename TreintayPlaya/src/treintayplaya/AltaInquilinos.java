@@ -4,12 +4,7 @@
  */
 package treintayplaya;
 
-import java.awt.event.KeyEvent;
 import java.sql.SQLException;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -18,7 +13,6 @@ import java.util.logging.Logger;
 public class AltaInquilinos extends javax.swing.JInternalFrame {
     
     private Integer cliID;
-    private javax.swing.text.MaskFormatter formatter;
     private AltaAlquiler altaAlquiler = null;
     private java.sql.Connection cnx;
     /**
@@ -81,20 +75,7 @@ public class AltaInquilinos extends javax.swing.JInternalFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        jftfDNI.setVerifyInputWhenFocusTarget(false);
-        jftfDNI.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                jftfDNIFocusLost(evt);
-            }
-        });
-        jftfDNI.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jftfDNIKeyPressed(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                jftfDNIKeyTyped(evt);
-            }
-        });
+        jftfDNI.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);
 
         jlblApellido.setText("Apellido:");
 
@@ -103,20 +84,20 @@ public class AltaInquilinos extends javax.swing.JInternalFrame {
         jlblTelefono.setText("Teléfono:");
 
         try {
-            jftfTelefono.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####-####-####-####")));
+            jftfTelefono.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#####-####-####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        jftfTelefono.setVerifyInputWhenFocusTarget(false);
+        jftfTelefono.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);
 
         jlblCelular.setText("Celular:");
 
         try {
-            jftfCelular.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####-####-####-####")));
+            jftfCelular.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####-####-####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        jftfCelular.setVerifyInputWhenFocusTarget(false);
+        jftfCelular.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);
 
         jlblEmail.setText("Email:");
 
@@ -235,22 +216,6 @@ public class AltaInquilinos extends javax.swing.JInternalFrame {
         dispose();
     }//GEN-LAST:event_jbtnAceptarActionPerformed
 
-    private void jftfDNIKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jftfDNIKeyPressed
-        
-    }//GEN-LAST:event_jftfDNIKeyPressed
-
-    private void jftfDNIKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jftfDNIKeyTyped
-        controlNumberEvent(evt);
-    }//GEN-LAST:event_jftfDNIKeyTyped
-
-    private void jftfDNIFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jftfDNIFocusLost
-        String text = String.valueOf(jftfDNI.getValue());
-        if(text.endsWith(" ")){
-            text = " ".concat(text.substring(0, text.length()-1));
-        }
-        jftfDNI.setValue(text);
-    }//GEN-LAST:event_jftfDNIFocusLost
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jbtnAceptar;
     private javax.swing.JButton jbtnCancelar;
@@ -286,16 +251,6 @@ public class AltaInquilinos extends javax.swing.JInternalFrame {
             
         }catch(java.sql.SQLException sqle){
             sqle.printStackTrace();
-        }
-    }
-
-    private void controlNumberEvent(KeyEvent evt) {
-        if (evt.getKeyChar() != ' '){
-            try{
-                int aux = Integer.parseInt(String.valueOf(evt.getKeyChar()));
-            }catch(NumberFormatException nfe){
-                evt.consume();
-            }
         }
     }
 

@@ -27,11 +27,11 @@ import javax.swing.table.DefaultTableModel;
  * @author sergio
  */
 public class VistaActividadAdmin extends javax.swing.JInternalFrame {
-    private int year;
-    private int month;
-    private ArrayList<Integer> ufIDs = new ArrayList<Integer>();
-    private GregorianCalendar calendar = new GregorianCalendar();
-    public DefaultTableModel modelo = new DefaultTableModel();
+    private static int year;
+    private static int month;
+    private static ArrayList<Integer> ufIDs = new ArrayList<Integer>();
+    private static GregorianCalendar calendar = new GregorianCalendar();
+    public static DefaultTableModel modelo = new DefaultTableModel();
     /** Creates new form VistaActividadAdmin */
     public VistaActividadAdmin() {
         this.year = this.calendar.get(GregorianCalendar.YEAR);
@@ -288,15 +288,15 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
     private javax.swing.JButton jbtnSiguiente;
     private javax.swing.JLabel jlblMesActual;
     private javax.swing.JPopupMenu jpmEstado;
-    private javax.swing.JTable jtblVistaMensual;
+    private static javax.swing.JTable jtblVistaMensual;
     private javax.swing.JMenuItem modificarMenuItem;
     private javax.swing.JMenuItem reservaPropietarioMenuItem;
     private javax.swing.JMenuItem reservarMenuItem;
     // End of variables declaration//GEN-END:variables
     
-    public void updateTable() {
-        Integer intMaxDay = this.calendar.getActualMaximum(GregorianCalendar.DAY_OF_MONTH);
-        Vector columns = this.getNombreColumnas(intMaxDay + 1);
+    public static void updateTable() {
+        Integer intMaxDay = calendar.getActualMaximum(GregorianCalendar.DAY_OF_MONTH);
+        Vector columns = getNombreColumnas(intMaxDay + 1);
 
         Connection cnx = Conexion.getInstance().getConnection();
         String query = "SELECT ufNombre, tufDetalle, tufID, ufID FROM UnidadesFuncionales INNER JOIN TiposUF ON ufTipo = tufID ORDER BY tufAmbientes, tufMetros2, ufNombre";
@@ -304,6 +304,7 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
             PreparedStatement pstm = cnx.prepareStatement(query);
             ResultSet rst = pstm.executeQuery();
             Vector data = new Vector();
+            ufIDs = new ArrayList<Integer>();
             Integer tufID = 0;
             while (rst.next()) {
                 if (rst.getInt("tufID") != tufID){
@@ -311,12 +312,12 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
                     Vector row = new Vector();
                     row.add(rst.getString("tufDetalle"));
                     data.add(row);
-                    this.ufIDs.add(0);
+                    ufIDs.add(0);
                 }
                 Vector row = new Vector();
                 row.add(rst.getString("ufNombre"));
                 data.add(row);
-                this.ufIDs.add(rst.getInt("ufID"));
+                ufIDs.add(rst.getInt("ufID"));
             }
             modelo.setDataVector(data, columns);
             rst.close();
@@ -341,7 +342,7 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
         return strMonth + "/" + strYear;
     }
 
-    private Vector getNombreColumnas(int cant) {
+    private static Vector getNombreColumnas(int cant) {
         Vector columnas = new Vector(cant);
         columnas.add("UF");
         for (Integer x = 1; x < cant; x++){
@@ -381,7 +382,7 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
         jtblVistaMensual.setDefaultRenderer(Object.class, new MiRender());
     }
 
-    private void cargarAlquileres() {
+    private static void cargarAlquileres() {
         try{
             Connection cnx = Conexion.getInstance().getConnection();
             for (int row = 0; row < modelo.getRowCount(); row++){

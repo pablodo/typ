@@ -25,6 +25,8 @@ public class Alquiler{
     String fecha_in = "";
     String fecha_out = "";
     String uf = "";
+    String email = "";
+    String email_propietario = "";
     
     public Alquiler(){
         
@@ -53,7 +55,7 @@ public class Alquiler{
     private void cargarAlquiler() {
         try {
             java.sql.Connection cnx = Conexion.getInstance().getConnection();
-            String query = "SELECT * FROM Alquileres INNER JOIN UnidadesFuncionales ON alqUF = ufID INNER JOIN Clientes ON alqCliente = cliID WHERE alqID = ?";
+            String query = "SELECT * FROM Alquileres INNER JOIN UnidadesFuncionales ON alqUF = ufID INNER JOIN Clientes ON alqCliente = cliID LEFT JOIN Propietarios ON propUF = ufID WHERE alqID = ?";
             java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
             pstm.setInt(1, id);
             java.sql.ResultSet rst = pstm.executeQuery();
@@ -66,7 +68,8 @@ public class Alquiler{
             fecha_in = FechasFormatter.getFechaFromMySQL(rst.getString("alqFIN"));
             fecha_out = FechasFormatter.getFechaFromMySQL(rst.getString("alqFOUT"));
             uf = rst.getString("ufNombre");
-            
+            email = rst.getString("cliEmail");
+            email_propietario = rst.getString("propEmail");
             
             rst.close();
             pstm.close();

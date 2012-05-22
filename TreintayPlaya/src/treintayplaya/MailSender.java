@@ -66,11 +66,17 @@ public class MailSender {
         }
     }
     public void send(String mailTo, String asunto, String mensaje){
-        mailsTo = new InternetAddress(mailTo);
+        mailsTo = new InternetAddress[1];
+        try {
+            mailsTo[0] = new InternetAddress(mailTo);
+            send(asunto, mensaje);
+        } catch (AddressException ex) {
+            Logger.getLogger(MailSender.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void send(String asunto, String mensaje){
-        SecurityManager security = System.getSecurityManager();
+        
         try {
             SMTPAuthenticator smtpAuth = new SMTPAuthenticator(mailFrom, passFrom);
             Session session = Session.getInstance(props, smtpAuth);

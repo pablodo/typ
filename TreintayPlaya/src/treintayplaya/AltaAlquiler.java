@@ -11,6 +11,7 @@
 package treintayplaya;
 
 import java.awt.Color;
+import java.awt.ComponentOrientation;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.GregorianCalendar;
@@ -892,10 +893,15 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
     }
 
     private void enviarContrato() {
-        System.out.println("Paso");
+        if (! AppPrincipal.configuracion.mailingActivado)
+            return;
         Integer contratoID = ((ComboTabla)jcbxContrato).getSelectedId();
         String contrato = ContratosFactory.createContrato(contratoID, alquiler);
-        System.out.println(contrato);
+        String mails[] = new String[2];
+        mails[0] = alquiler.email;
+        mails[1] = alquiler.email_propietario;
+        MailSender ms = new MailSender(mails, AppPrincipal.configuracion.email, AppPrincipal.configuracion.emailPassword);
+        ms.send("", contrato);
     }
 
 }

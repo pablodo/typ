@@ -4,6 +4,8 @@
  */
 package treintayplaya;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Pablo
@@ -11,12 +13,17 @@ package treintayplaya;
 public class DialogMailSender extends javax.swing.JDialog {
 
     Alquiler[] alquileres;
+    ArrayList<String> tags;
+    MailSender ms;
     /**
      * Creates new form DialogMailSender
      */
-    public DialogMailSender(java.awt.Frame parent, Alquiler[] alquileres) {
-        super(parent, true);
+    public DialogMailSender(Alquiler[] alquileres) {
+        super();
         initComponents();
+        this.alquileres = alquileres;
+        this.tags = ContratosFactory.getTags(Alquiler.class);
+        this.ms = new MailSender(AppPrincipal.configuracion.email, AppPrincipal.configuracion.emailPassword);
     }
 
     /**
@@ -30,6 +37,11 @@ public class DialogMailSender extends javax.swing.JDialog {
 
         cerrar = new javax.swing.JButton();
         enviar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        mensaje = new javax.swing.JTextArea();
+        asunto = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Escriba el texto a enviar");
@@ -53,21 +65,47 @@ public class DialogMailSender extends javax.swing.JDialog {
             }
         });
 
+        mensaje.setColumns(20);
+        mensaje.setRows(5);
+        jScrollPane1.setViewportView(mensaje);
+
+        jLabel1.setText("Asunto");
+
+        jLabel2.setText("Mensaje");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(220, Short.MAX_VALUE)
-                .addComponent(enviar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cerrar)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 239, Short.MAX_VALUE)
+                        .addComponent(enviar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cerrar))
+                    .addComponent(asunto)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(263, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(asunto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cerrar)
                     .addComponent(enviar))
@@ -82,12 +120,14 @@ public class DialogMailSender extends javax.swing.JDialog {
     }//GEN-LAST:event_cerrarActionPerformed
 
     private void enviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enviarActionPerformed
-        
-              
         for (Alquiler alquiler : alquileres){
-            String mensaje = ContratosFactory.replaceTags("",alquiler);
-            
+            if (alquiler != null){
+                String asn = ContratosFactory.replaceTags(asunto.getText(), alquiler, tags);
+                String msj = ContratosFactory.replaceTags(mensaje.getText(),alquiler, tags);
+                ms.send(alquiler.email, asn, msj);
+            }
         }
+        dispose();
     }//GEN-LAST:event_enviarActionPerformed
 
     /**
@@ -127,7 +167,7 @@ public class DialogMailSender extends javax.swing.JDialog {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                DialogMailSender dialog = new DialogMailSender(new javax.swing.JFrame(), true);
+                DialogMailSender dialog = new DialogMailSender(null);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
 
                     @Override
@@ -140,7 +180,12 @@ public class DialogMailSender extends javax.swing.JDialog {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField asunto;
     private javax.swing.JButton cerrar;
     private javax.swing.JButton enviar;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea mensaje;
     // End of variables declaration//GEN-END:variables
 }

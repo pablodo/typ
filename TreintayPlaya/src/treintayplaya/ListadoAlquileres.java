@@ -6,10 +6,12 @@
 package treintayplaya;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -22,6 +24,7 @@ public class ListadoAlquileres extends javax.swing.JInternalFrame {
     java.sql.Connection cnx;
     javax.swing.table.DefaultTableModel modelo;
     Integer listado;
+    Alquiler[] alquileres;
     
     /** Creates new form ListadoAlquileres */
     public ListadoAlquileres(Integer listado) {
@@ -162,7 +165,13 @@ public class ListadoAlquileres extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void enviarMailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enviarMailActionPerformed
-        // TODO add your handling code here:
+        Alquiler[] selectedAlquileres = new Alquiler[alquileres.length];
+        for (int i = 0; i < tabla.getRowCount(); i++){
+            if (tabla.isCellSelected(i, 0)){
+                selectedAlquileres[i] = alquileres[i];
+            }
+        }
+        new DialogMailSender(selectedAlquileres).setVisible(true);
     }//GEN-LAST:event_enviarMailActionPerformed
 
     private void cerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cerrarActionPerformed
@@ -182,10 +191,10 @@ public class ListadoAlquileres extends javax.swing.JInternalFrame {
     
     private void listarDeudores(){
         try {
-            String query = "SELECT *, (alqTotal - alqImporteReserva) as Saldo FROM Alquileres, Clientes, UnidadesFuncionales WHERE alqCliente = cliID AND alqUF = ufID AND alqFecha >= ? AND alqFecha <= ? AND (alqTotal - alqImporteReserva) != 0";
+            String query = "SELECT *, (alqTotal - alqImporteReserva) as Saldo FROM Alquileres, Clientes, UnidadesFuncionales WHERE alqCliente = cliID AND alqUF = ufID AND CAST(alqFecha AS DATE) >= ? AND CAST(alqFecha AS DATE) <= ? AND (alqTotal - alqImporteReserva) != 0";
             java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
-            pstm.setString(1, FechasFormatter.getFechaString(fechaDesde.getCalendar()));
-            pstm.setString(2, FechasFormatter.getFechaString(fechaHasta.getCalendar()));
+            pstm.setString(1, FechasFormatter.getFechaSimpleString(fechaDesde.getCalendar()));
+            pstm.setString(2, FechasFormatter.getFechaSimpleString(fechaHasta.getCalendar()));
             java.sql.ResultSet rst = pstm.executeQuery();
             
             modelo = new javax.swing.table.DefaultTableModel();
@@ -196,7 +205,11 @@ public class ListadoAlquileres extends javax.swing.JInternalFrame {
                                 "Celular"};
             modelo.setColumnIdentifiers(headers);
             tabla.setModel(modelo);
+            rst.last();
+            alquileres = new Alquiler[rst.getRow()];
+            rst.beforeFirst();
             while (rst.next()){
+                alquileres[rst.getRow()-1] = new Alquiler(rst.getInt("alqID"));
                 Object[] fila = {rst.getString("cliApellido"),
                                  rst.getString("cliNombre"),
                                  rst.getString("ufNombre"),

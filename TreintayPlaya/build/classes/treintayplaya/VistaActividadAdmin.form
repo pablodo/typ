@@ -208,6 +208,7 @@
             <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTable(){&#xa;    public boolean isCellEditable(int row, int col){&#xa;        return false;&#xa;    }&#xa;}"/>
             <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="jtblVistaMensual.setShowGrid(true);"/>
             <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="this.updateTable();"/>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="10"/>
           </AuxValues>
         </Component>
       </SubComponents>

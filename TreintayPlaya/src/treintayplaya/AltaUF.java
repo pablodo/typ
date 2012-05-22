@@ -96,7 +96,7 @@ public class AltaUF extends javax.swing.JInternalFrame {
         jlblComision.setText("Comisión:");
 
         jftfComision.setDocument(new FixedLengthDocument(3));
-        jftfComision.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("###"))));
+        jftfComision.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("##0"))));
         jftfComision.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
@@ -179,7 +179,7 @@ public class AltaUF extends javax.swing.JInternalFrame {
             pstm.setString(1, jtxfNombre.getText().trim());
             pstm.setInt   (2, tufID);
             pstm.setString(3, jtxaEquipamiento.getText().trim());
-            pstm.setInt   (4, Integer.valueOf(jftfComision.getValue().toString()));
+            pstm.setInt   (4, Integer.valueOf(String.valueOf(jftfComision.getValue())));
             if (ufID > 0)
                 pstm.setInt(5, ufID);
             
