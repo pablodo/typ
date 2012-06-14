@@ -57,6 +57,7 @@ public class AppPrincipal extends javax.swing.JFrame {
         mantenimientoMenu = new javax.swing.JMenu();
         jmiBancos = new javax.swing.JMenuItem();
         jmiTCuentas = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jmiTarifas = new javax.swing.JMenuItem();
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
         jmiTiposUF = new javax.swing.JMenuItem();
@@ -241,6 +242,15 @@ public class AppPrincipal extends javax.swing.JFrame {
             }
         });
         mantenimientoMenu.add(jmiTCuentas);
+
+        jMenuItem2.setMnemonic('F');
+        jMenuItem2.setText("Formas de Pago");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        mantenimientoMenu.add(jMenuItem2);
 
         jmiTarifas.setMnemonic('T');
         jmiTarifas.setText("Tarifas");
@@ -444,6 +454,14 @@ public class AppPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        if(isAdmin()) {
+            MantenimientoFormasPago FormasPago = new MantenimientoFormasPago();
+            desktopPane.add(FormasPago);
+            FormasPago.show();
+        }
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
     private boolean isAdmin(){
         return DatosGlobales.usrNivel == 1 && DatosGlobales.usrEstado == 1 && DatosGlobales.appSesion;
     }
@@ -498,6 +516,7 @@ public class AppPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;

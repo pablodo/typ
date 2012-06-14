@@ -8,6 +8,7 @@ import java.awt.Component;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
@@ -38,6 +39,17 @@ public class Funciones {
     public static boolean validaTextField(Component parentComponent, JTextField obj, String name){
         if (obj.getText() == null || "".equals(obj.getText())){
             String msg = "Ingrese " + name + '.';
+            String msgTitle = "Error en " + name + '.';
+            JOptionPane.showMessageDialog(parentComponent, msg, msgTitle, JOptionPane.ERROR_MESSAGE);
+            obj.requestFocusInWindow();
+            return false;
+        }
+        return true;
+    }
+    
+    public static boolean validaCombo(Component parentComponent, JComboBox obj, String name){
+        if (obj.getSelectedIndex() < 0){
+            String msg = "Seleccione " + name + '.';
             String msgTitle = "Error en " + name + '.';
             JOptionPane.showMessageDialog(parentComponent, msg, msgTitle, JOptionPane.ERROR_MESSAGE);
             obj.requestFocusInWindow();

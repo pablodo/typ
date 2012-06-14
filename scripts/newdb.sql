@@ -305,34 +305,17 @@ INSERT INTO `UsuariosWeb` (`usrID`, `usrEmail`, `usrPass`, `usrNivel`, `usrActiv
 CREATE TABLE IF NOT EXISTS `FormasPago` (
   `fpID` int(11) NOT NULL AUTO_INCREMENT,
   `fpNombre` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `fpDestino` int(1) NOT NULL, /* A favor de (1: Comercializadora, 2: Propietario) */
   PRIMARY KEY (`fpID`),
   UNIQUE KEY `fpNombre` (`fpNombre`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=8 ;
 --
 -- Volcado de datos para la tabla `FormasPago`
 --
-INSERT INTO `FormasPago` (`fpNombre`) VALUES
-('Contado'),
-('30 dias');
--- --------------------------------------------------------
---
--- Estructura de tabla para la tabla `FormasPago`
---
-CREATE TABLE IF NOT EXISTS `TiposPago` (
-  `tpID` int(11) NOT NULL AUTO_INCREMENT,
-  `tpNombre` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `tpDestino` int(1) NOT NULL, /* A favor del propietario o a favor de la comercializadora */
-  PRIMARY KEY (`tpID`),
-  UNIQUE KEY `tpNombre` (`tpNombre`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
---
--- Volcado de datos para la tabla `FormasPago`
---
-INSERT INTO `TiposPago` (`tpNombre`, `tpDestino`) VALUES
-('Cta. Bancaria del Propietario', 1),
-('Efectivo en Oficinas', 2),
-('Efectivo en el Complejo', 2),
-('Otros', 1);
+INSERT INTO `FormasPago` (`fpNombre`, `fpDestino`) VALUES
+('Cta. Bancaria del Propietario', 2),
+('Efectivo en Oficinas', 1),
+('Efectivo en el Complejo', 1);
 -- --------------------------------------------------------
 --
 -- Estructura de tabla para la tabla `Configuracion`

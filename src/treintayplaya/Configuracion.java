@@ -22,15 +22,16 @@ public class Configuracion {
     public String emailPassword;
     
     public Configuracion(){
-        mailingActivado = true;
+        mailingActivado = false;
         java.sql.Connection cnx = Conexion.getInstance().getConnection();
         try {
             java.sql.Statement stm = cnx.createStatement();
             java.sql.ResultSet rst = stm.executeQuery("SELECT AES_DECRYPT(emailPassword,'typ2012') as emailPassword, email, mailing FROM Configuracion");
-            rst.next();
-            email = rst.getString("email");
-            emailPassword = rst.getString("emailPassword");
-            mailingActivado = rst.getInt("mailing") == 1;
+            if (rst.next()){
+                email = rst.getString("email");
+                emailPassword = rst.getString("emailPassword");
+                mailingActivado = rst.getInt("mailing") == 1;
+            }
             rst.close();
             stm.close();
         } catch (SQLException ex) {
