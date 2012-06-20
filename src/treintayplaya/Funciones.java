@@ -57,4 +57,29 @@ public class Funciones {
         }
         return true;
     }
+
+    public static void cargarComboTablaEspecial(ComboTabla combo, String query, String campoNombre, String campoId, String campoEspecial, String[] valoresEspeciales) {
+        try {
+            java.sql.Connection cnx = Conexion.getInstance().getConnection();
+            java.sql.Statement stm = cnx.createStatement();
+            java.sql.ResultSet rst = stm.executeQuery(query);
+            
+            int especialAnterior = 0;
+            while (rst.next()){
+                int especial = rst.getInt(campoEspecial);
+                if (especial != especialAnterior){
+                    combo.addItem(valoresEspeciales[especial],true);
+                    especialAnterior = especial;
+                }
+                String nombre = rst.getString(campoNombre);
+                Integer id = rst.getInt(campoId);
+                combo.addItem(nombre, id);
+            }
+            rst.close();
+            stm.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Funciones.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
 }
