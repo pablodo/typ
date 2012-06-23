@@ -35,8 +35,8 @@ CREATE TABLE IF NOT EXISTS `Alquileres` (
   `alqDesayunosImp` int(11) NOT NULL,
   `alqContrato` int(11) NOT NULL,
   `alqImporteReserva` decimal(10,2) NOT NULL,
+  `alqDifImputacion` decimal(10,2) NOT NULL,
   `alqTotal` decimal(10,2) NOT NULL,
-  `alqTotalImp` decimal(10,2) NOT NULL,
   `alqVencimiento` datetime NOT NULL,
   `alqFormaPagoOpe` int(11) NOT NULL,
   `alqFormaPagoImp` int(11) NOT NULL,
@@ -80,33 +80,6 @@ CREATE TABLE IF NOT EXISTS `Clientes` (
   `cliEmail` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`cliID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
---
--- Volcado de datos para la tabla `Clientes`
---
-INSERT INTO `Clientes` (`cliID`, `cliDNI`, `cliApellido`, `cliNombre`, `cliTelefono`, `cliCelular`, `cliEmail`) VALUES
-(1, '23456789', 'Bbbb', 'Bbb', '123-4567-8909-8765', '098-8765-4322-3456', 'Bbbb@gmail.com'),
-(2, '21345678', 'Cccc', 'Ccc', '987-9876-7676-5644', '765-6756-5456-4564', 'Cccc@gmail.com'),
-(3, '87766554', 'Dddd', 'Ddd', '765-7644-5586-7978', '543-3654-5765-8768', 'Dddd@gmail.com'),
-(4, '12321324', 'kjknkjnkjn', 'knkk', '988-9786-8756-6456', '798-7986-8768-6686', 'gjgdjshgd@jvjhghj.sfgs');
--- --------------------------------------------------------
---
--- Estructura de tabla para la tabla `Conceptos`
---
-CREATE TABLE IF NOT EXISTS `Conceptos` (
-  `conID` int(11) NOT NULL AUTO_INCREMENT,
-  `conTipo` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`conID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=22 ;
---
--- Volcado de datos para la tabla `Conceptos`
---
-INSERT INTO `Conceptos` (`conID`, `conTipo`) VALUES
-(16, 'Seña'),
-(17, 'Reserva'),
-(18, 'Cancelación'),
-(19, 'Comisiones'),
-(20, 'Pagos al Propietario'),
-(21, 'Expensas');
 -- --------------------------------------------------------
 --
 -- Estructura de tabla para la tabla `Contratos`
@@ -118,14 +91,14 @@ CREATE TABLE IF NOT EXISTS `Contratos` (
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 --
--- Volcado de datos para la tabla `Conceptos`
+-- Volcado de datos para la tabla `Contratos`
 --
 INSERT INTO `Contratos` (`ID`, `conTipo`, `conDetalle`) VALUES
 (1, "Reserva",          ''),
 (2, "Cancelación",      ''),
 (3, "Ingreso",          ''),
 (4, "Ingreso Completo", ''),
-(5, "Anulación",      '');
+(5, "Anulación",        '');
 -- --------------------------------------------------------
 --
 -- Estructura de tabla para la tabla `DetAlquileres`
@@ -135,20 +108,6 @@ CREATE TABLE IF NOT EXISTS `DetAlquileres` (
   `dalqAlq` int(11) NOT NULL,
   `dalqFecha` date NOT NULL,
   PRIMARY KEY (`dalqID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
--- --------------------------------------------------------
---
--- Estructura de tabla para la tabla `Movimientos`
---
-CREATE TABLE IF NOT EXISTS `Movimientos` (
-  `movID` int(11) NOT NULL AUTO_INCREMENT,
-  `movFecha` datetime NOT NULL,
-  `movTipoPago` int(11) NOT NULL,
-  `movImporte` decimal(10,2) NOT NULL,
-  `movUF` int(11) NOT NULL,
-  `movImputacion` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
-  `movImputacionValor` decimal(10,2) NOT NULL,
-  PRIMARY KEY (`movID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 -- --------------------------------------------------------
 --
@@ -181,15 +140,6 @@ INSERT INTO `Propietarios` (`propID`, `propApellido`, `propNombre`, `propEmail`,
 ( 6, 'Bianchi'      , 'Patricia',     '',                           '',                 '',                 '27-24364732-6', 9, '5-201532-517', '0167777100052015325173', 1, 0),
 ( 7, 'Bianchi'      , 'Patricia',     '',                           '',                 '',                 '27-24364732-6', 1, '786153532',    '1500032900007861535328', 1, 0);
 /*(  , '', '', '', '', '', '', 0, '', '', 0, 0),*/
--- --------------------------------------------------------
---
--- Estructura de tabla para la tabla `Tarifas`
---
-CREATE TABLE IF NOT EXISTS `Tarifas` (
-  `tarifasID` int(11) NOT NULL AUTO_INCREMENT,
-  `tarifasImporte` decimal(10,2) NOT NULL,
-  PRIMARY KEY (`tarifasID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 -- --------------------------------------------------------
 --
 -- Estructura de tabla para la tabla `TCuentas`
@@ -246,34 +196,34 @@ CREATE TABLE IF NOT EXISTS `UnidadesFuncionales` (
 -- Volcado de datos para la tabla `UnidadesFuncionales`
 --
 INSERT INTO `UnidadesFuncionales` (`ufID`, `ufNombre`, `ufTipo`, `ufDetalles`, `ufPrecio`) VALUES
-( 1, 'UF 01', 1, 'Aaaa.', 0),
-( 2, 'UF 02', 1, 'Bbbb.', 0),
-( 3, 'UF 03', 0, 'Cccc.', 0),
-( 4, 'UF 04', 1, 'Dddd.', 0),
-( 5, 'UF 05', 0, 'Bbbb.', 0),
-( 6, 'UF 06', 1, 'Bbbb.', 0),
-( 7, 'UF 07', 3, 'Bbbb.', 0),
-( 8, 'UF 08', 0, 'Bbbb.', 0),
-( 9, 'UF 09', 3, 'Bbbb.', 0),
-(10, 'UF 10', 0, 'Bbbb.', 0),
-(11, 'UF 11', 3, 'Aaaa.', 0),
-(12, 'UF 12', 1, 'Bbbb.', 0),
-(13, 'UF 13', 1, 'Cccc.', 0),
-(14, 'UF 14', 0, 'Dddd.', 0),
-(15, 'UF 15', 0, 'Bbbb.', 0),
-(16, 'UF 16', 0, 'Bbbb.', 0),
-(17, 'UF 17', 1, 'Bbbb.', 0),
-(18, 'UF 18', 3, 'Bbbb.', 0),
-(19, 'UF 19', 0, 'Bbbb.', 0),
-(20, 'UF 20', 3, 'Bbbb.', 0),
-(21, 'UF 21', 0, 'Aaaa.', 0),
-(22, 'UF 22', 1, 'Bbbb.', 0),
-(23, 'UF 23', 2, 'Cccc.', 0),
-(24, 'UF 24', 1, 'Dddd.', 0),
-(25, 'UF 25', 0, 'Bbbb.', 0),
-(26, 'UF 26', 0, 'Bbbb.', 0),
-(27, 'UF 27', 0, 'Bbbb.', 0),
-(28, 'UF 28', 1, 'Bbbb.', 0);
+( 1, 'UF 01', 1, '', 0),
+( 2, 'UF 02', 1, '', 0),
+( 3, 'UF 03', 0, '', 0),
+( 4, 'UF 04', 1, '', 0),
+( 5, 'UF 05', 0, '', 0),
+( 6, 'UF 06', 1, '', 0),
+( 7, 'UF 07', 3, '', 0),
+( 8, 'UF 08', 0, '', 0),
+( 9, 'UF 09', 3, '', 0),
+(10, 'UF 10', 0, '', 0),
+(11, 'UF 11', 3, '', 0),
+(12, 'UF 12', 1, '', 0),
+(13, 'UF 13', 1, '', 0),
+(14, 'UF 14', 0, '', 0),
+(15, 'UF 15', 0, '', 0),
+(16, 'UF 16', 0, '', 0),
+(17, 'UF 17', 1, '', 0),
+(18, 'UF 18', 3, '', 0),
+(19, 'UF 19', 0, '', 0),
+(20, 'UF 20', 3, '', 0),
+(21, 'UF 21', 0, '', 0),
+(22, 'UF 22', 1, '', 0),
+(23, 'UF 23', 2, '', 0),
+(24, 'UF 24', 1, '', 0),
+(25, 'UF 25', 0, '', 0),
+(26, 'UF 26', 0, '', 0),
+(27, 'UF 27', 0, '', 0),
+(28, 'UF 28', 1, '', 0);
 -- --------------------------------------------------------
 --
 -- Estructura de tabla para la tabla `UsuariosWeb`
@@ -292,11 +242,7 @@ CREATE TABLE IF NOT EXISTS `UsuariosWeb` (
 -- Volcado de datos para la tabla `UsuariosWeb`
 --
 INSERT INTO `UsuariosWeb` (`usrID`, `usrEmail`, `usrPass`, `usrNivel`, `usrActivo`, `usrPropID`) VALUES
-(1, 'admin@typ.com', 0x8f2456956029dfd398da8724afdc399b, 1, 1, 0),
-(2, 'prop1@typ.com', 0x8f2456956029dfd398da8724afdc399b, 2, 1, 0),
-(3, 'prop2@typ.com', 0x8f2456956029dfd398da8724afdc399b, 2, 0, 0),
-(4, 'prop3@typ.com', 0x8f2456956029dfd398da8724afdc399b, 2, 1, 0),
-(5, 'admin1@typ.com', 0x8f2456956029dfd398da8724afdc399b, 1, 0, 0);
+(1, 'admin@typ.com', 0x8f2456956029dfd398da8724afdc399b, 1, 1, 0);
 -- --------------------------------------------------------
 --
 -- Estructura de tabla para la tabla `FormasPago`
@@ -327,3 +273,7 @@ CREATE TABLE IF NOT EXISTS `Configuracion` (
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+--
+-- Volcado de datos para la tabla `Configuracion`
+--
+INSERT INTO `Configuracion` (`mailing`, `email`, `emailPassword`) VALUES (1, '', '');

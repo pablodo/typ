@@ -16,7 +16,6 @@ import java.text.ParseException;
 import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
 /**
@@ -101,8 +100,8 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         jcbxContrato = new treintayplaya.ComboTabla();
         jlblvencimiento = new javax.swing.JLabel();
         jdcVencimiento = new com.toedter.calendar.JDateChooser();
-        jlblImporte = new javax.swing.JLabel();
-        jftfImporteImp = new javax.swing.JFormattedTextField();
+        lblDifImputacion = new javax.swing.JLabel();
+        jftfDifImputacion = new javax.swing.JFormattedTextField();
         jbtnAceptar = new javax.swing.JButton();
         jbtnCancelar = new javax.swing.JButton();
         jpnlDetPagos = new javax.swing.JPanel();
@@ -115,7 +114,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         jtaObservaciones = new javax.swing.JTextArea();
         jLabel3 = new javax.swing.JLabel();
         jlblImporte1 = new javax.swing.JLabel();
-        jftfImporte = new javax.swing.JFormattedTextField();
+        jftfTotal = new javax.swing.JFormattedTextField();
         jlblImporte2 = new javax.swing.JLabel();
         jlblImporte2.setVisible(this.operacion > 0);
         jftfImporteReserva = new javax.swing.JFormattedTextField();
@@ -124,6 +123,8 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         jlblSaldo.setVisible(this.operacion > 0);
 
         setClosable(true);
+        setMaximizable(true);
+        setResizable(true);
         setTitle("Alta de Reserva Provisoria");
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
@@ -247,14 +248,14 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
 
         jdcVencimiento.setDateFormatString("dd-MM-yyyy");
 
-        jlblImporte.setText("Importe Imputado:");
+        lblDifImputacion.setText("Dif. Imputación:");
 
-        jftfImporteImp.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
-        jftfImporteImp.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        jftfImporteImp.setValue(0);
-        jftfImporteImp.addFocusListener(new java.awt.event.FocusAdapter() {
+        jftfDifImputacion.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
+        jftfDifImputacion.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jftfDifImputacion.setValue(0);
+        jftfDifImputacion.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
-                jftfImporteImpFocusLost(evt);
+                jftfDifImputacionFocusLost(evt);
             }
         });
 
@@ -297,15 +298,14 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         jpnlDetPagosLayout.setHorizontalGroup(
             jpnlDetPagosLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jpnlDetPagosLayout.createSequentialGroup()
-                .addContainerGap()
                 .add(jpnlDetPagosLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jlblFormaPagoOperacion)
                     .add(jlblFormaPagoImputacion))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jpnlDetPagosLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                    .add(jcbxFormaPagoImputacion, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(jcbxFormaPagoOperacion, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 316, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(19, Short.MAX_VALUE))
+                    .add(jcbxFormaPagoOperacion, 0, 202, Short.MAX_VALUE)
+                    .add(jcbxFormaPagoImputacion, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jpnlDetPagosLayout.setVerticalGroup(
             jpnlDetPagosLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -333,12 +333,12 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
 
         jlblImporte1.setText("Importe Total:");
 
-        jftfImporte.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
-        jftfImporte.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        jftfImporte.setValue(0);
-        jftfImporte.addFocusListener(new java.awt.event.FocusAdapter() {
+        jftfTotal.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
+        jftfTotal.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jftfTotal.setValue(0);
+        jftfTotal.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
-                jftfImporteFocusLost(evt);
+                jftfTotalFocusLost(evt);
             }
         });
 
@@ -348,9 +348,6 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         jftfImporteReserva.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         jftfImporteReserva.setValue(0);
         jftfImporteReserva.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                jftfImporteReservaFocusGained(evt);
-            }
             public void focusLost(java.awt.event.FocusEvent evt) {
                 jftfImporteReservaFocusLost(evt);
             }
@@ -365,137 +362,143 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .add(jbtnAceptar)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(jbtnCancelar)
+                .addContainerGap())
             .add(layout.createSequentialGroup()
-                .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(layout.createSequentialGroup()
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(layout.createSequentialGroup()
+                                .add(12, 12, 12)
+                                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 446, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                            .add(layout.createSequentialGroup()
                                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                                     .add(layout.createSequentialGroup()
-                                        .add(jlblUF, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 131, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                        .add(9, 9, 9)
-                                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                            .add(jdcFIN, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 307, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                            .add(jcbxUF, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 127, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                                    .add(jlblFIN, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 105, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                        .add(12, 12, 12)
+                                        .add(jlblContrato, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 105, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                        .add(36, 36, 36)
+                                        .add(jcbxContrato, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 263, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                                     .add(layout.createSequentialGroup()
-                                        .add(jlblFecha, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 122, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                        .add(18, 18, 18)
-                                        .add(jlblAlqFecha, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 307, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                                    .add(jlblImporte2))
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                                .add(0, 0, Short.MAX_VALUE)
-                                .add(jlblSaldo)
-                                .add(74, 74, 74)))
+                                        .add(10, 10, 10)
+                                        .add(jpnlDetPagos, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                                .add(18, 18, 18)
+                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(jlblImporte2)
+                                    .add(jlblImporte1)
+                                    .add(lblDifImputacion)
+                                    .add(jlblvencimiento)))
+                            .add(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .add(jLabel3)))
+                        .add(12, 12, 12)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(layout.createSequentialGroup()
-                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                    .add(layout.createSequentialGroup()
-                                        .add(jlblOperador, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 80, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                        .add(18, 18, 18))
-                                    .add(layout.createSequentialGroup()
-                                        .add(jlblCliente, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .add(7, 7, 7)))
-                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                    .add(layout.createSequentialGroup()
-                                        .add(jcbxCliente, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 245, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                        .add(jbtnNuevoInquilino)
-                                        .add(0, 0, Short.MAX_VALUE))
-                                    .add(jlblAlqOperador, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .add(layout.createSequentialGroup()
-                                .add(jlblFOUT)
-                                .add(25, 25, 25)
-                                .add(jdcFOUT, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .add(layout.createSequentialGroup()
-                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                    .add(jlblvencimiento)
-                                    .add(jlblImporte, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 153, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                    .add(jlblImporte1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 153, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                    .add(jftfImporteImp)
-                                    .add(jdcVencimiento, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .add(jftfImporte)))))
+                            .add(jlblSaldo)
+                            .add(jftfTotal)
+                            .add(jftfImporteReserva)
+                            .add(jftfDifImputacion)
+                            .add(jdcVencimiento, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .add(layout.createSequentialGroup()
+                        .add(12, 12, 12)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(jpnlPax, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 905, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                             .add(layout.createSequentialGroup()
-                                .add(jlblContrato, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 105, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .add(36, 36, 36)
+                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(jlblFecha, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 122, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                    .add(jlblUF, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 131, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                    .add(jlblFIN, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 105, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                                .add(9, 9, 9)
+                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(jdcFIN, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 299, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                    .add(jcbxUF, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 130, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                    .add(jlblAlqFecha, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 307, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                                .add(15, 15, 15)
+                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(jlblOperador, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 80, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                    .add(jlblCliente, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 110, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                    .add(jlblFOUT))
+                                .add(7, 7, 7)
                                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                                    .add(jcbxContrato, 0, 263, Short.MAX_VALUE)
-                                    .add(jftfImporteReserva)))
-                            .add(jLabel3)
-                            .add(jpnlDetPagos, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                        .add(0, 15, Short.MAX_VALUE))
-                    .add(layout.createSequentialGroup()
-                        .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 584, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .add(jbtnAceptar)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jbtnCancelar)))
-                .addContainerGap())
+                                    .add(jdcFOUT, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 326, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                    .add(layout.createSequentialGroup()
+                                        .add(jcbxCliente, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 245, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .add(jbtnNuevoInquilino))
+                                    .add(jlblAlqOperador, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 326, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .addContainerGap()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(org.jdesktop.layout.GroupLayout.CENTER, jlblOperador, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.CENTER, jlblAlqFecha, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 28, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(org.jdesktop.layout.GroupLayout.CENTER, jlblFecha, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jlblAlqOperador, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
-                    .add(jcbxUF, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jlblCliente)
-                    .add(jbtnNuevoInquilino)
-                    .add(jlblUF)
-                    .add(jcbxCliente, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(15, 15, 15)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
-                    .add(jdcFIN, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jlblFIN)
-                    .add(jlblFOUT)
-                    .add(jdcFOUT, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jpnlPax, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(12, 12, 12)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jlblFecha, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 28, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jlblAlqFecha, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 28, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jlblOperador, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 28, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jlblAlqOperador, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 28, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(layout.createSequentialGroup()
+                        .add(12, 12, 12)
+                        .add(jlblUF))
+                    .add(layout.createSequentialGroup()
+                        .add(7, 7, 7)
+                        .add(jcbxUF, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(layout.createSequentialGroup()
+                        .add(12, 12, 12)
+                        .add(jlblCliente))
+                    .add(layout.createSequentialGroup()
+                        .add(6, 6, 6)
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                            .add(jcbxCliente, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(jbtnNuevoInquilino))))
+                .add(6, 6, 6)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jdcFIN, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jdcFOUT, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(layout.createSequentialGroup()
+                        .add(5, 5, 5)
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jlblFIN)
+                            .add(jlblFOUT))))
+                .add(12, 12, 12)
+                .add(jpnlPax, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(11, 11, 11)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
                     .add(jlblContrato)
                     .add(jcbxContrato, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jlblvencimiento)
                     .add(jdcVencimiento, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
-                    .add(jlblImporte)
-                    .add(jftfImporteImp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                        .add(jlblImporte2)
-                        .add(jftfImporteReserva, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
-                        .add(jlblImporte1)
-                        .add(jftfImporte, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(jlblSaldo))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(12, 12, 12)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(layout.createSequentialGroup()
-                        .add(jpnlDetPagos, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(5, 5, 5)
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
+                            .add(jftfDifImputacion, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(lblDifImputacion, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 19, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
+                            .add(jftfImporteReserva, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(jlblImporte2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 19, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
+                            .add(jftfTotal, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(jlblImporte1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 19, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .add(18, 18, 18)
+                        .add(jlblSaldo))
+                    .add(layout.createSequentialGroup()
+                        .add(jpnlDetPagos, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(11, 11, 11)
                         .add(jLabel3)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                        .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 65, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(47, 47, 47))
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                            .add(jbtnAceptar)
-                            .add(jbtnCancelar))
-                        .add(26, 26, 26))))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 50, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 21, Short.MAX_VALUE)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(jbtnCancelar)
+                    .add(jbtnAceptar))
+                .addContainerGap())
         );
 
         jpnlPax.getAccessibleContext().setAccessibleName("");
@@ -555,18 +558,14 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         inquilinos.toFront();
     }//GEN-LAST:event_jbtnNuevoInquilinoActionPerformed
 
-    private void jftfImporteImpFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jftfImporteImpFocusLost
+    private void jftfDifImputacionFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jftfDifImputacionFocusLost
         try {
-            jftfImporteImp.commitEdit();
-            if (Double.valueOf(jftfImporte.getValue().toString()) == 0){
-                jftfImporte.setValue(jftfImporteImp.getValue());
-            }
-            calcularSaldo();
+            jftfDifImputacion.commitEdit();
         } catch (ParseException ex) {
             Logger.getLogger(AltaAlquiler.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-    }//GEN-LAST:event_jftfImporteImpFocusLost
+    }//GEN-LAST:event_jftfDifImputacionFocusLost
 
     private void jftfImporteReservaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jftfImporteReservaFocusLost
         try {
@@ -577,14 +576,14 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jftfImporteReservaFocusLost
 
-    private void jftfImporteFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jftfImporteFocusLost
+    private void jftfTotalFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jftfTotalFocusLost
         try {
-            jftfImporte.commitEdit();
+            jftfTotal.commitEdit();
             calcularSaldo();
         } catch (ParseException ex) {
             Logger.getLogger(AltaAlquiler.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jftfImporteFocusLost
+    }//GEN-LAST:event_jftfTotalFocusLost
 
     private void formInternalFrameActivated(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameActivated
         if (operacion != Alquiler.RESERVAR && operacion != Alquiler.MODIFICAR){
@@ -592,15 +591,15 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_formInternalFrameActivated
 
-    private void jftfImporteReservaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jftfImporteReservaFocusGained
-         
-    }//GEN-LAST:event_jftfImporteReservaFocusGained
-
     private void jcbxFormaPagoOperacionFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jcbxFormaPagoOperacionFocusLost
+        if (evt.getOppositeComponent().equals(jbtnCancelar) || evt.getOppositeComponent().equals(jcbxFormaPagoImputacion))
+            return;
         validaCombosFormaDePago((ComboTabla)jcbxFormaPagoOperacion);
     }//GEN-LAST:event_jcbxFormaPagoOperacionFocusLost
 
     private void jcbxFormaPagoImputacionFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jcbxFormaPagoImputacionFocusLost
+        if (evt.getOppositeComponent().equals(jbtnCancelar) || evt.getOppositeComponent().equals(jcbxFormaPagoOperacion))
+            return;
         validaCombosFormaDePago((ComboTabla)jcbxFormaPagoImputacion);
     }//GEN-LAST:event_jcbxFormaPagoImputacionFocusLost
 
@@ -634,9 +633,9 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
     private com.toedter.calendar.JDateChooser jdcFIN;
     private com.toedter.calendar.JDateChooser jdcFOUT;
     private com.toedter.calendar.JDateChooser jdcVencimiento;
-    private javax.swing.JFormattedTextField jftfImporte;
-    private javax.swing.JFormattedTextField jftfImporteImp;
+    private javax.swing.JFormattedTextField jftfDifImputacion;
     private javax.swing.JFormattedTextField jftfImporteReserva;
+    private javax.swing.JFormattedTextField jftfTotal;
     private javax.swing.JLabel jlblAdultos;
     private javax.swing.JLabel jlblAlqFecha;
     private javax.swing.JLabel jlblAlqOperador;
@@ -650,7 +649,6 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jlblFecha;
     private javax.swing.JLabel jlblFormaPagoImputacion;
     private javax.swing.JLabel jlblFormaPagoOperacion;
-    private javax.swing.JLabel jlblImporte;
     private javax.swing.JLabel jlblImporte1;
     private javax.swing.JLabel jlblImporte2;
     private javax.swing.JLabel jlblMenores;
@@ -661,6 +659,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jpnlDetPagos;
     private javax.swing.JPanel jpnlPax;
     private javax.swing.JTextArea jtaObservaciones;
+    private javax.swing.JLabel lblDifImputacion;
     // End of variables declaration//GEN-END:variables
 
     void selectUF(Integer id) {
@@ -676,18 +675,21 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
     }
 
     private boolean validaFormulario() {
+        if (! validaCombosFormaDePago((ComboTabla)jcbxFormaPagoImputacion)){
+            return false;
+        }
         return true;
     }
 
     private boolean insertAlquiler() throws SQLException{
         String query = "INSERT INTO Alquileres (alqFecha, alqEstado, alqOperador, alqUF, alqCliente, alqFIN, alqFOUT, "
                                + "alqOcupantesA, alqOcupantesM, alqOcupantesB, alqDesayunos, alqDesayunosImp, alqContrato, alqTotal, "
-                               + "alqTotalImp, alqVencimiento, alqFormaPagoOpe, alqFormaPagoImp, alqObservaciones, alqImporteReserva) VALUES "
+                               + "alqDifImputacion, alqVencimiento, alqFormaPagoOpe, alqFormaPagoImp, alqObservaciones, alqImporteReserva) VALUES "
                                + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)";
         if (alquiler.id > 0){
             query = "UPDATE Alquileres SET alqFecha=?, alqEstado=?, alqOperador=?, alqUF=?, alqCliente=?, alqFIN=?, alqFOUT=?, "
                                + "alqOcupantesA=?, alqOcupantesM=?, alqOcupantesB=?, alqDesayunos=?, alqDesayunosImp=?, alqContrato=?, alqTotal=?, "
-                               + "alqTotalImp=?, alqVencimiento=?, alqFormaPagoOpe=?, alqFormaPagoImp=?, alqObservaciones=?, "
+                               + "alqDifImputacion=?, alqVencimiento=?, alqFormaPagoOpe=?, alqFormaPagoImp=?, alqObservaciones=?, "
                                + "alqImporteReserva=? WHERE alqID=?";
         }
 
@@ -713,8 +715,8 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         pstm.setInt   (11, Integer.valueOf(jcbxDesayunos.getSelectedItem().toString()));
         pstm.setInt   (12, Integer.valueOf(jcbxDesayunosImp.getSelectedItem().toString()));
         pstm.setInt   (13, this.operacion == Alquiler.RESERVAR ? 0 : ((ComboTabla)jcbxContrato).getSelectedId());
-        pstm.setDouble(14, Double.valueOf(jftfImporte.getValue().toString()));
-        pstm.setDouble(15, Double.valueOf(jftfImporteImp.getValue().toString()));
+        pstm.setDouble(14, Double.valueOf(jftfTotal.getValue().toString()));
+        pstm.setDouble(15, Double.valueOf(jftfDifImputacion.getValue().toString()));
         pstm.setString(16, vencimiento);
         pstm.setInt   (17, ((ComboTabla)jcbxFormaPagoOperacion).getSelectedId());
         pstm.setInt   (18, ((ComboTabla)jcbxFormaPagoImputacion).getSelectedId());
@@ -804,8 +806,8 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
             jcbxDesayunos.setSelectedItem(String.valueOf(rst.getInt("alqDesayunos")));
             jcbxDesayunosImp.setSelectedItem(String.valueOf(rst.getInt("alqDesayunosImp")));
             ((ComboTabla)jcbxContrato).setSelectedItemById(rst.getInt("alqContrato"));
-            jftfImporteImp.setValue(rst.getDouble("alqTotalImp"));
-            jftfImporte.setValue(rst.getDouble("alqTotal"));
+            jftfDifImputacion.setValue(rst.getDouble("alqDifImputacion"));
+            jftfTotal.setValue(rst.getDouble("alqTotal"));
             ((ComboTabla)jcbxFormaPagoOperacion).setSelectedItemById(rst.getInt("alqFormaPagoOpe"));
             ((ComboTabla)jcbxFormaPagoImputacion).setSelectedItemById(rst.getInt("alqFormaPagoImp"));
             jtaObservaciones.setText(rst.getString("alqObservaciones"));
@@ -844,7 +846,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
     }
 
     private void calcularSaldo() {
-        Double total = Double.valueOf(jftfImporteImp.getValue().toString());
+        Double total = Double.valueOf(jftfTotal.getValue().toString());
         Double reserva = Double.valueOf(jftfImporteReserva.getValue().toString());
         Double saldo = total - reserva;
         if (saldo == 0.0){
@@ -902,12 +904,14 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         ms.send("", contrato);
     }
 
-    private void validaCombosFormaDePago(ComboTabla combo) {
+    private boolean validaCombosFormaDePago(ComboTabla combo) {
         //No puede haber seleccionado una forma de pago operacion a favor de la Comercializadora si el de imputacion es a favor del Propietario
-        if (((ComboTabla)jcbxFormaPagoOperacion).isItemBeforeEspecial(1) && ((ComboTabla)jcbxFormaPagoImputacion).isItemAfterEspecial(1)){
+        if (((ComboTabla)jcbxFormaPagoOperacion).isItemAfterEspecial(1) && ((ComboTabla)jcbxFormaPagoImputacion).isItemBeforeEspecial(1)){
             JOptionPane.showMessageDialog(this, "No puede ingresar una cuenta a favor de la Comercializadora cuando la cuenta de imputación es a favor del Propietario.", "Seleccione una Forma de Pago válida", JOptionPane.ERROR_MESSAGE);
             combo.requestFocusInWindow();
-        }           
+            return false;
+        }          
+        return true;
     }
 
 }
