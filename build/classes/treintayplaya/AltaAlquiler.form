@@ -458,6 +458,9 @@
               </StringArray>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jcbxDesayunosFocusLost"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jlblDesayunos">
           <Properties>
@@ -654,9 +657,6 @@
               <StringArray count="0"/>
             </Property>
           </Properties>
-          <Events>
-            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jcbxCuentaFocusLost"/>
-          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new ComboTabla()"/>
           </AuxValues>

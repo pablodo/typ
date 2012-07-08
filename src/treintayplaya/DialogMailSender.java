@@ -13,7 +13,6 @@ import java.util.ArrayList;
 public class DialogMailSender extends javax.swing.JDialog {
 
     Alquiler[] alquileres;
-    ArrayList<String> tags;
     MailSender ms;
     /**
      * Creates new form DialogMailSender
@@ -22,7 +21,6 @@ public class DialogMailSender extends javax.swing.JDialog {
         super();
         initComponents();
         this.alquileres = alquileres;
-        this.tags = ContratosFactory.getTags(Alquiler.class);
         this.ms = new MailSender(AppPrincipal.configuracion.email, AppPrincipal.configuracion.emailPassword);
     }
 
@@ -122,8 +120,8 @@ public class DialogMailSender extends javax.swing.JDialog {
     private void enviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enviarActionPerformed
         for (Alquiler alquiler : alquileres){
             if (alquiler != null){
-                String asn = ContratosFactory.replaceTags(asunto.getText(), alquiler, tags);
-                String msj = ContratosFactory.replaceTags(mensaje.getText(),alquiler, tags);
+                String asn = Tags.replaceTags(asunto.getText(), alquiler, Tags.tags_alquiler);
+                String msj = Tags.replaceTags(mensaje.getText(),alquiler, Tags.tags_alquiler);
                 ms.send(alquiler.email, asn, msj);
             }
         }

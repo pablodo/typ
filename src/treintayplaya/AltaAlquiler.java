@@ -193,6 +193,11 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         jlblBebes.setText("Bebes");
 
         jcbxDesayunos.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" }));
+        jcbxDesayunos.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jcbxDesayunosFocusLost(evt);
+            }
+        });
 
         jlblDesayunos.setText("Desayunos");
 
@@ -301,12 +306,6 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         });
 
         jlblCuenta.setText("Cuenta de depósito:");
-
-        jcbxCuenta.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                jcbxCuentaFocusLost(evt);
-            }
-        });
 
         org.jdesktop.layout.GroupLayout jpnlDetPagosLayout = new org.jdesktop.layout.GroupLayout(jpnlDetPagos);
         jpnlDetPagos.setLayout(jpnlDetPagosLayout);
@@ -643,17 +642,17 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         validaCombosFormaDePago((ComboTabla)jcbxFormaPagoImputacion);
     }//GEN-LAST:event_jcbxFormaPagoImputacionFocusLost
 
-    private void jcbxCuentaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jcbxCuentaFocusLost
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jcbxCuentaFocusLost
-
     private void jcbxFormaPagoOperacionItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbxFormaPagoOperacionItemStateChanged
         setearCuenta(((ComboTabla)jcbxFormaPagoOperacion).isItemBeforeEspecial(1));
     }//GEN-LAST:event_jcbxFormaPagoOperacionItemStateChanged
 
     private void jftfTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jftfTotalActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_jftfTotalActionPerformed
+
+	private void jcbxDesayunosFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jcbxDesayunosFocusLost
+		if (jcbxDesayunosImp.getSelectedIndex() == 0)
+			jcbxDesayunosImp.setSelectedIndex(jcbxDesayunos.getSelectedIndex());
+	}//GEN-LAST:event_jcbxDesayunosFocusLost
 
     private void cargaCombos() {
         Funciones.cargarComboTabla((ComboTabla)jcbxUF, "select ufNombre, ufID from UnidadesFuncionales where ufTipo > 0 order by ufNombre", "ufNombre", "ufID");

@@ -69,6 +69,7 @@ public class AppPrincipal extends javax.swing.JFrame {
         deudoresMenu = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
+        tagsMenuItem = new javax.swing.JMenuItem();
         contentMenuItem = new javax.swing.JMenuItem();
         aboutMenuItem = new javax.swing.JMenuItem();
 
@@ -88,7 +89,7 @@ public class AppPrincipal extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(871, Short.MAX_VALUE)
+                .addContainerGap(879, Short.MAX_VALUE)
                 .add(jlblAppUsuario)
                 .add(22, 22, 22))
         );
@@ -311,6 +312,16 @@ public class AppPrincipal extends javax.swing.JFrame {
         helpMenu.setMnemonic('y');
         helpMenu.setText("Ayuda");
 
+        tagsMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.CTRL_MASK));
+        tagsMenuItem.setMnemonic('T');
+        tagsMenuItem.setText("Tags disponibles");
+        tagsMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tagsMenuItemActionPerformed(evt);
+            }
+        });
+        helpMenu.add(tagsMenuItem);
+
         contentMenuItem.setMnemonic('c');
         contentMenuItem.setText("Contenidos");
         helpMenu.add(contentMenuItem);
@@ -464,6 +475,14 @@ public class AppPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
+	private void tagsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tagsMenuItemActionPerformed
+		if (isAdmin()){
+			Tags tags= new Tags();
+			desktopPane.add(tags);	
+			tags.show();
+		}
+	}//GEN-LAST:event_tagsMenuItemActionPerformed
+
     private boolean isAdmin(){
         return DatosGlobales.usrNivel == 1 && DatosGlobales.usrEstado == 1 && DatosGlobales.appSesion;
     }
@@ -544,6 +563,7 @@ public class AppPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu mantenimientoMenu;
     public static javax.swing.JMenu propMenu;
     private javax.swing.JMenuItem saveMenuItem;
+    private javax.swing.JMenuItem tagsMenuItem;
     private javax.swing.JMenu usrMenu;
     // End of variables declaration//GEN-END:variables
 }
