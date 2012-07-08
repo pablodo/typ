@@ -44,7 +44,7 @@ public class ContratosFactory {
         for (int i=0; i < fields.length; i++){
             if (! Modifier.isFinal(fields[i].getModifiers())){
                 String field = fields[i].getName();
-                String tag = "#" + field.trim().toUpperCase();
+                String tag = "<" + field.trim().toUpperCase() + ">";
                 tags.add(tag);
             }
         }
@@ -53,7 +53,7 @@ public class ContratosFactory {
     
     public static Object getValueByTag(Object objeto, String tag){
         Object value = new Object();
-        tag = tag.toLowerCase().substring(1, tag.length());
+        tag = tag.toLowerCase().substring(1, tag.length() -1); //desde el 1 hasta -1 para excluir los < >
         try {
             value = objeto.getClass().getDeclaredField(tag).get(objeto);
         } catch (Exception ex) {

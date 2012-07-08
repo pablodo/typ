@@ -26,6 +26,8 @@ public class MailSender {
     String asunto = null;
     String cuerpo = null;
     Properties props;
+    SMTPAuthenticator smtpAuth;
+    Session session;
     
     public MailSender(String mailFrom, String passFrom){
         this(new String[0], mailFrom, passFrom);
@@ -54,6 +56,9 @@ public class MailSender {
             props.put("mail.smtp.socketFactory.class",
                     "javax.net.ssl.SSLSocketFactory");
             props.put("mail.smtp.socketFactory.fallback", "false");
+            
+            smtpAuth = new SMTPAuthenticator(mailFrom, passFrom);
+            session = Session.getInstance(props, smtpAuth);
         } catch (AddressException ex) {
             Logger.getLogger(MailSender.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -72,16 +77,14 @@ public class MailSender {
         try {
             mailsTo[0] = new InternetAddress(mailTo);
             send(asunto, mensaje);
-        } catch (AddressException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(MailSender.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    public void send(String asunto, String mensaje){
+    public void send(String asunto, String mensaje) throws Exception{
         
         try {
-            SMTPAuthenticator smtpAuth = new SMTPAuthenticator(mailFrom, passFrom);
-            Session session = Session.getInstance(props, smtpAuth);
             MimeMessage msg = new MimeMessage(session);
             msg.setText(mensaje);
             msg.setSubject(asunto);
@@ -90,7 +93,7 @@ public class MailSender {
             
             Transport.send(msg);
         } catch (MessagingException ex) {
-            Logger.getLogger(MailSender.class.getName()).log(Level.SEVERE, null, ex);
+            throw new Exception(ex.getMessage());
         }
     }
     
@@ -110,7 +113,9 @@ public class MailSender {
     public static void main(String args[]){
         String[] mails = {"pablodo@olx.com","pabliyus@gmail.com"};
         MailSender mail = new MailSender(mails, "pablo.diazogni@gmail.com", "");
-        mail.send("Prueba", "Si te llego este mail, es que ya aprendi a mandar mails en java :)");
+        try{
+            mail.send("Prueba", "Si te llego este mail, es que ya aprendi a mandar mails en java :)");
+        }catch(Exception e){}
     }
 }
 

@@ -28,7 +28,18 @@ public class Alquiler{
     String uf = "";
     String email = "";
     String email_propietario = "";
-    String cuenta_deposito= "";
+    String cuenta= "";
+    String tipo_cuenta= "";
+    Integer cantidad_personas = 0;
+    Integer desayunos = 0;
+    Integer desayunos_imputados = 0;
+    Integer adultos = 0;
+    Integer menores = 0;
+    Integer bebes = 0;
+    String total = "0.00";
+    String reserva = "0.00";
+    String reserva_minima = "0.00";
+    String total_imputado = "0.00";
     
     public Alquiler(){
         
@@ -43,7 +54,7 @@ public class Alquiler{
     public String toString(){
         return "";
     }
-
+ 
     boolean isReserva() {
         return tipo == RESERVAR;
     }
@@ -57,7 +68,12 @@ public class Alquiler{
     private void cargarAlquiler() {
         try {
             java.sql.Connection cnx = Conexion.getInstance().getConnection();
-            String query = "SELECT * FROM Alquileres INNER JOIN UnidadesFuncionales ON alqUF = ufID INNER JOIN Clientes ON alqCliente = cliID LEFT JOIN Propietarios ON propUF = ufID WHERE alqID = ?";
+            String query = "SELECT * FROM Alquileres " + 
+                           "INNER JOIN UnidadesFuncionales ON alqUF = ufID " + 
+                           "INNER JOIN Clientes ON alqCliente = cliID " +
+                           "LEFT JOIN Propietarios as p1 ON p1.propUF = ufID " +
+                           "LEFT JOIN Propietarios as p2 ON p2.propID = alqCuentaPropID " +
+                           "WHERE alqID = ?";
             java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
             pstm.setInt(1, id);
             java.sql.ResultSet rst = pstm.executeQuery();
@@ -72,6 +88,18 @@ public class Alquiler{
             uf = rst.getString("ufNombre");
             email = rst.getString("cliEmail");
             email_propietario = rst.getString("propEmail");
+            reserva = Funciones.formatNumber(rst.getDouble("alqImporteReserva"));
+            reserva_minima = Funciones.formatNumber(rst.getDouble("alqImporteMinReserva"));
+            total = Funciones.formatNumber(rst.getDouble("alqTotal"));
+            total_imputado = Funciones.formatNumber(rst.getDouble("alqTotal") - rst.getDouble("alqDifImputacion"));
+            desayunos = rst.getInt("alqDesayunos");
+            desayunos_imputados = rst.getInt("alqDesayunosImp");
+            adultos = rst.getInt("alqOcupantesA");
+            menores = rst.getInt("alqOcupantesM");
+            bebes = rst.getInt("alqOcupantesB");
+            cantidad_personas = adultos + menores + bebes;
+	    cuenta = rst.getString("p2.propNCuenta");
+	    tipo_cuenta = rst.getString("p2.propTCuenta");
             
             limpiar();
             rst.close();

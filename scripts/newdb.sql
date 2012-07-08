@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS `Alquileres` (
   `alqFecha` datetime NOT NULL,
   `alqOperador` int(11) NOT NULL,
   `alqUF` int(11) NOT NULL,
+  `alqCuentaPropID` int(11) NOT NULL,
   `alqCliente` int(11) NOT NULL,
   `alqFIN` datetime NOT NULL,
   `alqFOUT` datetime NOT NULL,
@@ -33,7 +34,9 @@ CREATE TABLE IF NOT EXISTS `Alquileres` (
   `alqOcupantesB` int(11) NOT NULL,
   `alqDesayunos` int(11) NOT NULL,
   `alqDesayunosImp` int(11) NOT NULL,
-  `alqContrato` int(11) NOT NULL,
+  `alqContratoProp` int(11) NOT NULL,
+  `alqContratoCli` int(11) NOT NULL,
+  `alqImporteMinReserva` decimal(10,2) NOT NULL,
   `alqImporteReserva` decimal(10,2) NOT NULL,
   `alqDifImputacion` decimal(10,2) NOT NULL,
   `alqTotal` decimal(10,2) NOT NULL,
@@ -94,11 +97,17 @@ CREATE TABLE IF NOT EXISTS `Contratos` (
 -- Volcado de datos para la tabla `Contratos`
 --
 INSERT INTO `Contratos` (`ID`, `conTipo`, `conDetalle`) VALUES
-(1, "Reserva",          ''),
-(2, "Cancelación",      ''),
-(3, "Ingreso",          ''),
-(4, "Ingreso Completo", ''),
-(5, "Anulación",        '');
+( 1, "Reserva Provisoria",           ''),
+( 2, "Confirmación Cliente",         ''),
+( 3, "Confirmación Propietario",     ''),
+( 4, "Cancelación Cliente",          ''),
+( 5, "Cancelación Propietario",      ''),
+( 6, "Ingreso Cliente",              ''),
+( 7, "Ingreso Propietario",          ''),
+( 8, "Ingreso Completo Cliente",     ''),
+( 9, "Ingreso Completo Propietario", ''),
+(10, "Anulación Cliente",            ''),
+(11, "Anulación Propietario",        '');
 -- --------------------------------------------------------
 --
 -- Estructura de tabla para la tabla `DetAlquileres`

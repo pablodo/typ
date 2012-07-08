@@ -17,6 +17,8 @@ package treintayplaya;
 public class AppPrincipal extends javax.swing.JFrame {
     
     public final static Configuracion configuracion = new Configuracion();
+    public final static MailSender mailSender = new MailSender(configuracion.email, configuracion.emailPassword);
+    
     /** Creates new form AppPrincipal */
     public AppPrincipal() {
         initComponents();
