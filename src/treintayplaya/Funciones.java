@@ -22,9 +22,11 @@ import javax.swing.text.NumberFormatter;
  */
 public class Funciones {
     
-    public static void cargarComboTabla(ComboTabla combo, String query, String campoNombre, String campoId){
+    public static void cargarComboTabla(ComboTabla combo, String query, String campoNombre, String campoId, boolean primerItemVacio){
         try {
             combo.removeAllItems();
+	    if (primerItemVacio)
+		combo.addItem("Ninguno");
             java.sql.Connection cnx = Conexion.getInstance().getConnection();
             java.sql.Statement stm = cnx.createStatement();
             java.sql.ResultSet rst = stm.executeQuery(query);
@@ -36,9 +38,14 @@ public class Funciones {
             }
             rst.close();
             stm.close();
+
         } catch (SQLException ex) {
             Logger.getLogger(Funciones.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public static void cargarComboTabla(ComboTabla combo, String query, String campoNombre, String campoId){
+	    cargarComboTabla(combo, query, campoNombre, campoId, false);
     }
     
     public static boolean validaTextField(Component parentComponent, JTextField obj, String name){

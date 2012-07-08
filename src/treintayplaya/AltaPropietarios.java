@@ -311,7 +311,7 @@ public class AltaPropietarios extends javax.swing.JInternalFrame {
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jbtnAceptar)
                     .add(jbtnCancelar))
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -369,7 +369,7 @@ public class AltaPropietarios extends javax.swing.JInternalFrame {
         
         Funciones.cargarComboTabla((ComboTabla)jcbxBanco, sqlBancos, "bancoNombre", "bancoID");
         Funciones.cargarComboTabla((ComboTabla)jcbxTCuenta, sqlTCuentas, "tcNombre", "tcID");
-        Funciones.cargarComboTabla((ComboTabla)jcbxUF, sqlUF, "ufNombre", "ufID");
+        Funciones.cargarComboTabla((ComboTabla)jcbxUF, sqlUF, "ufNombre", "ufID", true);
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

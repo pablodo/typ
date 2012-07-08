@@ -657,8 +657,8 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
 
     private void cargaCombos() {
         Funciones.cargarComboTabla((ComboTabla)jcbxUF, "select ufNombre, ufID from UnidadesFuncionales where ufTipo > 0 order by ufNombre", "ufNombre", "ufID");
-        Funciones.cargarComboTabla((ComboTabla)jcbxContratoCli, "select conTipo, ID from Contratos order by ID", "conTipo", "ID");
-        Funciones.cargarComboTabla((ComboTabla)jcbxContratoProp, "select conTipo, ID from Contratos order by ID", "conTipo", "ID");
+        Funciones.cargarComboTabla((ComboTabla)jcbxContratoCli, "select conTipo, ID from Contratos order by ID", "conTipo", "ID", true);
+        Funciones.cargarComboTabla((ComboTabla)jcbxContratoProp, "select conTipo, ID from Contratos order by ID", "conTipo", "ID", true);
         String[] destinos = {"", "Comercializadora", "Propietario"};
         Funciones.cargarComboTablaEspecial((ComboTabla)jcbxFormaPagoOperacion, "select fpNombre, fpDestino, fpID from FormasPago order by fpDestino, fpNombre", "fpNombre", "fpID", "fpDestino", destinos);
         Funciones.cargarComboTablaEspecial((ComboTabla)jcbxFormaPagoImputacion, "select fpNombre, fpDestino, fpID from FormasPago order by fpDestino, fpNombre", "fpNombre", "fpID", "fpDestino", destinos);
@@ -938,18 +938,17 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
             case Alquiler.RESERVAR:
                 jcbxContratoProp.setSelectedIndex(-1);
                 jcbxContratoProp.setEnabled(false);
-                jcbxContratoCli.setSelectedIndex(0);
+                jcbxContratoCli.setSelectedIndex(1);
                 break;
             case Alquiler.CONFIRMAR:
-                jcbxContratoCli.setSelectedIndex(1);
-                jcbxContratoProp.setSelectedIndex(2);
+                jcbxContratoCli.setSelectedIndex(2);
+                jcbxContratoProp.setSelectedIndex(3);
                 break;
             case Alquiler.CANCELAR:
-                jcbxContratoCli.setSelectedIndex(3);
-                jcbxContratoProp.setSelectedIndex(4);
+                jcbxContratoCli.setSelectedIndex(4);
+                jcbxContratoProp.setSelectedIndex(5);
                 break;
         }
-        
     }
 
     private void enviarContratos() {
@@ -989,7 +988,8 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         String propID = "0";
         if (! administrador)
             propID = ((ComboTabla)jcbxUF).getSelectedId().toString();
-        Funciones.cargarComboTabla((ComboTabla)jcbxCuenta, "SELECT propNCuenta, propID FROM Propietarios WHERE propUF = " + propID , "propNCuenta", "propID");
+	String query = "SELECT propNCuenta, propID FROM Propietarios WHERE propUF = 0 OR propUF = " + propID ;
+        Funciones.cargarComboTabla((ComboTabla)jcbxCuenta, query, "propNCuenta", "propID");
         jcbxCuenta.setSelectedIndex(-1);
     }   
     
