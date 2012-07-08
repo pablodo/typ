@@ -83,7 +83,9 @@ public class MailSender {
     }
     
     public void send(String asunto, String mensaje) throws Exception{
-        
+       	if (mensaje == null || "".equals(mensaje.trim())){
+		return;
+	} 
         try {
             MimeMessage msg = new MimeMessage(session);
             msg.setText(mensaje);
