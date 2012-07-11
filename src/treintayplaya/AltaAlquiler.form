@@ -706,13 +706,12 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jftfTotalActionPerformed"/>
         <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jftfTotalFocusLost"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jlblImporte2">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Importe Reserva:"/>
+        <Property name="text" type="java.lang.String" value="Importe Reserva Cobrada:"/>
       </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="jlblImporte2.setText(this.operacion == 0 ? &quot;Importe m&#xed;nimo de reserva:&quot;:&quot;Importe reserva&quot;);"/>
@@ -724,6 +723,9 @@
           <Format format="#,##0.00" subtype="-1" type="0"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="enabled" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="operacion != Alquiler.CANCELAR" type="code"/>
+        </Property>
         <Property name="value" type="java.lang.Object" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="0" type="code"/>
         </Property>

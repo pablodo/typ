@@ -1,7 +1,9 @@
 package treintayplaya;
 
+import java.lang.annotation.Annotation;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,13 +46,12 @@ public class Tags extends javax.swing.JInternalFrame {
 
 	public static ArrayList<String> getTags(Class clase) {
 		ArrayList<String> tags = new ArrayList<String>();
-		Field[] fields = clase.getDeclaredFields();
-		for (int i = 0; i < fields.length; i++) {
-			if (!Modifier.isFinal(fields[i].getModifiers())) {
-				String field = fields[i].getName();
-				String tag = "<" + field.trim().toUpperCase() + ">";
-				tags.add(tag);
-			}
+		for (Field field: clase.getDeclaredFields()) {
+			for (Annotation annotation: field.getDeclaredAnnotations())
+				if (annotation.annotationType().equals(Tag.class)){
+					String tag = "<" + field.getName().trim().toUpperCase() + ">";
+					tags.add(tag);
+				}
 		}
 		return tags;
 	}
@@ -65,6 +66,10 @@ public class Tags extends javax.swing.JInternalFrame {
 		}
 
 		return value;
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)	
+	public @interface Tag{
 	}
 
 	/**

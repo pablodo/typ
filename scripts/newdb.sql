@@ -179,8 +179,7 @@ CREATE TABLE IF NOT EXISTS `TiposUF` (
   `tufAmbientes` int(11) NOT NULL,
   `tufUbicacion` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`tufID`),
-  UNIQUE KEY `tufDetalle` (`tufDetalle`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
+  UNIQUE KEY `tufDetalle` (`tufDetalle`)) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
 --
 -- Volcado de datos para la tabla `TiposUF`
 --
@@ -286,3 +285,15 @@ CREATE TABLE IF NOT EXISTS `Configuracion` (
 -- Volcado de datos para la tabla `Configuracion`
 --
 INSERT INTO `Configuracion` (`mailing`, `email`, `emailPassword`) VALUES (1, '', '');
+-- --------------------------------------------------------
+--
+-- Estructura de tabla para la tabla `Movimientos`
+--
+CREATE TABLE IF NOT EXISTS `Movimientos` (
+  `movID` int(11) NOT NULL AUTO_INCREMENT,
+  `movFecha` datetime NOT NULL,
+  `movAlqID` int(11) NOT NULL,
+  `movImporte` decimal(10,2) NOT NULL,
+  `movDestino` int(1) NOT NULL, /* A favor de (1: Comercializadora, 2: Propietario) */
+  PRIMARY KEY (`movID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;

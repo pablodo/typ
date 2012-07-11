@@ -356,22 +356,18 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         jftfTotal.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
         jftfTotal.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         jftfTotal.setValue(0);
-        jftfTotal.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jftfTotalActionPerformed(evt);
-            }
-        });
         jftfTotal.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 jftfTotalFocusLost(evt);
             }
         });
 
-        jlblImporte2.setText("Importe Reserva:");
+        jlblImporte2.setText("Importe Reserva Cobrada:");
         jlblImporte2.setText(this.operacion == 0 ? "Importe mínimo de reserva:":"Importe reserva");
 
         jftfImporteReserva.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
         jftfImporteReserva.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jftfImporteReserva.setEnabled(operacion != Alquiler.CANCELAR);
         jftfImporteReserva.setValue(0);
         jftfImporteReserva.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -554,6 +550,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
             boolean insert1 = false;
             try {
                 cnx.setAutoCommit(false);
+				Alquiler alquilerAnterior = alquiler;
                 insert1 = insertAlquiler();
                 if (insert1){
                     if (alquiler.id == 0){
@@ -564,8 +561,12 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
                     }
                     insertDetalleAlquiler(alquiler.id);
                 }
+				if (operacion == Alquiler.CONFIRMAR || operacion == Alquiler.CANCELAR)
+					generarMovimiento(alquilerAnterior.reservaCobrada);
+				cnx.commit();
                 if (((ComboTabla)jcbxContratoCli).getSelectedId() > 0 && operacion != alquiler.MODIFICAR)
                     enviarContratos();
+				
             } catch(java.sql.SQLException sqle) {
                 sqle.printStackTrace();
                 try {
@@ -607,6 +608,14 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
     private void jftfImporteReservaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jftfImporteReservaFocusLost
         try {
             jftfImporteReserva.commitEdit();
+			if (operacion == Alquiler.CONFIRMAR){
+				Double importe = Double.valueOf(jftfImporteReserva.getValue().toString());
+				if (importe < alquiler.reservaMinima){
+					int respuesta = JOptionPane.showConfirmDialog(this, "La reserva mínima es de $" + alquiler.reserva_minima + ". ¿Está seguro que desea continuar?", "Importe insuficiente", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+					if (respuesta != JOptionPane.OK_OPTION)
+						jftfImporteReserva.requestFocus();
+				}
+			}
             calcularSaldo();
         } catch (ParseException ex) {
             Logger.getLogger(AltaAlquiler.class.getName()).log(Level.SEVERE, null, ex);
@@ -645,9 +654,6 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
     private void jcbxFormaPagoOperacionItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbxFormaPagoOperacionItemStateChanged
         setearCuenta(((ComboTabla)jcbxFormaPagoOperacion).isItemBeforeEspecial(1));
     }//GEN-LAST:event_jcbxFormaPagoOperacionItemStateChanged
-
-    private void jftfTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jftfTotalActionPerformed
-    }//GEN-LAST:event_jftfTotalActionPerformed
 
 	private void jcbxDesayunosFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jcbxDesayunosFocusLost
 		if (jcbxDesayunosImp.getSelectedIndex() == 0)
@@ -781,7 +787,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         pstm.setInt   (19, ((ComboTabla)jcbxFormaPagoImputacion).getSelectedId());
         pstm.setString(20, jtaObservaciones.getText());
         pstm.setDouble(21, Double.valueOf(jftfImporteReserva.getValue().toString()));
-	pstm.setInt   (22, ((ComboTabla)jcbxCuenta).getSelectedId());
+		pstm.setInt   (22, ((ComboTabla)jcbxCuenta).getSelectedId());
         if(alquiler.id > 0){
             pstm.setInt(23, this.alquiler.id);
         }
@@ -868,11 +874,15 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
             ((ComboTabla)jcbxContratoCli).setSelectedItemById(rst.getInt("alqContratoCli"));
             ((ComboTabla)jcbxContratoProp).setSelectedItemById(rst.getInt("alqContratoProp"));
             jftfDifImputacion.setValue(rst.getDouble("alqDifImputacion"));
-            jftfTotal.setValue(rst.getDouble("alqTotal"));
+			Double total = rst.getDouble("alqTotal");
+            jftfTotal.setValue(total);
             ((ComboTabla)jcbxFormaPagoOperacion).setSelectedItemById(rst.getInt("alqFormaPagoOpe"));
             ((ComboTabla)jcbxFormaPagoImputacion).setSelectedItemById(rst.getInt("alqFormaPagoImp"));
             jtaObservaciones.setText(rst.getString("alqObservaciones"));
-            jftfImporteReserva.setValue(rst.getDouble("alqImporteReserva"));
+			Double importeReserva = rst.getDouble("alqImporteReserva");
+			if (operacion == Alquiler.CANCELAR)
+				importeReserva = total;
+            jftfImporteReserva.setValue(importeReserva);
             ((ComboTabla)jcbxCuenta).setSelectedItemById(rst.getInt("alqCuentaPropID"));
             
             calcularSaldo();
@@ -990,7 +1000,14 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
 	String query = "SELECT propNCuenta, propID FROM Propietarios WHERE propUF = 0 OR propUF = " + propID ;
         Funciones.cargarComboTabla((ComboTabla)jcbxCuenta, query, "propNCuenta", "propID");
         jcbxCuenta.setSelectedIndex(-1);
-    }   
+    }
+
+	private void generarMovimiento(Double importeAnterior) throws SQLException {
+		Double importe = Double.valueOf(jftfImporteReserva.getValue().toString());
+		importe -= importeAnterior;
+		int destino = ((ComboTabla)jcbxFormaPagoOperacion).isItemBeforeEspecial(1)? 1:2;
+		Movimientos.generarMovimiento(alquiler.id, importe, destino);
+	}
     
 
 }
