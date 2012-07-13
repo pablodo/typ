@@ -288,7 +288,6 @@
     <Component class="javax.swing.JComboBox" name="jcbxCliente">
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new treintayplaya.ComboTabla()"/>
-        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="((ComboTabla)jcbxCliente).addItem(&quot; &quot;, 0);"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
       </AuxValues>
     </Component>

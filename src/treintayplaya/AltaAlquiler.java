@@ -80,7 +80,6 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         jcbxUF = new treintayplaya.ComboTabla();
         jlblCliente = new javax.swing.JLabel();
         jcbxCliente = new treintayplaya.ComboTabla();
-        ((ComboTabla)jcbxCliente).addItem(" ", 0);
         jlblFIN = new javax.swing.JLabel();
         jdcFIN = new com.toedter.calendar.JDateChooser();
         jlblFOUT = new javax.swing.JLabel();
@@ -741,6 +740,8 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
             return false;
         if (! Funciones.validaComboTabla(this, (ComboTabla)jcbxCuenta, "Cuenta de depósito"))
             return false;
+		if (! Funciones.validaComboTabla(this, (ComboTabla)jcbxCliente, "Inquilino"))
+			return false;
         return true;
     }
 
@@ -910,6 +911,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
                 String nombre = rstClientes.getString("cliNombre");
                 ((ComboTabla)jcbxCliente).addItem(apellido + ", " + nombre, cliID);
             }
+			jcbxCliente.setSelectedIndex(-1);
             rstClientes.close();
             stmClientes.close();
         } catch (SQLException ex) {
