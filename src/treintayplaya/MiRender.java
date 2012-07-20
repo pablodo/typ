@@ -57,7 +57,7 @@ public class MiRender extends DefaultTableCellRenderer implements TableCellRende
                 }
                 setHorizontalAlignment(0);
                 setText("");
-                setToolTipText(((Alquiler)value).apellido + ", " + ((Alquiler)value).apellido );
+                setToolTipText(((Alquiler)value).apellido + ", " + ((Alquiler)value).nombre);
             }else{
                 setText(String.valueOf(value));
                 setToolTipText(null);
