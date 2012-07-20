@@ -52,10 +52,10 @@ public class AppPrincipal extends javax.swing.JFrame {
         jmiUF = new javax.swing.JMenuItem();
         jmiUsrWeb = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
-        jmiMovimientos = new javax.swing.JMenuItem();
         jmiReservas = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
         jmiResumenes = new javax.swing.JMenuItem();
+        jmiMovimientos = new javax.swing.JMenuItem();
         mantenimientoMenu = new javax.swing.JMenu();
         jmiBancos = new javax.swing.JMenuItem();
         jmiTCuentas = new javax.swing.JMenuItem();
@@ -199,15 +199,6 @@ public class AppPrincipal extends javax.swing.JFrame {
         consultasMenu.add(jmiUsrWeb);
         consultasMenu.add(jSeparator2);
 
-        jmiMovimientos.setMnemonic('M');
-        jmiMovimientos.setText("Movimientos");
-        jmiMovimientos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jmiMovimientosActionPerformed(evt);
-            }
-        });
-        consultasMenu.add(jmiMovimientos);
-
         jmiReservas.setMnemonic('A');
         jmiReservas.setText("Alquileres");
         jmiReservas.addActionListener(new java.awt.event.ActionListener() {
@@ -221,6 +212,15 @@ public class AppPrincipal extends javax.swing.JFrame {
         jmiResumenes.setMnemonic('R');
         jmiResumenes.setText("Resumenes");
         consultasMenu.add(jmiResumenes);
+
+        jmiMovimientos.setMnemonic('M');
+        jmiMovimientos.setText("Movimientos");
+        jmiMovimientos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiMovimientosActionPerformed(evt);
+            }
+        });
+        consultasMenu.add(jmiMovimientos);
 
         admMenu.add(consultasMenu);
 
@@ -443,14 +443,6 @@ public class AppPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jmiTiposUFActionPerformed
 
-    private void jmiMovimientosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiMovimientosActionPerformed
-        if(isAdmin()) {
-            ConsultaMovimientos movimientos = new ConsultaMovimientos();
-            desktopPane.add(movimientos);
-            movimientos.show();
-        }
-    }//GEN-LAST:event_jmiMovimientosActionPerformed
-
     private void jmiContratosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiContratosActionPerformed
         if(isAdmin()) {
             MantenimientoContratos contratos = new MantenimientoContratos();
@@ -482,6 +474,14 @@ public class AppPrincipal extends javax.swing.JFrame {
 			tags.show();
 		}
 	}//GEN-LAST:event_tagsMenuItemActionPerformed
+
+	private void jmiMovimientosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiMovimientosActionPerformed
+		if (isAdmin()){
+			IngresoMovimientos movimientos= new IngresoMovimientos();
+			desktopPane.add(movimientos);	
+			movimientos.show();
+		}
+	}//GEN-LAST:event_jmiMovimientosActionPerformed
 
     private boolean isAdmin(){
         return DatosGlobales.usrNivel == 1 && DatosGlobales.usrEstado == 1 && DatosGlobales.appSesion;

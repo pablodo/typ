@@ -127,15 +127,6 @@
                 </MenuItem>
                 <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator2">
                 </MenuItem>
-                <MenuItem class="javax.swing.JMenuItem" name="jmiMovimientos">
-                  <Properties>
-                    <Property name="mnemonic" type="int" value="77"/>
-                    <Property name="text" type="java.lang.String" value="Movimientos"/>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jmiMovimientosActionPerformed"/>
-                  </Events>
-                </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="jmiReservas">
                   <Properties>
                     <Property name="mnemonic" type="int" value="65"/>
@@ -152,6 +143,15 @@
                     <Property name="mnemonic" type="int" value="82"/>
                     <Property name="text" type="java.lang.String" value="Resumenes"/>
                   </Properties>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="jmiMovimientos">
+                  <Properties>
+                    <Property name="mnemonic" type="int" value="77"/>
+                    <Property name="text" type="java.lang.String" value="Movimientos"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jmiMovimientosActionPerformed"/>
+                  </Events>
                 </MenuItem>
               </SubComponents>
             </Menu>
