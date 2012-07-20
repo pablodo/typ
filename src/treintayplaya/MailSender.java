@@ -20,8 +20,8 @@ import javax.mail.internet.MimeMessage;
 public class MailSender {
     String mailFrom;
     String passFrom;
-    String servidorSMTP = "smtp.gmail.com";
-    String puertoEnvio = "465";
+    String servidorSMTP = "mail.30yplaya.com.ar";
+    String puertoEnvio = "587";
     Address[] mailsTo = null;
     String asunto = null;
     String cuerpo = null;
@@ -50,13 +50,6 @@ public class MailSender {
             props.put("mail.smtp.host", servidorSMTP);
             props.put("mail.smtp.port", puertoEnvio);
             props.put("mail.smtp.auth", "true");
-            props.put("mail.smtp.starttls.enable", "true");
-            props.put("mail.smtp.auth", "true");
-            props.put("mail.smtp.socketFactory.port", puertoEnvio);
-            props.put("mail.smtp.socketFactory.class",
-                    "javax.net.ssl.SSLSocketFactory");
-            props.put("mail.smtp.socketFactory.fallback", "false");
-            
             smtpAuth = new SMTPAuthenticator(mailFrom, passFrom);
             session = Session.getInstance(props, smtpAuth);
         } catch (AddressException ex) {
@@ -113,11 +106,13 @@ public class MailSender {
     }
     
     public static void main(String args[]){
-        String[] mails = {"pablodo@olx.com","pabliyus@gmail.com"};
-        MailSender mail = new MailSender(mails, "pablo.diazogni@gmail.com", "");
+        String[] mails = {"pablo.diazogni@gmail.com"};
+        MailSender mail = new MailSender(mails, "tesoreria@30yplaya.com.ar", "hypersys2010");
         try{
             mail.send("Prueba", "Si te llego este mail, es que ya aprendi a mandar mails en java :)");
-        }catch(Exception e){}
+        }catch(Exception e){
+			e.printStackTrace();
+		}
     }
 }
 
