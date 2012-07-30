@@ -477,7 +477,7 @@ public class AppPrincipal extends javax.swing.JFrame {
 
 	private void jmiMovimientosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiMovimientosActionPerformed
 		if (isAdmin()){
-			IngresoMovimientos movimientos= new IngresoMovimientos();
+			ConsultaMovimientos movimientos= new ConsultaMovimientos();
 			desktopPane.add(movimientos);	
 			movimientos.show();
 		}

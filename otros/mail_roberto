@@ -1,0 +1,45 @@
+Buen dia Pablo, estuvimos liquidando algunas unidades en estos dias, y tengo algunas cosas que te pueden servir. Aclaraciones Sistema
+Completar imputaciones cuando la reserva es efectiva
+Listados reservas vencidas  x filtra fecha ingreso y egreso de fecha manual
+Listado deuda x saldo pendiente
+Listado liquidacion unidad x unidad filtrar fecha ingreso y egreso
+Listado ingresos inquilinos filtrar x fecha ingreso y egreso (  que aparezcan todas las unidades y en forma individual los siguientes datos: todos los datos
+De la reserva confirmada ( menos los importes que no figure ninguno).
+Listado De saldos finales pendientes de propietarios filtrando x rango de fecha.
+Listado gral comercializadora donde por rango de fecha : facturacion total, con:
+1- subtotales de facturacion unidad x unidad.-( que yo pueda filtrarlas hay algunas que no me pagan comision)
+2-comision general hoy..... 10% ( que esto se pueda en cambiar en caso de ser necesario)
+3- los gastos de la comercilalizadora que yo voy cargando.( ej gastos bancarios , sueldos, etc)
+
+Por otro lado para despejar dudas que me quedaron el otro dia, te paso en limpio.
+
+En cuanto a pago de los inquilinos:
+Por un lado te listo a los que se imputan a la comercilaizadora:
+Efvo complejo
+Efvo oficina
+Efvo cobrador
+Cheque oficina
+Cta  banco 1 
+Cta  banco 2
+
+Por otro lado te listo los que se imputan al propietarios:
+Cta banco propietario
+Cta banco administrador
+
+Ahora con respecto a las liquidaciones de cada una de las unidades a los propietarios. Te cito un ejemplo.
+Saldo a favor del propietarios $2000
+Te paso las  opciones de cancelacion:
+Efvo.
+Deposito en cta prop.
+Pago a cta expensas
+El saldo pasa a la proxima liquidacion ( acordate que si hay saldo de deuda siempre se arrastre sino es cancelado totalmente asi arrastra unsaldo en caso que haya un pago parcial) seris bueno al lado del saldo que agreges un "observaciones" asi podemos agregar aclaraciones utiles.
+
+Ahora ej .  Saldo a favor comercializadora $ 1000
+Te paso las opciones de cancelacion:
+Efvo
+Dep en cta bancaria propia
+Dep en otra cta bancaria.
+El saldo pasa a la proxima liquidacion
+
+Abzo, buen finde!,,,
+
