@@ -119,5 +119,25 @@ public class Funciones {
     public static String formatNumber(Double number) {
         return formatNumber(number, "###,###,##0.00");
     }
+
+	public static void cargarComboTablaApellidoNombre(ComboTabla combo, String query, String campoApellido, String campoNombre, String campoId) {
+        try {
+            combo.removeAllItems();
+            java.sql.Connection cnx = Conexion.getInstance().getConnection();
+            java.sql.Statement stm = cnx.createStatement();
+            java.sql.ResultSet rst = stm.executeQuery(query);
+            while(rst.next()){
+                int id = rst.getInt(campoId);
+                String apellido = rst.getString(campoApellido);
+                String nombre = rst.getString(campoNombre);
+                ((ComboTabla)combo).addItem(apellido + ", " + nombre, id);
+            }
+			combo.setSelectedIndex(-1);
+            rst.close();
+            stm.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Funciones.class.getName()).log(Level.SEVERE, null, ex);
+        }
+	}
     
 }

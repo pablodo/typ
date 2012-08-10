@@ -25,7 +25,8 @@ CREATE TABLE IF NOT EXISTS `Alquileres` (
   `alqFecha` datetime NOT NULL,
   `alqOperador` int(11) NOT NULL,
   `alqUF` int(11) NOT NULL,
-  `alqCuentaPropID` int(11) NOT NULL,
+  `alqCuentaOpePropID` int(11) NOT NULL,
+  `alqCuentaImpPropID` int(11) NOT NULL,
   `alqCliente` int(11) NOT NULL,
   `alqFIN` datetime NOT NULL,
   `alqFOUT` datetime NOT NULL,
@@ -137,18 +138,6 @@ CREATE TABLE IF NOT EXISTS `Propietarios` (
   `propUF` int(11) NOT NULL,
   PRIMARY KEY (`propID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
---
--- Volcado de datos para la tabla `Propietarios`
---
-INSERT INTO `Propietarios` (`propID`, `propApellido`, `propNombre`, `propEmail`, `propTelefono`, `propCelular`, `propCUIT`, `propBanco`, `propNCuenta`, `propCBU`, `propTCuenta`, `propUF`) VALUES
-( 1, 'Patri',         'Juan Antonio', 'jjjuan23jjj@hotmail.com',    '011-155-010-2757', '011-155-010-2757', '20-11985872-1', 1, '6096-03413-8', '1500609900060960341382', 1, 1),
-( 2, 'Dal Lago',      'Mercedes',     'carodal_lago@hotmail.com',   '011 154 969 1701', '011 154 969 1701', '',              0, '',             '',                       0, 1),
-( 3, 'Menaged',       'David',        'menageddavid@hotmail.com',   '011 154 083 1845', '011 154 083 1845', '27-14026259-0', 6, '143-14296-4',  '0170143840000001429646', 2, 2),
-( 4, 'Muebles París', 'Ariel',        'mueblesparis@speedy.com.ar', '',                 '0223 4964050',     '',              0, '',             '',                       0, 3),
-( 5, 'Muebles París', 'Daniel',       '',                           '0223 154 473 760', '0223 4964050',     '30-70068339-3', 1, '0753-20349-1', '1500025100007532034914', 4, 3),
-( 6, 'Bianchi'      , 'Patricia',     '',                           '',                 '',                 '27-24364732-6', 9, '5-201532-517', '0167777100052015325173', 1, 0),
-( 7, 'Bianchi'      , 'Patricia',     '',                           '',                 '',                 '27-24364732-6', 1, '786153532',    '1500032900007861535328', 1, 0);
-/*(  , '', '', '', '', '', '', 0, '', '', 0, 0),*/
 -- --------------------------------------------------------
 --
 -- Estructura de tabla para la tabla `TCuentas`
@@ -284,7 +273,7 @@ CREATE TABLE IF NOT EXISTS `Configuracion` (
 --
 -- Volcado de datos para la tabla `Configuracion`
 --
-INSERT INTO `Configuracion` (`mailing`, `email`, `emailPassword`) VALUES (1, '', '');
+INSERT INTO `Configuracion` (`mailing`, `email`, `emailPassword`) VALUES (1, 'tesoreria@30yplaya.com.ar', AES_ENCRYPT('hypersys2010', 'typ2012'));
 -- --------------------------------------------------------
 --
 -- Estructura de tabla para la tabla `Movimientos`
@@ -292,8 +281,11 @@ INSERT INTO `Configuracion` (`mailing`, `email`, `emailPassword`) VALUES (1, '',
 CREATE TABLE IF NOT EXISTS `Movimientos` (
   `movID` int(11) NOT NULL AUTO_INCREMENT,
   `movFecha` datetime NOT NULL,
+  `movFechaSaldado` datetime default NULL,
   `movAlqID` int(11) NOT NULL,
   `movImporte` decimal(10,2) NOT NULL,
+  `movSaldado` int(1) NOT NULL, /* (0: Sin saldar, 1: Saldado) */
   `movDestino` int(1) NOT NULL, /* A favor de (1: Comercializadora, 2: Propietario) */
+  `movDetalle` varchar(30) COLLATE utf8_unicode_ci default '',
   PRIMARY KEY (`movID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;

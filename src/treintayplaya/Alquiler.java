@@ -75,7 +75,7 @@ public class Alquiler{
                            "INNER JOIN UnidadesFuncionales ON alqUF = ufID " + 
                            "INNER JOIN Clientes ON alqCliente = cliID " +
                            "LEFT JOIN Propietarios as p1 ON p1.propUF = ufID " +
-                           "LEFT JOIN Propietarios as p2 ON p2.propID = alqCuentaPropID " +
+                           "LEFT JOIN Propietarios as p2 ON p2.propID = alqCuentaImpPropID " +
                            "WHERE alqID = ?";
             java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
             pstm.setInt(1, id);

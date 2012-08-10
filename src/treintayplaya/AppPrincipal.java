@@ -10,6 +10,10 @@
  */
 package treintayplaya;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author sergio
@@ -55,7 +59,6 @@ public class AppPrincipal extends javax.swing.JFrame {
         jmiReservas = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
         jmiResumenes = new javax.swing.JMenuItem();
-        jmiMovimientos = new javax.swing.JMenuItem();
         mantenimientoMenu = new javax.swing.JMenu();
         jmiBancos = new javax.swing.JMenuItem();
         jmiTCuentas = new javax.swing.JMenuItem();
@@ -64,6 +67,9 @@ public class AppPrincipal extends javax.swing.JFrame {
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
         jmiTiposUF = new javax.swing.JMenuItem();
         jmiContratos = new javax.swing.JMenuItem();
+        movimientosMenu = new javax.swing.JMenu();
+        jmiABMLMovimientos = new javax.swing.JMenuItem();
+        jmiCerrarMovimientos = new javax.swing.JMenuItem();
         propMenu = new javax.swing.JMenu();
         jmiPropResumenes = new javax.swing.JMenuItem();
         deudoresMenu = new javax.swing.JMenu();
@@ -75,8 +81,12 @@ public class AppPrincipal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Treinta y Playa - Sistema de Gestión");
-        setLocationByPlatform(true);
         setMinimumSize(new java.awt.Dimension(1024, 600));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         desktopPane.setAutoscrolls(true);
         desktopPane.setMinimumSize(new java.awt.Dimension(1024, 680));
@@ -213,15 +223,6 @@ public class AppPrincipal extends javax.swing.JFrame {
         jmiResumenes.setText("Resumenes");
         consultasMenu.add(jmiResumenes);
 
-        jmiMovimientos.setMnemonic('M');
-        jmiMovimientos.setText("Movimientos");
-        jmiMovimientos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jmiMovimientosActionPerformed(evt);
-            }
-        });
-        consultasMenu.add(jmiMovimientos);
-
         admMenu.add(consultasMenu);
 
         mantenimientoMenu.setMnemonic('M');
@@ -281,6 +282,28 @@ public class AppPrincipal extends javax.swing.JFrame {
         mantenimientoMenu.add(jmiContratos);
 
         admMenu.add(mantenimientoMenu);
+
+        movimientosMenu.setText("Movimientos");
+
+        jmiABMLMovimientos.setMnemonic('A');
+        jmiABMLMovimientos.setText("Altas, bajas y modificaciones");
+        jmiABMLMovimientos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiABMLMovimientosActionPerformed(evt);
+            }
+        });
+        movimientosMenu.add(jmiABMLMovimientos);
+
+        jmiCerrarMovimientos.setMnemonic('C');
+        jmiCerrarMovimientos.setText("Cerrar Movimientos");
+        jmiCerrarMovimientos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiCerrarMovimientosActionPerformed(evt);
+            }
+        });
+        movimientosMenu.add(jmiCerrarMovimientos);
+
+        admMenu.add(movimientosMenu);
 
         AppMenuBar.add(admMenu);
 
@@ -354,7 +377,7 @@ public class AppPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
-        System.exit(0);
+        exit();
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
     private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
@@ -475,13 +498,25 @@ public class AppPrincipal extends javax.swing.JFrame {
 		}
 	}//GEN-LAST:event_tagsMenuItemActionPerformed
 
-	private void jmiMovimientosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiMovimientosActionPerformed
+	private void jmiABMLMovimientosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiABMLMovimientosActionPerformed
 		if (isAdmin()){
-			ConsultaMovimientos movimientos= new ConsultaMovimientos();
-			desktopPane.add(movimientos);	
+			ConsultaMovimientos movimientos = new ConsultaMovimientos();
+			desktopPane.add(movimientos);
 			movimientos.show();
 		}
-	}//GEN-LAST:event_jmiMovimientosActionPerformed
+	}//GEN-LAST:event_jmiABMLMovimientosActionPerformed
+
+	private void jmiCerrarMovimientosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiCerrarMovimientosActionPerformed
+		if (isAdmin()){
+			CierreMovimientos movimientos = new CierreMovimientos();
+			desktopPane.add(movimientos);
+			movimientos.show();
+		}
+	}//GEN-LAST:event_jmiCerrarMovimientosActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        exit();
+    }//GEN-LAST:event_formWindowClosed
 
     private boolean isAdmin(){
         return DatosGlobales.usrNivel == 1 && DatosGlobales.usrEstado == 1 && DatosGlobales.appSesion;
@@ -544,10 +579,11 @@ public class AppPrincipal extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
     public static javax.swing.JLabel jlblAppUsuario;
+    private javax.swing.JMenuItem jmiABMLMovimientos;
     private javax.swing.JMenuItem jmiBancos;
+    private javax.swing.JMenuItem jmiCerrarMovimientos;
     private javax.swing.JMenuItem jmiClientes;
     private javax.swing.JMenuItem jmiContratos;
-    private javax.swing.JMenuItem jmiMovimientos;
     private javax.swing.JMenuItem jmiPropResumenes;
     private javax.swing.JMenuItem jmiPropietarios;
     private javax.swing.JMenuItem jmiReservas;
@@ -561,9 +597,19 @@ public class AppPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem loginMenuItem;
     private javax.swing.JMenuItem logoutMenuItem;
     private javax.swing.JMenu mantenimientoMenu;
+    private javax.swing.JMenu movimientosMenu;
     public static javax.swing.JMenu propMenu;
     private javax.swing.JMenuItem saveMenuItem;
     private javax.swing.JMenuItem tagsMenuItem;
     private javax.swing.JMenu usrMenu;
     // End of variables declaration//GEN-END:variables
+
+    private void exit() {
+        try {
+            Conexion.getInstance().cnx.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(AppPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        System.exit(0);
+    }
 }

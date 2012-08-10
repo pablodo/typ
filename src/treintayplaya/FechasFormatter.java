@@ -15,6 +15,8 @@ import java.util.GregorianCalendar;
 class FechasFormatter {
     
     static String getFechaString(Calendar calendar) {
+		if (calendar == null)
+			return "";
         NumberFormat formatter = NumberFormat.getInstance();
         formatter.setMinimumIntegerDigits(2);
         String dia, mes, anio, hr, min, seg;
@@ -59,6 +61,8 @@ class FechasFormatter {
     }
     
     static String getFechaFromMySQL(String fecha){
+		if (fecha == null)
+			return "";
         if(fecha.endsWith(".0")){
             fecha = fecha.substring(0, fecha.length()-2);
         }

@@ -26,9 +26,8 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPane1" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="0" pref="320" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       <Component id="jbtnAgregar" min="-2" pref="117" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jbtnBorrar" min="-2" pref="114" max="-2" attributes="0"/>
@@ -37,7 +36,13 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jbtnCerrar" min="-2" pref="117" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="jpnlAltaMovimiento" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jScrollPane1" alignment="0" min="-2" pref="804" max="-2" attributes="0"/>
+                          <Component id="jpnlAltaMovimiento" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -47,10 +52,10 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollPane1" pref="262" max="32767" attributes="0"/>
-              <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
-              <Component id="jpnlAltaMovimiento" min="-2" max="-2" attributes="0"/>
+              <Component id="jScrollPane1" pref="260" max="32767" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="jpnlAltaMovimiento" min="-2" pref="158" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jbtnAgregar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jbtnBorrar" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -137,19 +142,47 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="jlblDetalle" max="32767" attributes="0"/>
+                      <Component id="jlblFecha" min="-2" max="-2" attributes="0"/>
+                      <Component id="jlblImporte" max="32767" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jlblImporte" alignment="0" min="-2" pref="117" max="-2" attributes="0"/>
-                      <Component id="jlblDestino" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="jlblFecha" alignment="0" min="-2" pref="117" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Component id="jdcFecha" min="-2" pref="223" max="-2" attributes="0"/>
+                              <Component id="jftfImporte" min="-2" pref="223" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jchkSaldado" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jlblDestino" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Component id="jdcFechaSaldado" min="-2" pref="183" max="-2" attributes="0"/>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              </Group>
+                              <Component id="jcbxDestino" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Component id="jScrollPane2" max="32767" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="jbtnOK" min="-2" pref="117" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <EmptySpace min="566" pref="566" max="-2" attributes="0"/>
+                                  <Component id="jbtnCancelar" min="-2" pref="117" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                      <Component id="jftfImporte" alignment="0" max="32767" attributes="0"/>
-                      <Component id="jdcFecha" alignment="0" pref="223" max="32767" attributes="0"/>
-                      <Component id="jcbxDestino" max="32767" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Component id="jbtnOK" min="-2" pref="117" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -159,19 +192,27 @@
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="2" attributes="0">
-                      <Component id="jlblFecha" alignment="2" min="-2" max="-2" attributes="0"/>
+                      <Component id="jdcFechaSaldado" alignment="2" min="-2" max="-2" attributes="0"/>
+                      <Component id="jchkSaldado" alignment="2" min="-2" max="-2" attributes="0"/>
                       <Component id="jdcFecha" alignment="2" min="-2" max="-2" attributes="0"/>
+                      <Component id="jlblFecha" alignment="2" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="2" attributes="0">
-                      <Component id="jlblImporte" alignment="2" min="-2" max="-2" attributes="0"/>
+                      <Component id="jcbxDestino" alignment="2" min="-2" max="-2" attributes="0"/>
+                      <Component id="jlblDestino" alignment="2" min="-2" max="-2" attributes="0"/>
                       <Component id="jftfImporte" alignment="2" min="-2" max="-2" attributes="0"/>
+                      <Component id="jlblImporte" alignment="2" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jcbxDestino" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jlblDestino" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jbtnOK" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="jlblDetalle" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Component id="jbtnOK" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jbtnCancelar" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Component id="jScrollPane2" alignment="0" pref="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -193,7 +234,7 @@
           <Properties>
             <Property name="maximumRowCount" type="int" value="2"/>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="new javax.swing.DefaultComboBoxModel(destinos)" type="code"/>
+              <Connection code="new javax.swing.DefaultComboBoxModel(new String[]{Movimientos.destinos[1], Movimientos.destinos[2]})" type="code"/>
             </Property>
           </Properties>
         </Component>
@@ -226,6 +267,52 @@
           <Properties>
             <Property name="dateFormatString" type="java.lang.String" value="dd/MM/yyyy HH:mm:ss"/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JCheckBox" name="jchkSaldado">
+          <Properties>
+            <Property name="mnemonic" type="int" value="83"/>
+            <Property name="text" type="java.lang.String" value="Saldado?"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jchkSaldadoActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="com.toedter.calendar.JDateChooser" name="jdcFechaSaldado">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="Fecha de Saldado"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jlblDetalle">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Detalle:"/>
+          </Properties>
+        </Component>
+        <Container class="javax.swing.JScrollPane" name="jScrollPane2">
+          <AuxValues>
+            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+          </AuxValues>
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+          <SubComponents>
+            <Component class="javax.swing.JTextArea" name="jtaDetalle">
+              <Properties>
+                <Property name="columns" type="int" value="20"/>
+                <Property name="document" type="javax.swing.text.Document" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="new FixedLengthDocument(30)" type="code"/>
+                </Property>
+                <Property name="rows" type="int" value="5"/>
+              </Properties>
+            </Component>
+          </SubComponents>
+        </Container>
+        <Component class="javax.swing.JButton" name="jbtnCancelar">
+          <Properties>
+            <Property name="mnemonic" type="int" value="110"/>
+            <Property name="text" type="java.lang.String" value="Cancelar"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnCancelarActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

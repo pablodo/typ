@@ -66,19 +66,22 @@ public class MailSender {
         }
     }
     public void send(String mailTo, String asunto, String mensaje){
+        if (mailTo == null || "".equals(mensaje.trim()))
+            return;
         mailsTo = new InternetAddress[1];
         try {
             mailsTo[0] = new InternetAddress(mailTo);
             send(asunto, mensaje);
         } catch (Exception ex) {
-            Logger.getLogger(MailSender.class.getName()).log(Level.SEVERE, null, ex);
+            String params = "\n" + mailTo + "\n" + asunto + "\n" + mensaje;
+            Logger.getLogger(MailSender.class.getName()).log(Level.SEVERE, ex.toString() + params);
         }
     }
     
     public void send(String asunto, String mensaje) throws Exception{
        	if (mensaje == null || "".equals(mensaje.trim())){
-		return;
-	} 
+            return;
+        } 
         try {
             MimeMessage msg = new MimeMessage(session);
             msg.setText(mensaje);

@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
-import sun.font.Font2D;
 
 /**
  *
