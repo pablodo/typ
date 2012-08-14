@@ -29,14 +29,16 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
     private ArrayList<Integer> ids;
     private Object[] headers = {"Fecha", 
 								"Importe",
+								"Importe con Descuentos",
                                 "A favor de",
 								"Cuenta",
 								"Comisión",
 								"Detalle"};
 	private String[] totalesHeaders = {"En Comercializadora",
-									   "En el Propietario",
 									   "No imputado",
+									   "Sin comisión",
 									   "Comisiones",
+									   "En el Propietario",
 									   "A Pagar",
 									   "A Cobrar",
 									   "Ganancia"};
@@ -86,7 +88,7 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
         jpnlMovimientos.setEnabled(false);
 
         jtblMovimientos.setModel(modelo);
-        jtblMovimientos.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+        jtblMovimientos.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_NEXT_COLUMN);
         jtblMovimientos.setGridColor(new java.awt.Color(204, 204, 204));
         jScrollPane1.setViewportView(jtblMovimientos);
 
@@ -128,7 +130,7 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 212, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
+                .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 92, Short.MAX_VALUE)
                 .add(12, 12, 12)
                 .add(jbtnSaldar)
                 .add(6, 6, 6))
@@ -196,7 +198,6 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
         try {
             java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
             pstm.setString(1, FechasFormatter.getFechaString(new GregorianCalendar()));
-            System.out.println(query);
             int result = pstm.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(CierreMovimientos.class.getName()).log(Level.SEVERE, null, ex);
@@ -218,8 +219,7 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
 			habilitarMovimientos(false);
 		}
 	}//GEN-LAST:event_jcbxPropietariosItemStateChanged
-
-    public void cargaTabla(int propID) {
+public void cargaTabla(int propID) {
         try {
 			String query = "SELECT * FROM Movimientos "+
 					"INNER JOIN Alquileres ON movAlqID = alqID "+
@@ -242,40 +242,58 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
 			Double dblComisiones = 0.0;
 			int alqIDAnt = 0;
             Double importeImputado = 0.0;
+            Double importeSinComision = 0.0;
+            Double dblSinComision = 0.0;
             while(rst.next()) {
 				//Ordenado por alquileres
 				int alqID = rst.getInt("alqID");
 				Double porcentajeComision = rst.getDouble("ufPrecio");
 				Double importe = rst.getDouble("movImporte"); 
+                Double importeConDescuentos = importe;
 				if (alqID != alqIDAnt){
 					alqIDAnt = alqID;
+					importeSinComision = rst.getDouble("alqImporteSinComision");
 					importeImputado = rst.getDouble("alqDifImputacion");
+                    dblSinComision += importeSinComision;
 					dblDiferenciaImputado += importeImputado;
 					String[] row = {"Alquiler " + String.valueOf(alqID),
 								    "Total: " + Funciones.formatNumber(rst.getDouble("alqTotal")),
 									"No imputado: " + Funciones.formatNumber(importeImputado),
+									"Sin comisión: " + Funciones.formatNumber(importeSinComision),
 								    "Comision(%): " + Funciones.formatNumber(porcentajeComision, "#0.00")
                                     };
 					modelo.addRow(row);
 					ids.add(0);
 				}
+                
                 //Saco la imputacion a los movimientos
                 if (importeImputado > 0){
-                    if (importe >= importeImputado){
-                        importe -= importeImputado;
+                    if (importeConDescuentos >= importeImputado){
+                        importeConDescuentos -= importeImputado;
                         importeImputado = 0.0;
                     }else{
-                        importe = 0.0;
-                        importeImputado -= importe;
+                        importeConDescuentos = 0.0;
+                        importeImputado -= importeConDescuentos;
+                    }
+                }
+                //Saco el importe sin comision
+                if (importeSinComision > 0){
+                    if (importeConDescuentos >= importeSinComision){
+                        importeConDescuentos -= importeSinComision;
+                        importeSinComision = 0.0;
+                    }else{
+                        importeConDescuentos = 0.0;
+                        importeSinComision -= importeConDescuentos;
                     }
                 }
 				//Movimientos
                 ids.add(rst.getInt("movID"));
 				int destino = rst.getInt("movDestino");
-                Double comision = importe / 100 * porcentajeComision;
+                Double comision = importeConDescuentos / 100 * porcentajeComision;
                 dblComisiones += comision;
                 Object [] fila = {FechasFormatter.getFechaFromMySQL(rst.getString("movFecha")),
 								  Funciones.formatNumber(importe),
+								  Funciones.formatNumber(importeConDescuentos),
                                   Movimientos.destinos[destino],
 								  rst.getString("propNCuenta"),
 								  Funciones.formatNumber(comision),
@@ -284,20 +302,21 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
 
 				//Acumulo totales
 				if (destino == 1)
-					dblComercializadora += importe;
+					dblComercializadora += importeConDescuentos;
 				if (destino == 2)
-					dblPropietario += importe;
+					dblPropietario += importeConDescuentos;
             }
 			//Totales
-			Double ganancia = dblComisiones + dblDiferenciaImputado;
+			Double ganancia = dblComisiones + dblDiferenciaImputado + dblSinComision;
 			Double aCobrar = dblComisiones - dblComercializadora;
 			if (aCobrar < 0) aCobrar = 0.0;
-			Double aPagar = dblComercializadora - ganancia;
+			Double aPagar = dblComercializadora - dblComisiones;
 			if (aPagar < 0) aPagar = 0.0;
 	 		Object[][] totales = {{Funciones.formatNumber(dblComercializadora),
-								   Funciones.formatNumber(dblPropietario),
 								   Funciones.formatNumber(dblDiferenciaImputado),
+								   Funciones.formatNumber(dblSinComision),
 								   Funciones.formatNumber(dblComisiones),
+								   Funciones.formatNumber(dblPropietario),
 								   Funciones.formatNumber(aPagar),
 								   Funciones.formatNumber(aCobrar),
 								   Funciones.formatNumber(ganancia)}};
@@ -314,8 +333,8 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
 		jtblTotales.setEnabled(option);
 		jbtnSaldar.setEnabled(option);
         if (! option){
-            jtblMovimientos.removeAll();
-            jtblTotales.removeAll();
+            jtblMovimientos.setModel(new DefaultTableModel());
+            jtblTotales.setModel(new DefaultTableModel());
         }
     }
     

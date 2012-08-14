@@ -40,6 +40,7 @@ CREATE TABLE IF NOT EXISTS `Alquileres` (
   `alqImporteMinReserva` decimal(10,2) NOT NULL,
   `alqImporteReserva` decimal(10,2) NOT NULL,
   `alqDifImputacion` decimal(10,2) NOT NULL,
+  `alqImporteSinComision` decimal(10,2) NOT NULL,
   `alqTotal` decimal(10,2) NOT NULL,
   `alqVencimiento` datetime NOT NULL,
   `alqFormaPagoOpe` int(11) NOT NULL,

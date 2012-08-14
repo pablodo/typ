@@ -4,6 +4,7 @@
  */
 package treintayplaya;
 
+import com.toedter.calendar.JDateChooser;
 import java.awt.Component;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
@@ -73,6 +74,17 @@ public class Funciones {
     public static boolean validaComboTabla(Component parentComponent, ComboTabla obj, String name){
         if (obj.getSelectedIndex() < 0 || obj.getSelectedId() <= 0){
             String msg = "Seleccione " + name + '.';
+            String msgTitle = "Error en " + name + '.';
+            JOptionPane.showMessageDialog(parentComponent, msg, msgTitle, JOptionPane.ERROR_MESSAGE);
+            obj.requestFocusInWindow();
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean validaDateChooser(Component parentComponent, JDateChooser obj, String name){
+        if (obj.getCalendar() == null){
+            String msg = "Elija " + name + '.';
             String msgTitle = "Error en " + name + '.';
             JOptionPane.showMessageDialog(parentComponent, msg, msgTitle, JOptionPane.ERROR_MESSAGE);
             obj.requestFocusInWindow();

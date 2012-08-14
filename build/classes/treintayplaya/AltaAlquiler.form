@@ -61,6 +61,7 @@
                                   <Component id="jlblImporte1" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="lblDifImputacion" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="jlblvencimiento" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jlblSinComision" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Component id="jScrollPane1" alignment="0" min="-2" pref="446" max="-2" attributes="0"/>
@@ -73,6 +74,7 @@
                           <Component id="jftfImporteReserva" alignment="0" max="32767" attributes="0"/>
                           <Component id="jftfDifImputacion" alignment="0" max="32767" attributes="0"/>
                           <Component id="jdcVencimiento" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jftfImporteSinComision" alignment="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" attributes="0">
@@ -184,6 +186,11 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jlblSinComision" alignment="3" min="-2" pref="19" max="-2" attributes="0"/>
+                          <Component id="jftfImporteSinComision" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jlblImporte2" alignment="3" min="-2" pref="19" max="-2" attributes="0"/>
                           <Component id="jftfImporteReserva" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -206,7 +213,7 @@
                       <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jScrollPane1" min="-2" pref="50" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="3" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -770,6 +777,25 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Contrato Propietario:"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jlblSinComision">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Sin Comisi&#xf3;n:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JFormattedTextField" name="jftfImporteSinComision">
+      <Properties>
+        <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
+          <Format format="#,##0.00" subtype="-1" type="0"/>
+        </Property>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="value" type="java.lang.Object" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="0" type="code"/>
+        </Property>
+      </Properties>
+      <Events>
+        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jftfImporteSinComisionFocusLost"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
