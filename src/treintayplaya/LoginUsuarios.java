@@ -62,6 +62,7 @@ public class LoginUsuarios extends javax.swing.JInternalFrame {
 
         jbtnRegistrar.setMnemonic('R');
         jbtnRegistrar.setText("Registrar");
+        jbtnRegistrar.setEnabled(AppPrincipal.isAdmin());
         jbtnRegistrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnRegistrarActionPerformed(evt);
@@ -111,7 +112,7 @@ public class LoginUsuarios extends javax.swing.JInternalFrame {
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jlblPass)
                     .add(jpfPass, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 23, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 26, Short.MAX_VALUE)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jbtnLogin)
                     .add(jbtnRegistrar)

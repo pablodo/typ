@@ -124,6 +124,9 @@
                     <Property name="text" type="java.lang.String" value="Usuarios Web"/>
                     <Property name="actionCommand" type="java.lang.String" value="UsuariosWeb"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jmiUsrWebActionPerformed"/>
+                  </Events>
                 </MenuItem>
                 <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator2">
                 </MenuItem>

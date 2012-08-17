@@ -10,15 +10,39 @@
  */
 package treintayplaya;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author sergio
  */
 public class NuevoUsuario extends javax.swing.JInternalFrame {
+    private int id;
+    private boolean actualizar;
+    private java.sql.Connection cnx;
+    private ConsultaUsuarios consultaUsuarios = null;
 
     /** Creates new form NuevoUsuario */
-    public NuevoUsuario() {
+    public NuevoUsuario(ConsultaUsuarios consultaUsuarios) {
+        cnx = Conexion.getInstance().cnx;
+        this.id = 0;
+        this.consultaUsuarios = consultaUsuarios;
+        if (consultaUsuarios != null){
+            int row = consultaUsuarios.jtblUsuarios.getSelectedRow();
+            if (consultaUsuarios.ids.size() >= row && row > 0)
+                this.id = consultaUsuarios.ids.get(consultaUsuarios.jtblUsuarios.getSelectedRow());
+        }
+        actualizar = id > 0;
         initComponents();
+        if (actualizar){
+            cargarUsuario();
+        }
+    }
+
+    public NuevoUsuario() {
+        this(null);
     }
 
     /** This method is called from within the constructor to
@@ -38,6 +62,7 @@ public class NuevoUsuario extends javax.swing.JInternalFrame {
         jpfValPass = new javax.swing.JPasswordField();
         jbtnCancelar = new javax.swing.JButton();
         jbtnAceptar = new javax.swing.JButton();
+        jchkAdmin = new javax.swing.JCheckBox();
 
         setTitle("Registro de Usuario Nuevo");
 
@@ -61,6 +86,10 @@ public class NuevoUsuario extends javax.swing.JInternalFrame {
             }
         });
 
+        jchkAdmin.setText("Administrador?");
+        jchkAdmin.setEnabled(AppPrincipal.isAdmin());
+        jchkAdmin.setVisible(AppPrincipal.isAdmin());
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -79,10 +108,13 @@ public class NuevoUsuario extends javax.swing.JInternalFrame {
                             .add(jtxfUsuario, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
                             .add(jpfPass, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)))
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                        .add(jbtnCancelar)
-                        .add(18, 18, 18)
+                        .add(0, 0, Short.MAX_VALUE)
                         .add(jbtnAceptar)
-                        .add(11, 11, 11)))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jbtnCancelar))
+                    .add(layout.createSequentialGroup()
+                        .add(jchkAdmin)
+                        .add(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -92,19 +124,21 @@ public class NuevoUsuario extends javax.swing.JInternalFrame {
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jlblUsuario)
                     .add(jtxfUsuario, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(18, 18, 18)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jlblPass)
                     .add(jpfPass, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(18, 18, 18)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jlblValPass)
                     .add(jpfValPass, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(18, 18, 18)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(jchkAdmin)
+                .add(6, 6, 6)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jbtnCancelar)
                     .add(jbtnAceptar))
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         pack();
@@ -120,7 +154,6 @@ public class NuevoUsuario extends javax.swing.JInternalFrame {
         valEmail = valPass = false;
 
         // Valida Dirección de E-Mail
-
         if(!validaEmail(jtxfUsuario.getText())) {
             javax.swing.JOptionPane.showMessageDialog(this,
                                                       "Ingresó una Dirección de Correo Electrónico NO Válido.",
@@ -133,9 +166,7 @@ public class NuevoUsuario extends javax.swing.JInternalFrame {
             valEmail = true;
         }
 
-
         // Valida Pass
-
         if(!validaPass(new String(jpfPass.getPassword()), new String(jpfValPass.getPassword()))) {
             javax.swing.JOptionPane.showMessageDialog(this,
                                                       "Las Contraseñas NO Coinciden.",
@@ -153,22 +184,32 @@ public class NuevoUsuario extends javax.swing.JInternalFrame {
             try {
                 java.sql.Connection cnx = Conexion.getInstance().getConnection();
 
-                java.sql.PreparedStatement pstm = cnx.prepareStatement("insert into UsuariosWeb (usrEmail, usrPass, usrNivel, usrActivo, usrPropID) values (?,AES_ENCRYPT(?, 'typ2012'),?,?,0)") ;
+                String query = "insert into UsuariosWeb (usrEmail, usrPass, usrNivel, usrActivo, usrPropID) values (?,AES_ENCRYPT(?, 'typ2012'),?,?,0)";
+                String mensaje = "El usuario se registró correctamente.";
+                if (actualizar){
+                    query = "UPDATE UsuariosWeb SET usrEmail=?, usrPass=AES_ENCRYPT(?,'typ2012'), usrNivel=?, usrActivo=1 WHERE usrID=?";
+                    mensaje = "El usuario se actualizó correctamente.";
+                }
+                java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
 
                 pstm.setString(1, jtxfUsuario.getText());
-                pstm.setString(2, String.valueOf(jpfPass.getPassword())/*toString()*/);
-                pstm.setInt(3, 1);
-                pstm.setInt(4, 1);
+                pstm.setString(2, String.valueOf(jpfPass.getPassword()));
+                pstm.setInt(3, jchkAdmin.isSelected()?1:2);
+                if (! actualizar)
+                    pstm.setInt(4, 1);
+                else
+                    pstm.setInt(4, id);
 
                 int resultado = pstm.executeUpdate();
 
-                javax.swing.JOptionPane.showMessageDialog(this, "El Usuario Se Registró Correctamente.", "Registro", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                javax.swing.JOptionPane.showMessageDialog(this, mensaje, "Registro", javax.swing.JOptionPane.INFORMATION_MESSAGE);
 
-                cnx.close();
+                pstm.close();
             } catch (java.sql.SQLException sqle) {
                 javax.swing.JOptionPane.showMessageDialog(this, sqle.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
             }
-
+            if (consultaUsuarios != null)
+                consultaUsuarios.cargaTabla();
             dispose();
         }
     }//GEN-LAST:event_jbtnAceptarActionPerformed
@@ -197,18 +238,18 @@ public class NuevoUsuario extends javax.swing.JInternalFrame {
     }
     
     private boolean validaPass(String pass, String passVal) {
-        boolean resultado = false;
-        
-        if(pass.equals(passVal))
-            resultado = true;
-        
-        return resultado;
+        if(pass.trim().matches(""))
+            return false;
+        if(! pass.matches(passVal))
+            return false;
+        return true;
     }
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jbtnAceptar;
     private javax.swing.JButton jbtnCancelar;
+    private javax.swing.JCheckBox jchkAdmin;
     private javax.swing.JLabel jlblPass;
     private javax.swing.JLabel jlblUsuario;
     private javax.swing.JLabel jlblValPass;
@@ -216,4 +257,20 @@ public class NuevoUsuario extends javax.swing.JInternalFrame {
     private javax.swing.JPasswordField jpfValPass;
     private javax.swing.JTextField jtxfUsuario;
     // End of variables declaration//GEN-END:variables
+
+    private void cargarUsuario() {
+        String query = "SELECT usrEmail, usrNivel FROM UsuariosWeb WHERE usrID=?";
+        try {
+            java.sql.PreparedStatement pstm =  cnx.prepareStatement(query);
+            pstm.setInt(1, id);
+            java.sql.ResultSet rst = pstm.executeQuery();
+            rst.next();
+            jtxfUsuario.setText(rst.getString("usrEmail"));
+            jchkAdmin.setSelected(rst.getInt("usrNivel")==1);
+            rst.close();
+            pstm.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(NuevoUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

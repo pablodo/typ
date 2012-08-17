@@ -206,6 +206,11 @@ public class AppPrincipal extends javax.swing.JFrame {
         jmiUsrWeb.setMnemonic('U');
         jmiUsrWeb.setText("Usuarios Web");
         jmiUsrWeb.setActionCommand("UsuariosWeb");
+        jmiUsrWeb.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiUsrWebActionPerformed(evt);
+            }
+        });
         consultasMenu.add(jmiUsrWeb);
         consultasMenu.add(jSeparator2);
 
@@ -518,10 +523,18 @@ public class AppPrincipal extends javax.swing.JFrame {
         exit();
     }//GEN-LAST:event_formWindowClosed
 
-    private boolean isAdmin(){
+    private void jmiUsrWebActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiUsrWebActionPerformed
+		if (isAdmin()){
+			ConsultaUsuarios usuarios = new ConsultaUsuarios();
+			desktopPane.add(usuarios);
+			usuarios.show();
+		}
+    }//GEN-LAST:event_jmiUsrWebActionPerformed
+
+    public static boolean isAdmin(){
         return DatosGlobales.usrNivel == 1 && DatosGlobales.usrEstado == 1 && DatosGlobales.appSesion;
     }
-    private boolean isUsuario(){
+    public static boolean isUsuario(){
         return DatosGlobales.usrNivel == 2 && DatosGlobales.usrEstado == 1 && DatosGlobales.appSesion;
     }
     /**

@@ -63,7 +63,7 @@
                   <Component id="jlblPass" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jpfPass" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="23" max="32767" attributes="0"/>
+              <EmptySpace pref="26" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jbtnLogin" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jbtnRegistrar" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -108,6 +108,9 @@
       <Properties>
         <Property name="mnemonic" type="int" value="82"/>
         <Property name="text" type="java.lang.String" value="Registrar"/>
+        <Property name="enabled" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="AppPrincipal.isAdmin()" type="code"/>
+        </Property>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnRegistrarActionPerformed"/>
