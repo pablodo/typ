@@ -41,7 +41,7 @@
     | | Dado una fecha de ingreso, muestra todos los inquilinos que no pagaron la reserva provisoria
     | | 
 2   | | Listado de Inquilinos entrantes a una fecha:
-    | | Lista todos los inquilinos que tienen alquiler en una fecha mostrando: Apellido, Nombre, Código(Adultos, Menores, Bebes, Desayunos), Observaciones
+    | | Lista todos los inquilinos que tienen alquiler en una fecha mostrando: UF, Apellido, Nombre, Código(Adultos, Menores, Bebes, Desayunos), Observaciones
     | | 
     | | USUARIOS:
     | | Administrador: Todo

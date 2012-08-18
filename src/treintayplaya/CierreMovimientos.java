@@ -302,15 +302,15 @@ public void cargaTabla(int propID) {
 
 				//Acumulo totales
 				if (destino == 1)
-					dblComercializadora += importeConDescuentos;
+					dblComercializadora += importe;
 				if (destino == 2)
-					dblPropietario += importeConDescuentos;
+					dblPropietario += importe;
             }
 			//Totales
-			Double ganancia = dblComisiones + dblDiferenciaImputado + dblSinComision;
+			Double ganancia = dblComisiones + dblDiferenciaImputado;
 			Double aCobrar = dblComisiones - dblComercializadora;
 			if (aCobrar < 0) aCobrar = 0.0;
-			Double aPagar = dblComercializadora - dblComisiones;
+			Double aPagar = dblComercializadora - dblComisiones - dblDiferenciaImputado;
 			if (aPagar < 0) aPagar = 0.0;
 	 		Object[][] totales = {{Funciones.formatNumber(dblComercializadora),
 								   Funciones.formatNumber(dblDiferenciaImputado),
