@@ -55,15 +55,10 @@ public class AppPrincipal extends javax.swing.JFrame {
         jmiPropietarios = new javax.swing.JMenuItem();
         jmiUF = new javax.swing.JMenuItem();
         jmiUsrWeb = new javax.swing.JMenuItem();
-        jSeparator2 = new javax.swing.JPopupMenu.Separator();
-        jmiReservas = new javax.swing.JMenuItem();
-        jSeparator3 = new javax.swing.JPopupMenu.Separator();
-        jmiResumenes = new javax.swing.JMenuItem();
         mantenimientoMenu = new javax.swing.JMenu();
         jmiBancos = new javax.swing.JMenuItem();
         jmiTCuentas = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jmiTarifas = new javax.swing.JMenuItem();
+        jmiFormasPago = new javax.swing.JMenuItem();
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
         jmiTiposUF = new javax.swing.JMenuItem();
         jmiContratos = new javax.swing.JMenuItem();
@@ -212,21 +207,6 @@ public class AppPrincipal extends javax.swing.JFrame {
             }
         });
         consultasMenu.add(jmiUsrWeb);
-        consultasMenu.add(jSeparator2);
-
-        jmiReservas.setMnemonic('A');
-        jmiReservas.setText("Alquileres");
-        jmiReservas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jmiReservasActionPerformed(evt);
-            }
-        });
-        consultasMenu.add(jmiReservas);
-        consultasMenu.add(jSeparator3);
-
-        jmiResumenes.setMnemonic('R');
-        jmiResumenes.setText("Resumenes");
-        consultasMenu.add(jmiResumenes);
 
         admMenu.add(consultasMenu);
 
@@ -252,19 +232,14 @@ public class AppPrincipal extends javax.swing.JFrame {
         });
         mantenimientoMenu.add(jmiTCuentas);
 
-        jMenuItem2.setMnemonic('F');
-        jMenuItem2.setText("Formas de Pago");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        jmiFormasPago.setMnemonic('F');
+        jmiFormasPago.setText("Formas de Pago");
+        jmiFormasPago.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                jmiFormasPagoActionPerformed(evt);
             }
         });
-        mantenimientoMenu.add(jMenuItem2);
-
-        jmiTarifas.setMnemonic('T');
-        jmiTarifas.setText("Tarifas");
-        jmiTarifas.setEnabled(false);
-        mantenimientoMenu.add(jmiTarifas);
+        mantenimientoMenu.add(jmiFormasPago);
         mantenimientoMenu.add(jSeparator4);
 
         jmiTiposUF.setMnemonic('U');
@@ -439,14 +414,6 @@ public class AppPrincipal extends javax.swing.JFrame {
         jlblAppUsuario.setText("Sesión NO Iniciada.");
     }//GEN-LAST:event_logoutMenuItemActionPerformed
 
-    private void jmiReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiReservasActionPerformed
-        if(isAdmin()) {
-            AltaAlquiler aAlquiler = new AltaAlquiler();
-            desktopPane.add(aAlquiler);
-            aAlquiler.show();
-        }
-    }//GEN-LAST:event_jmiReservasActionPerformed
-
     private void jmiBancosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiBancosActionPerformed
         if(isAdmin()) {
             MantenimientoBancos mBancos = new MantenimientoBancos();
@@ -487,13 +454,13 @@ public class AppPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+    private void jmiFormasPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiFormasPagoActionPerformed
         if(isAdmin()) {
             MantenimientoFormasPago FormasPago = new MantenimientoFormasPago();
             desktopPane.add(FormasPago);
             FormasPago.show();
         }
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    }//GEN-LAST:event_jmiFormasPagoActionPerformed
 
 	private void tagsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tagsMenuItemActionPerformed
 		if (isAdmin()){
@@ -585,11 +552,8 @@ public class AppPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
-    private javax.swing.JPopupMenu.Separator jSeparator2;
-    private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
     public static javax.swing.JLabel jlblAppUsuario;
     private javax.swing.JMenuItem jmiABMLMovimientos;
@@ -597,12 +561,10 @@ public class AppPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jmiCerrarMovimientos;
     private javax.swing.JMenuItem jmiClientes;
     private javax.swing.JMenuItem jmiContratos;
+    private javax.swing.JMenuItem jmiFormasPago;
     private javax.swing.JMenuItem jmiPropResumenes;
     private javax.swing.JMenuItem jmiPropietarios;
-    private javax.swing.JMenuItem jmiReservas;
-    private javax.swing.JMenuItem jmiResumenes;
     private javax.swing.JMenuItem jmiTCuentas;
-    private javax.swing.JMenuItem jmiTarifas;
     private javax.swing.JMenuItem jmiTiposUF;
     private javax.swing.JMenuItem jmiUF;
     private javax.swing.JMenuItem jmiUsrWeb;
