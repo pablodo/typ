@@ -40,7 +40,7 @@ public class Configuracion {
     }
     
     public static void cargarDatosDB(){
-        baseLocal = false;
+        baseLocal = true;
         baseURL = "dtc.hypersys-hosting2.com.ar/30yplaya_db";
         baseUsr = "db_30yplaya";
         basePass = "30ypl4y42012";

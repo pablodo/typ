@@ -564,42 +564,43 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
 
     
     private void jbtnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnAceptarActionPerformed
-        if (validaFormulario()){
-			Double reservaCobrada = alquiler.reservaCobrada;
-            boolean insert1 = false;
-            try {
-                cnx.setAutoCommit(false);
-                insert1 = insertAlquiler();
-                if (insert1){
-                    if (alquiler.id == 0){
-                        alquiler = new Alquiler(getUltimoAlquiler());
-                    }else{
-                        alquiler = new Alquiler(alquiler.id);
-                        deleteDetalleAlquiler(alquiler.id);
-                    }
-                    insertDetalleAlquiler(alquiler.id);
-                }
-				if (operacion == Alquiler.CONFIRMAR || operacion == Alquiler.CANCELAR)
-					generarMovimiento(reservaCobrada);
-				cnx.commit();
-                if (((ComboTabla)jcbxContratoCli).getSelectedId() > 0 && operacion != Alquiler.MODIFICAR)
-                    enviarContratos();
-				
-            } catch(java.sql.SQLException sqle) {
-                sqle.printStackTrace();
-                try {
-                    cnx.rollback();
-                } catch (SQLException ex) {}
-            } finally {
-                try {
-                    cnx.setAutoCommit(true);
-                } catch (SQLException ex) {}
-            }
+        if (! validaFormulario())
+            return;
+
+        Double reservaCobrada = alquiler.reservaCobrada;
+        boolean insert1 = false;
+        try {
+            cnx.setAutoCommit(false);
+            insert1 = insertAlquiler();
             if (insert1){
-                if (tabla != null)
-                    tabla.updateTable();
-                dispose();
+                if (alquiler.id == 0){
+                    alquiler = new Alquiler(getUltimoAlquiler());
+                }else{
+                    alquiler = new Alquiler(alquiler.id);
+                    deleteDetalleAlquiler(alquiler.id);
+                }
+                insertDetalleAlquiler(alquiler.id);
             }
+            if (operacion == Alquiler.CONFIRMAR || operacion == Alquiler.CANCELAR)
+                generarMovimiento(reservaCobrada);
+            cnx.commit();
+            if (((ComboTabla)jcbxContratoCli).getSelectedId() > 0 && operacion != Alquiler.MODIFICAR)
+                enviarContratos();
+            
+        } catch(java.sql.SQLException sqle) {
+            sqle.printStackTrace();
+            try {
+                cnx.rollback();
+            } catch (SQLException ex) {}
+        } finally {
+            try {
+                cnx.setAutoCommit(true);
+            } catch (SQLException ex) {}
+        }
+        if (insert1){
+            if (tabla != null)
+                tabla.updateTable();
+            dispose();
         }
     }//GEN-LAST:event_jbtnAceptarActionPerformed
 
@@ -937,7 +938,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
     }
 
     void cargarInquilinos() {
-		Funciones.cargarComboTablaApellidoNombre((ComboTabla)jcbxCliente, "select cliID, cliApellido, cliNombre from Clientes order by cliApellido", "cliApellido", "cliNombre", "cliID");
+		Funciones.cargarComboTablaApellidoNombre((ComboTabla)jcbxCliente, "SELECT cliID, cliApellido, cliNombre FROM Clientes ORDER BY cliApellido", "cliApellido", "cliNombre", "cliID");
     }
 
     private void calcularSaldo() {
@@ -986,24 +987,24 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
     private void enviarContratos() {
         if (! AppPrincipal.configuracion.mailingActivado)
             return;
-        if (jcbxContratoCli.isEnabled()){
-            Integer contratoID = ((ComboTabla)jcbxContratoCli).getSelectedId();
-            try{
-                String contrato = ContratosFactory.createContrato(contratoID, alquiler);
-                AppPrincipal.mailSender.send(alquiler.email, "", contrato);
-            }catch(Exception e){
-                JOptionPane.showMessageDialog(this, "Ocurrió el siguiente error al enviar el mail al inquilino: " + e.getMessage(), "Error en el envío de mail", JOptionPane.ERROR_MESSAGE);
-            }
+
+        enviarContrato((ComboTabla)jcbxContratoCli, alquiler.email, "cliente");
+        enviarContrato((ComboTabla)jcbxContratoProp, alquiler.email_propietario, "propietario");
+    }
+    
+    private void enviarContrato(ComboTabla combo, String email, String destino){
+        if (! combo.isEnabled())
+            return;
+
+        Integer contratoID = combo.getSelectedId();
+        try{
+            String contrato = ContratosFactory.createContrato(contratoID, alquiler);
+            AppPrincipal.mailSender.send(email, "", contrato);
+        }catch(Exception e){
+            String msj = "Ocurrió un error al enviar el mail al" + destino + ": " + e.getMessage();
+            String titulo = "Error en el envío de mail al " + destino;
+            JOptionPane.showMessageDialog(this, msj, titulo, JOptionPane.ERROR_MESSAGE);
         }
-        if (jcbxContratoProp.isEnabled()){
-            Integer contratoID = ((ComboTabla)jcbxContratoProp).getSelectedId();
-            try{
-                String contrato = ContratosFactory.createContrato(contratoID, alquiler);
-                AppPrincipal.mailSender.send(alquiler.email_propietario, "", contrato);
-            }catch(Exception e){
-                JOptionPane.showMessageDialog(this, "Ocurrió el siguiente error al enviar el mail al propietario: " + e.getMessage(), "Error en el envío de mail", JOptionPane.ERROR_MESSAGE);
-            }
-        }        
     }
 
     private void cargarCuentas(boolean cuentaComercializadora, ComboTabla combo) {
