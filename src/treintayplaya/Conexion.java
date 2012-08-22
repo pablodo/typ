@@ -20,21 +20,22 @@ public class Conexion {
     }
     
     private void updateConnection(){
-        try {
-            Class.forName("org.gjt.mm.mysql.Driver");
-            
-            Configuracion.cargarDatosDB();
-            String baseURL = Configuracion.baseURL;
-            String baseUsr = Configuracion.baseUsr;
-            String basePass = Configuracion.basePass;
-            cnx = java.sql.DriverManager.getConnection("jdbc:mysql://" + baseURL, baseUsr, basePass);
-        } catch (SQLException ex) {
-            
-        } catch (ClassNotFoundException ex) {
-            System.out.println("Error en la conexion");
-        }
+		String baseURL = Configuracion.getInstance().baseURL;
+		String baseUsr = Configuracion.getInstance().baseUsr;
+		String basePass = Configuracion.getInstance().basePass;
+		cnx = getNewConnection(baseURL, baseUsr, basePass);
+	}
 
-    }
+	public static Connection getNewConnection(String baseURL, String baseUsr, String basePass){
+		Connection conn = null;
+        try {
+			Class.forName("org.gjt.mm.mysql.Driver"); 
+			conn = java.sql.DriverManager.getConnection("jdbc:mysql://" + baseURL, baseUsr, basePass);
+        } catch (Exception ex) {
+            System.out.println("Error al conectarse con la base de datos: " + ex.getMessage());
+        }
+		return conn;
+	}
     
     public static synchronized Conexion getInstance() {
         if (instance == null) {

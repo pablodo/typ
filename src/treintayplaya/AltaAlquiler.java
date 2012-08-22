@@ -985,7 +985,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
     }
 
     private void enviarContratos() {
-        if (! AppPrincipal.configuracion.mailingActivado)
+        if (! Configuracion.getInstance().mailingActivado)
             return;
 
         enviarContrato((ComboTabla)jcbxContratoCli, alquiler.email, "cliente");

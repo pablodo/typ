@@ -10,6 +10,8 @@
  */
 package treintayplaya;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,10 +21,8 @@ import java.util.logging.Logger;
  * @author sergio
  */
 public class AppPrincipal extends javax.swing.JFrame {
-    
-    public final static Configuracion configuracion = new Configuracion();
-    public final static MailSender mailSender = new MailSender(configuracion.email, configuracion.emailPassword);
-    
+    public final static MailSender mailSender = new MailSender(Configuracion.getInstance().email, Configuracion.getInstance().emailPassword);
+
     /** Creates new form AppPrincipal */
     public AppPrincipal() {
         initComponents();
@@ -94,20 +94,17 @@ public class AppPrincipal extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(879, Short.MAX_VALUE)
+                .addContainerGap(833, Short.MAX_VALUE)
                 .add(jlblAppUsuario)
                 .add(22, 22, 22))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(24, Short.MAX_VALUE)
                 .add(jlblAppUsuario)
                 .addContainerGap())
         );
-
-        jPanel1.setBounds(0, 650, 1030, 30);
-        desktopPane.add(jPanel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         fileMenu.setMnemonic('A');
         fileMenu.setText("Archivo");
@@ -346,11 +343,17 @@ public class AppPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(desktopPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1024, Short.MAX_VALUE)
+            .add(layout.createSequentialGroup()
+                .add(40, 40, 40)
+                .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .add(desktopPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(desktopPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 680, Short.MAX_VALUE)
+            .add(layout.createSequentialGroup()
+                .add(desktopPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 684, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
