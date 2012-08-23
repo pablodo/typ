@@ -1001,7 +1001,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
             String contrato = ContratosFactory.createContrato(contratoID, alquiler);
             AppPrincipal.mailSender.send(email, "", contrato);
         }catch(Exception e){
-            String msj = "Ocurrió un error al enviar el mail al" + destino + ": " + e.getMessage();
+            String msj = "Ocurrió un error al enviar el mail al " + destino + ":\n\n" + e.getMessage();
             String titulo = "Error en el envío de mail al " + destino;
             JOptionPane.showMessageDialog(this, msj, titulo, JOptionPane.ERROR_MESSAGE);
         }

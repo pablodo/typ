@@ -7,6 +7,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
 
 /*
  * To change this template, choose Tools | Templates
@@ -28,17 +29,20 @@ public class Tags extends javax.swing.JInternalFrame {
 		lista.setListData(tags_alquiler.toArray());
 	}
 
-	public static String replaceTags(String texto, Object objeto) {
+	public static String replaceTags(String texto, Object objeto) throws Exception {
 		return replaceTags(texto, objeto, getTags(objeto.getClass()));
 	}
 
-	public static String replaceTags(String texto, Object objeto, ArrayList<String> tags) {
-		for (int i = 0; i < tags.size(); i++) {
-			String tag = tags.get(i);
-			Object rawValue = getValueByTag(objeto, tag);
-			if (rawValue != null) {
-				String value = String.valueOf(rawValue);
-				texto = texto.replaceAll(tag, value);
+	public static String replaceTags(String texto, Object objeto, ArrayList<String> tags) throws Exception {
+		for (String tag: tags) {
+			try{
+				Object rawValue = getValueByTag(objeto, tag);
+				if (rawValue != null) {
+					String value = Matcher.quoteReplacement(String.valueOf(rawValue));
+					texto = texto.replaceAll(tag, value);
+				}
+			}catch(Exception e){
+				throw new Exception("Problem with tag " + tag + "\n" + e.getMessage());
 			}
 		}
 		return texto;
@@ -57,7 +61,7 @@ public class Tags extends javax.swing.JInternalFrame {
 	}
 
 	public static Object getValueByTag(Object objeto, String tag) {
-	Object value = new Object();
+		Object value = new Object();
 		tag = tag.toLowerCase().substring(1, tag.length() - 1); //desde el 1 hasta -1 para excluir los < >
 		try {
 			value = objeto.getClass().getDeclaredField(tag).get(objeto);
@@ -95,14 +99,14 @@ public class Tags extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 469, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 635, Short.MAX_VALUE)
                 .addContainerGap())
         );
 

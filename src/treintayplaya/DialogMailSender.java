@@ -5,6 +5,9 @@
 package treintayplaya;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -118,9 +121,13 @@ public class DialogMailSender extends javax.swing.JDialog {
     private void enviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enviarActionPerformed
         for (Alquiler alquiler : alquileres){
             if (alquiler != null){
-                String asn = Tags.replaceTags(asunto.getText(), alquiler, Tags.tags_alquiler);
-                String msj = Tags.replaceTags(mensaje.getText(),alquiler, Tags.tags_alquiler);
-                AppPrincipal.mailSender.send(alquiler.email, asn, msj);
+				try {
+					String asn = Tags.replaceTags(asunto.getText(), alquiler, Tags.tags_alquiler);
+					String msj = Tags.replaceTags(mensaje.getText(),alquiler, Tags.tags_alquiler);
+					AppPrincipal.mailSender.send(alquiler.email, asn, msj);
+				} catch (Exception ex) {
+					Logger.getLogger(DialogMailSender.class.getName()).log(Level.SEVERE, null, ex);
+				}
             }
         }
         dispose();

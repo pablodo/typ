@@ -10,8 +10,6 @@
  */
 package treintayplaya;
 
-import java.awt.Color;
-import java.awt.Graphics;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;

@@ -33,6 +33,7 @@ public class Alquiler{
     @Tag String dni = "";
     @Tag String fecha_in = "";
     @Tag String fecha_out = "";
+    @Tag String fecha_vencimiento = "";
     @Tag String uf = "";
     @Tag String email = "";
     @Tag String email_propietario = "";
@@ -40,6 +41,8 @@ public class Alquiler{
     @Tag String cuenta_imputada= "";
     @Tag String tipo_cuenta= "";
     @Tag String tipo_cuenta_imputada = "";
+    @Tag String cbu= "";
+    @Tag String cbu_imputado= "";
     @Tag Integer cantidad_personas = 0;
     @Tag Integer desayunos = 0;
     @Tag Integer desayunos_imputados = 0;
@@ -85,7 +88,9 @@ public class Alquiler{
                            "INNER JOIN UnidadesFuncionales ON alqUF = ufID " + 
                            "INNER JOIN Clientes ON alqCliente = cliID " +
                            "LEFT JOIN Propietarios as p1 ON p1.propID = alqCuentaOpePropID " +
+                           "LEFT JOIN TCuentas as t1 ON p1.propTCuenta = t1.tcID " +
                            "LEFT JOIN Propietarios as p2 ON p2.propID = alqCuentaImpPropID " +
+                           "LEFT JOIN TCuentas as t2 ON p2.propTCuenta = t2.tcID " +
                            "WHERE alqID = ?";
             java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
             pstm.setInt(1, id);
@@ -106,14 +111,15 @@ public class Alquiler{
             tipo = rst.getInt("alqEstado");
             fecha_in = FechasFormatter.getFechaFromMySQL(rst.getString("alqFIN"));
             fecha_out = FechasFormatter.getFechaFromMySQL(rst.getString("alqFOUT"));
+            fecha_vencimiento = FechasFormatter.getFechaFromMySQL(rst.getString("alqVencimiento"));
             uf = rst.getString("ufNombre");
             email = rst.getString("cliEmail");
-            email_propietario = rst.getString("propEmail");
+            email_propietario = rst.getString("p2.propEmail");
             reserva_cobrada = Funciones.formatNumber(reservaCobrada);
             reserva_minima = Funciones.formatNumber(reservaMinima);
             total = Funciones.formatNumber(dblTotal);
             total_imputado = Funciones.formatNumber(dblTotalImputado);
-            saldo_pendiente = Funciones.formatNumber(dblSaldoPendienteImputado);
+            saldo_pendiente = Funciones.formatNumber(dblSaldoPendiente);
             saldo_pendiente_imputado = Funciones.formatNumber(dblSaldoPendienteImputado);
             desayunos = rst.getInt("alqDesayunos");
             desayunos_imputados = rst.getInt("alqDesayunosImp");
@@ -122,9 +128,11 @@ public class Alquiler{
             bebes = rst.getInt("alqOcupantesB");
             cantidad_personas = adultos + menores + bebes;
 			cuenta = rst.getString("p1.propNCuenta");
-			tipo_cuenta = rst.getString("p1.propTCuenta");
+			cbu = rst.getString("p1.propCBU");
+			tipo_cuenta = rst.getString("t1.tcNombre");
 			cuenta_imputada = rst.getString("p2.propNCuenta");
-			tipo_cuenta_imputada = rst.getString("p2.propTCuenta");
+			cbu_imputado = rst.getString("p2.propCBU");
+			tipo_cuenta_imputada = rst.getString("t2.tcNombre");
             
             limpiar();
             rst.close();

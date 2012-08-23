@@ -56,8 +56,18 @@ public class Configuracion {
     }
 
 	public static synchronized Configuracion getInstance(){
-		if (instance == null)
+		if (instance == null){
 			instance = new Configuracion();
+			Logger.getLogger(Configuracion.class.getName()).log(Level.INFO, instance.toString());
+		}
 		return instance;
+	}
+
+	@Override
+	public String toString(){
+		return "\nbaseURL: " + baseURL + "\n" +
+			     "baseUsr: " + baseUsr + "\n" +
+			     "email:   " + email   + "\n" +
+			     "mail:    " + String.valueOf(mailingActivado) + "\n";
 	}
 }
