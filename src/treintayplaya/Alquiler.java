@@ -155,4 +155,24 @@ public class Alquiler{
             }
         }
     }
+
+	public boolean borrar() {
+		if (id < 1) return false;
+        try{
+            java.sql.Connection cnx = Conexion.getInstance().getConnection();
+            String query = "DELETE Alquileres, DetAlquileres, Movimientos "+
+					       "FROM Alquileres "+
+						   "INNER JOIN DetAlquileres ON alqID = dalqAlq "+
+						   "INNER JOIN Movimientos ON alqID = movAlqID "+
+					       "WHERE alqID = ?";
+            java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
+            pstm.setInt(1, id);
+            
+            int result = pstm.executeUpdate();
+            pstm.close();
+            return true;
+        }catch(SQLException sqle){
+            return false;
+        }
+	}
 }

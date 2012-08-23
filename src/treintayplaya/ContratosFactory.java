@@ -36,7 +36,7 @@ public class ContratosFactory {
             rst.close();
             pstm.close();
         } catch (SQLException ex) {
-            Logger.getLogger(ContratosFactory.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ContratosFactory.class.getName()).log(Level.SEVERE, null, "ID del contrato: " + String.valueOf(contratoID) + "\n" + ex);
         }
         return contrato;
     }

@@ -126,6 +126,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         jlblContratoProp = new javax.swing.JLabel();
         jlblSinComision = new javax.swing.JLabel();
         jftfImporteSinComision = new javax.swing.JFormattedTextField();
+        jchkEnviarMails = new javax.swing.JCheckBox();
 
         setClosable(true);
         setMaximizable(true);
@@ -399,6 +400,9 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
             }
         });
 
+        jchkEnviarMails.setSelected(operacion != Alquiler.MODIFICAR);
+        jchkEnviarMails.setText("Enviar mails?");
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -434,14 +438,20 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
                                     .add(jlblSinComision)))
                             .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 446, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                             .add(jLabel3))
-                        .add(12, 12, 12)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(jlblSaldo)
-                            .add(jftfTotal)
-                            .add(jftfImporteReserva)
-                            .add(jftfDifImputacion)
-                            .add(jdcVencimiento, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .add(jftfImporteSinComision)))
+                            .add(layout.createSequentialGroup()
+                                .add(12, 12, 12)
+                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(jlblSaldo)
+                                    .add(jftfTotal)
+                                    .add(jftfImporteReserva)
+                                    .add(jftfDifImputacion)
+                                    .add(jdcVencimiento, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .add(jftfImporteSinComision)))
+                            .add(layout.createSequentialGroup()
+                                .add(80, 80, 80)
+                                .add(jchkEnviarMails)
+                                .add(0, 0, Short.MAX_VALUE))))
                     .add(layout.createSequentialGroup()
                         .add(12, 12, 12)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -539,6 +549,8 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                         .add(jlblSaldo)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .add(jchkEnviarMails)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                             .add(jbtnCancelar)
                             .add(jbtnAceptar)))
@@ -584,9 +596,9 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
             if (operacion == Alquiler.CONFIRMAR || operacion == Alquiler.CANCELAR)
                 generarMovimiento(reservaCobrada);
             cnx.commit();
-            if (((ComboTabla)jcbxContratoCli).getSelectedId() > 0 && operacion != Alquiler.MODIFICAR)
+
+            if (jchkEnviarMails.isSelected())
                 enviarContratos();
-            
         } catch(java.sql.SQLException sqle) {
             sqle.printStackTrace();
             try {
@@ -712,6 +724,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox jcbxFormaPagoOperacion;
     private javax.swing.JComboBox jcbxMenores;
     private javax.swing.JComboBox jcbxUF;
+    private javax.swing.JCheckBox jchkEnviarMails;
     private com.toedter.calendar.JDateChooser jdcFIN;
     private com.toedter.calendar.JDateChooser jdcFOUT;
     private com.toedter.calendar.JDateChooser jdcVencimiento;
@@ -997,6 +1010,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
             return;
 
         Integer contratoID = combo.getSelectedId();
+		if (contratoID < 1) return;
         try{
             String contrato = ContratosFactory.createContrato(contratoID, alquiler);
             AppPrincipal.mailSender.send(email, "", contrato);

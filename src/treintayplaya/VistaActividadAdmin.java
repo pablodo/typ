@@ -229,7 +229,7 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
 
     private void anularMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anularMenuItemActionPerformed
         if (validaAnulacion()){
-            if (anular()){
+			if (getSelectedAlquiler().borrar()){
                 updateTable();
             }
 
@@ -437,23 +437,6 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
         if (alquiler== null)
             alquiler = new Alquiler();
         return alquiler;
-    }
-
-    
-    private boolean anular() {
-        Alquiler alquiler = getSelectedAlquiler();
-        try{
-            Connection cnx = Conexion.getInstance().getConnection();
-            String query = "DELETE Alquileres, DetAlquileres FROM Alquileres INNER JOIN DetAlquileres ON alqID = dalqAlq WHERE alqID = ?";
-            PreparedStatement pstm = cnx.prepareStatement(query);
-            pstm.setInt(1, alquiler.id);
-            
-            int result = pstm.executeUpdate();
-            pstm.close();
-            return true;
-        }catch(SQLException sqle){
-            return false;
-        }
     }
 
     private boolean isReservaEnabled() {
