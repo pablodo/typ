@@ -136,6 +136,7 @@ CREATE TABLE IF NOT EXISTS `Propietarios` (
   `propNCuenta` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `propCBU` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
   `propTCuenta` int(11) NOT NULL,
+  `propTitularCuenta` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `propUF` int(11) NOT NULL,
   PRIMARY KEY (`propID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;

@@ -43,6 +43,10 @@ public class Alquiler{
     @Tag String tipo_cuenta_imputada = "";
     @Tag String cbu= "";
     @Tag String cbu_imputado= "";
+    @Tag String banco= "";
+    @Tag String banco_imputado= "";
+    @Tag String titular_cuenta= "";
+    @Tag String titular_cuenta_imputada= "";
     @Tag Integer cantidad_personas = 0;
     @Tag Integer desayunos = 0;
     @Tag Integer desayunos_imputados = 0;
@@ -89,8 +93,10 @@ public class Alquiler{
                            "INNER JOIN Clientes ON alqCliente = cliID " +
                            "LEFT JOIN Propietarios as p1 ON p1.propID = alqCuentaOpePropID " +
                            "LEFT JOIN TCuentas as t1 ON p1.propTCuenta = t1.tcID " +
+                           "LEFT JOIN Bancos as b1 ON p1.propBanco = b1.bancoID " +
                            "LEFT JOIN Propietarios as p2 ON p2.propID = alqCuentaImpPropID " +
                            "LEFT JOIN TCuentas as t2 ON p2.propTCuenta = t2.tcID " +
+                           "LEFT JOIN Bancos as b2 ON p2.propBanco = b2.bancoID " +
                            "WHERE alqID = ?";
             java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
             pstm.setInt(1, id);
@@ -130,9 +136,13 @@ public class Alquiler{
 			cuenta = rst.getString("p1.propNCuenta");
 			cbu = rst.getString("p1.propCBU");
 			tipo_cuenta = rst.getString("t1.tcNombre");
+			banco = rst.getString("b1.bancoNombre");
+			titular_cuenta = rst.getString("p1.propTitularCuenta");
 			cuenta_imputada = rst.getString("p2.propNCuenta");
 			cbu_imputado = rst.getString("p2.propCBU");
 			tipo_cuenta_imputada = rst.getString("t2.tcNombre");
+			banco_imputado = rst.getString("b2.bancoNombre");
+			titular_cuenta_imputada = rst.getString("p2.propTitularCuenta");
             
             limpiar();
             rst.close();

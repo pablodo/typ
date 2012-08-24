@@ -22,7 +22,6 @@ public class ContratosFactory {
         return Tags.replaceTags(contrato, alquiler, Tags.tags_alquiler);
     }
     
-    
 
     private static String getContrato(Integer contratoID) {
         String contrato = "";
@@ -40,14 +39,4 @@ public class ContratosFactory {
         }
         return contrato;
     }
-
-//	public static void main(String args[]){
-//		try {
-//			Alquiler alquiler = new Alquiler(7);
-//			System.out.println(ContratosFactory.createContrato(2, alquiler));
-//		} catch (Exception ex) {
-//			Logger.getLogger(ContratosFactory.class.getName()).log(Level.SEVERE, null, ex);
-//		}
-//	}
-    
 }

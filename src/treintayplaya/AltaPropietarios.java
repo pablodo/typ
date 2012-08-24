@@ -82,6 +82,8 @@ public class AltaPropietarios extends javax.swing.JInternalFrame {
         jtxfNCuenta = new javax.swing.JTextField();
         jlblCBU = new javax.swing.JLabel();
         jtxfCBU = new javax.swing.JTextField();
+        jlblTitular = new javax.swing.JLabel();
+        jtxfTitular = new javax.swing.JTextField();
 
         setTitle("Alta de Propietarios");
 
@@ -176,7 +178,7 @@ public class AltaPropietarios extends javax.swing.JInternalFrame {
                     .add(jlblCelular)
                     .add(jlblTelefono)
                     .add(jftfCelular, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(9, Short.MAX_VALUE))
         );
 
         jpnlUF.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos de Propiedad"));
@@ -201,7 +203,7 @@ public class AltaPropietarios extends javax.swing.JInternalFrame {
                 .add(jpnlUFLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jlblUF)
                     .add(jcbxUF, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(0, 16, Short.MAX_VALUE))
+                .add(0, 10, Short.MAX_VALUE))
         );
 
         jpnlBancario.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Bancarios"));
@@ -225,8 +227,18 @@ public class AltaPropietarios extends javax.swing.JInternalFrame {
 
         jlblCBU.setText("CBU:");
 
-        jtxfCBU.setDocument(new FixedLengthDocument(25));
-        jtxfCBU.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        jtxfCBU.setDocument(new FixedLengthDocument(24));
+        jtxfCBU.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        jlblTitular.setText("Titular:");
+
+        jtxfTitular.setDocument(new FixedLengthDocument(50));
+        jtxfTitular.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jtxfTitular.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jtxfTitularFocusGained(evt);
+            }
+        });
 
         org.jdesktop.layout.GroupLayout jpnlBancarioLayout = new org.jdesktop.layout.GroupLayout(jpnlBancario);
         jpnlBancario.setLayout(jpnlBancarioLayout);
@@ -234,51 +246,53 @@ public class AltaPropietarios extends javax.swing.JInternalFrame {
             jpnlBancarioLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jpnlBancarioLayout.createSequentialGroup()
                 .addContainerGap()
-                .add(jpnlBancarioLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, jpnlBancarioLayout.createSequentialGroup()
-                        .add(jlblCBU)
-                        .add(0, 0, Short.MAX_VALUE))
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, jpnlBancarioLayout.createSequentialGroup()
-                        .add(jpnlBancarioLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(jlblCUIT)
-                            .add(jlblBanco)
-                            .add(jlblNCuenta))
-                        .add(38, 38, 38)
-                        .add(jpnlBancarioLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(jtxfNCuenta)
-                            .add(org.jdesktop.layout.GroupLayout.TRAILING, jtxfCBU)
-                            .add(jpnlBancarioLayout.createSequentialGroup()
-                                .add(jpnlBancarioLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-                                    .add(org.jdesktop.layout.GroupLayout.LEADING, jftfCUIT, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)
-                                    .add(org.jdesktop.layout.GroupLayout.LEADING, jcbxBanco, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 22, Short.MAX_VALUE)
-                                .add(jlblTCuenta)
-                                .add(18, 18, 18)
-                                .add(jcbxTCuenta, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 238, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))))
+                .add(jpnlBancarioLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jlblCUIT)
+                    .add(jlblBanco)
+                    .add(jlblNCuenta)
+                    .add(jlblCBU)
+                    .add(jlblTitular))
+                .add(38, 38, 38)
+                .add(jpnlBancarioLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jtxfCBU)
+                    .add(jtxfNCuenta)
+                    .add(jpnlBancarioLayout.createSequentialGroup()
+                        .add(jpnlBancarioLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
+                            .add(org.jdesktop.layout.GroupLayout.LEADING, jftfCUIT, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)
+                            .add(org.jdesktop.layout.GroupLayout.LEADING, jcbxBanco, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 22, Short.MAX_VALUE)
+                        .add(jlblTCuenta)
+                        .add(18, 18, 18)
+                        .add(jcbxTCuenta, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 238, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jtxfTitular))
                 .addContainerGap())
         );
         jpnlBancarioLayout.setVerticalGroup(
             jpnlBancarioLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jpnlBancarioLayout.createSequentialGroup()
                 .addContainerGap()
-                .add(jpnlBancarioLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                .add(jpnlBancarioLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
                     .add(jftfCUIT, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jlblCUIT))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(jpnlBancarioLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jlblBanco)
-                    .add(jcbxBanco, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(jpnlBancarioLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
+                    .add(jcbxTCuenta, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jlblTCuenta)
-                    .add(jcbxTCuenta, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(18, 18, 18)
-                .add(jpnlBancarioLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(jcbxBanco, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jlblBanco))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(jpnlBancarioLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
                     .add(jtxfNCuenta, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jlblNCuenta))
-                .add(18, 18, 18)
-                .add(jpnlBancarioLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(jpnlBancarioLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
                     .add(jtxfCBU, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jlblCBU))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(jpnlBancarioLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
+                    .add(jtxfTitular, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jlblTitular))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
@@ -305,13 +319,13 @@ public class AltaPropietarios extends javax.swing.JInternalFrame {
                 .add(jpnlPersonal, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(18, 18, 18)
                 .add(jpnlUF, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(18, 18, 18)
+                .add(26, 26, 26)
                 .add(jpnlBancario, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(18, 18, 18)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jbtnAceptar)
                     .add(jbtnCancelar))
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         pack();
@@ -335,9 +349,15 @@ public class AltaPropietarios extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jbtnAceptarActionPerformed
 
+	private void jtxfTitularFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtxfTitularFocusGained
+		if (jtxfTitular.getText().trim().equals("")){
+			jtxfTitular.setText(jtxfNombre.getText().trim() + " " + jtxfApellido.getText().trim());
+		}
+	}//GEN-LAST:event_jtxfTitularFocusGained
+
     private void cargarPropietario() {
         try{    
-            String query = "SELECT propApellido, propNombre, propTelefono, propCelular, propEmail, propCUIT, propBanco, propTCuenta, propNCuenta, propCBU, propUF FROM Propietarios WHERE propID =";
+            String query = "SELECT * FROM Propietarios WHERE propID =";
             query = query + " " + String.valueOf(propID);
             java.sql.Statement pstm = cnx.createStatement();
             java.sql.ResultSet rst = pstm.executeQuery(query);
@@ -356,7 +376,7 @@ public class AltaPropietarios extends javax.swing.JInternalFrame {
             jtxfNCuenta.setText(rst.getString("propNCuenta"));
             jtxfCBU.setText(rst.getString("propCBU"));
             ((ComboTabla) jcbxUF).setSelectedItemById(rst.getInt("propUF"));
-
+			jtxfTitular.setText(rst.getString("propTitularCuenta"));
         } catch(java.sql.SQLException sqle) {
             sqle.printStackTrace();
         }    
@@ -391,6 +411,7 @@ public class AltaPropietarios extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jlblNombre;
     private javax.swing.JLabel jlblTCuenta;
     private javax.swing.JLabel jlblTelefono;
+    private javax.swing.JLabel jlblTitular;
     private javax.swing.JLabel jlblUF;
     private javax.swing.JPanel jpnlBancario;
     private javax.swing.JPanel jpnlPersonal;
@@ -400,6 +421,7 @@ public class AltaPropietarios extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jtxfEmail;
     private javax.swing.JTextField jtxfNCuenta;
     private javax.swing.JTextField jtxfNombre;
+    private javax.swing.JTextField jtxfTitular;
     // End of variables declaration//GEN-END:variables
 
     private boolean validaFormulario() {
@@ -413,12 +435,15 @@ public class AltaPropietarios extends javax.swing.JInternalFrame {
     }
 
     private int insertPropietario() throws SQLException {
-        String query = "INSERT INTO Propietarios (propApellido, propNombre, propTelefono, propCelular, propEmail, propCUIT, propBanco, propTCuenta, propNCuenta, propCBU, propUF) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; 
+        String query = "INSERT INTO Propietarios (propApellido, propNombre, propTelefono, propCelular, " +
+				       "propEmail, propCUIT, propBanco, propTCuenta, propNCuenta, propCBU, propTitularCuenta, propUF) " +
+				       "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; 
         if (estado == ACTUALIZAR){
-            query = "UPDATE Propietarios SET propApellido=?, propNombre=?, propTelefono=?, propCelular=?, propEmail=?, propCUIT=?, propBanco=?, propTCuenta=?, propNCuenta=?, propCBU=?, propUF=? WHERE propID = ?";
+            query = "UPDATE Propietarios SET propApellido=?, propNombre=?, propTelefono=?, propCelular=?, propEmail=?, " +
+					"propCUIT=?, propBanco=?, propTCuenta=?, propNCuenta=?, propCBU=?, propTitularCuenta=?, propUF=? " +
+					"WHERE propID = ?";
         }
         java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
-
         pstm.setString( 1, jtxfApellido.getText());
         pstm.setString( 2, jtxfNombre.getText());
         pstm.setString( 3, jftfTelefono.getText());
@@ -429,9 +454,10 @@ public class AltaPropietarios extends javax.swing.JInternalFrame {
         pstm.setInt   ( 8, ((ComboTabla)jcbxTCuenta).getSelectedId());
         pstm.setString( 9, jtxfNCuenta.getText());
         pstm.setString(10, jtxfCBU.getText());
-        pstm.setInt   (11, ((ComboTabla)jcbxUF).getSelectedId());
+        pstm.setString(11, jtxfTitular.getText());
+        pstm.setInt   (12, ((ComboTabla)jcbxUF).getSelectedId());
         if (estado == ACTUALIZAR){
-            pstm.setString(12, String.valueOf(propID));
+            pstm.setString(13, String.valueOf(propID));
         }
         int result = pstm.executeUpdate();
         pstm.close();

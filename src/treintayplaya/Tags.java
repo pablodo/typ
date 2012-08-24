@@ -76,6 +76,15 @@ public class Tags extends javax.swing.JInternalFrame {
 	public @interface Tag{
 	}
 
+//	public static void main(String args[]){
+//		String contrato = "<BANCO> <TITULAR_CUENTA> <BANCO_IMPUTADO> <TITULAR_CUENTA_IMPUTADA>";
+//		try {
+//			System.out.println(Tags.replaceTags(contrato, new Alquiler(10)));
+//		} catch (Exception ex) {
+//			Logger.getLogger(Tags.class.getName()).log(Level.SEVERE, null, ex);
+//		}
+//	}
+
 	/**
 	 * This method is called from within the constructor to initialize the
 	 * form. WARNING: Do NOT modify this code. The content of this method is
