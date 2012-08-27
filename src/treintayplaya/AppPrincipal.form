@@ -189,6 +189,7 @@
             </Menu>
             <Menu class="javax.swing.JMenu" name="movimientosMenu">
               <Properties>
+                <Property name="mnemonic" type="int" value="111"/>
                 <Property name="text" type="java.lang.String" value="Movimientos"/>
               </Properties>
               <SubComponents>

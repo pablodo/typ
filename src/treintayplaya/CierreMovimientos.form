@@ -116,7 +116,7 @@
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="lblMovimientos" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" pref="236" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" pref="239" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jScrollPane2" min="-2" pref="69" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -217,7 +217,7 @@
       </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new treintayplaya.ComboTabla()"/>
-        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="Funciones.cargarComboTablaApellidoNombre((ComboTabla)jcbxPropietarios, &quot;SELECT * FROM Propietarios ORDER BY propApellido&quot;, &quot;propApellido&quot;, &quot;propNombre&quot;, &quot;propID&quot;);"/>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="Funciones.cargarComboTablaApellidoNombre((ComboTabla)jcbxPropietarios, &quot;SELECT * FROM Propietarios WHERE propUF &gt; 0 ORDER BY propApellido&quot;, &quot;propApellido&quot;, &quot;propNombre&quot;, &quot;propID&quot;);"/>
       </AuxValues>
     </Component>
   </SubComponents>

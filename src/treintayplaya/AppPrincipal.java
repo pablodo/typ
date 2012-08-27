@@ -258,6 +258,7 @@ public class AppPrincipal extends javax.swing.JFrame {
 
         admMenu.add(mantenimientoMenu);
 
+        movimientosMenu.setMnemonic('o');
         movimientosMenu.setText("Movimientos");
 
         jmiABMLMovimientos.setMnemonic('A');
