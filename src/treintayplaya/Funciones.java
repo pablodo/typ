@@ -6,6 +6,12 @@ package treintayplaya;
 
 import com.toedter.calendar.JDateChooser;
 import java.awt.Component;
+import java.awt.Toolkit;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -14,7 +20,6 @@ import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.NumberFormatter;
 
 /**
@@ -151,5 +156,26 @@ public class Funciones {
             Logger.getLogger(Funciones.class.getName()).log(Level.SEVERE, null, ex);
         }
 	}
+
+	public static String getClipboard() {
+		String text = "";
+		try {
+			Transferable t = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
+			if (t != null && t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+					text = (String) t.getTransferData(DataFlavor.stringFlavor);
+			}
+		} catch (UnsupportedFlavorException ex) {
+			Logger.getLogger(Funciones.class.getName()).log(Level.SEVERE, null, ex);
+		} catch (IOException ex) {
+			Logger.getLogger(Funciones.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		return text;
+	}
+
+	public static void setClipboard(String text){
+		StringSelection selection = new StringSelection(text);
+		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(selection, null);
+	}
+
     
 }

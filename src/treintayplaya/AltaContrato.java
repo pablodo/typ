@@ -44,12 +44,23 @@ public class AltaContrato extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        menu = new javax.swing.JPopupMenu();
+        jmiPegar = new javax.swing.JMenuItem();
         jlblNombre = new javax.swing.JLabel();
         jtxfTipo = new javax.swing.JTextField();
         jbtnAceptar = new javax.swing.JButton();
         jbtnCancelar = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jtxaDetalle = new javax.swing.JTextArea();
+
+        jmiPegar.setMnemonic('P');
+        jmiPegar.setText("Pegar");
+        jmiPegar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiPegarActionPerformed(evt);
+            }
+        });
+        menu.add(jmiPegar);
 
         setClosable(true);
         setTitle("Alta de Contratos");
@@ -76,6 +87,7 @@ public class AltaContrato extends javax.swing.JInternalFrame {
 
         jtxaDetalle.setDocument(new FixedLengthDocument(1000));
         jtxaDetalle.setTabSize(4);
+        jtxaDetalle.setComponentPopupMenu(menu);
         jScrollPane2.setViewportView(jtxaDetalle);
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
@@ -105,7 +117,7 @@ public class AltaContrato extends javax.swing.JInternalFrame {
                     .add(jlblNombre)
                     .add(jtxfTipo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE)
+                .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE)
                 .add(18, 18, 18)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jbtnAceptar)
@@ -145,6 +157,11 @@ public class AltaContrato extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jbtnAceptarActionPerformed
 
+	private void jmiPegarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiPegarActionPerformed
+		String paste = Funciones.getClipboard();
+		jtxaDetalle.setText(jtxaDetalle.getText() + paste);
+	}//GEN-LAST:event_jmiPegarActionPerformed
+
     
     private void cargarContrato() {
         try {
@@ -167,8 +184,10 @@ public class AltaContrato extends javax.swing.JInternalFrame {
     private javax.swing.JButton jbtnAceptar;
     private javax.swing.JButton jbtnCancelar;
     private javax.swing.JLabel jlblNombre;
+    private javax.swing.JMenuItem jmiPegar;
     private javax.swing.JTextArea jtxaDetalle;
     private javax.swing.JTextField jtxfTipo;
+    private javax.swing.JPopupMenu menu;
     // End of variables declaration//GEN-END:variables
 
 }

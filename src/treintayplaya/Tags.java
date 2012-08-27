@@ -94,12 +94,27 @@ public class Tags extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        menu = new javax.swing.JPopupMenu();
+        jmiCopiar = new javax.swing.JMenuItem();
         jScrollPane1 = new javax.swing.JScrollPane();
         lista = new javax.swing.JList();
+
+        jmiCopiar.setMnemonic('C');
+        jmiCopiar.setText("Copiar");
+        jmiCopiar.setToolTipText("");
+        jmiCopiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiCopiarActionPerformed(evt);
+            }
+        });
+        menu.add(jmiCopiar);
+
+        menu.getAccessibleContext().setAccessibleParent(lista);
 
         setClosable(true);
         setResizable(true);
 
+        lista.setComponentPopupMenu(menu);
         jScrollPane1.setViewportView(lista);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -115,14 +130,23 @@ public class Tags extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 635, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 638, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+	private void jmiCopiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiCopiarActionPerformed
+		if (lista.getSelectedIndex() < 1)
+			return;
+		Funciones.setClipboard(lista.getSelectedValue().toString());
+	}//GEN-LAST:event_jmiCopiarActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JMenuItem jmiCopiar;
     private javax.swing.JList lista;
+    private javax.swing.JPopupMenu menu;
     // End of variables declaration//GEN-END:variables
 }
