@@ -301,7 +301,9 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
         Vector columns = getNombreColumnas(intMaxDay + 1);
 
         Connection cnx = Conexion.getInstance().getConnection();
-        String query = "SELECT ufNombre, tufDetalle, tufID, ufID FROM UnidadesFuncionales INNER JOIN TiposUF ON ufTipo = tufID ORDER BY tufAmbientes, tufMetros2, ufNombre";
+        String query = "SELECT ufNombre, tufDetalle, tufID, ufID " +
+					   "FROM UnidadesFuncionales INNER JOIN TiposUF ON ufTipo = tufID " +
+					   "ORDER BY tufAmbientes, tufMetros2, ufNombre";
         try {
             PreparedStatement pstm = cnx.prepareStatement(query);
             ResultSet rst = pstm.executeQuery();
@@ -328,7 +330,6 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
             Logger.getLogger(VistaActividadAdmin.class.getName()).log(Level.SEVERE, null, ex);
         }
         cargarAlquileres();
-        
     }
     
     private void updateDate(){
@@ -387,29 +388,28 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
     private static void cargarAlquileres() {
         try{
             Connection cnx = Conexion.getInstance().getConnection();
-            for (int row = 0; row < modelo.getRowCount(); row++){
-                int ufID = ufIDs.get(row);
-                if (ufID > 0){
-                    String query = "SELECT dalqFecha, alqID FROM DetAlquileres INNER JOIN Alquileres ON dalqAlq = alqID WHERE alqUF = ? ";
-                    PreparedStatement pstm = cnx.prepareStatement(query);
-                    pstm.setInt(1, ufID);
-                    ResultSet rst = pstm.executeQuery();
-                    
-                    while(rst.next()){
-                        String fecha = rst.getString("dalqFecha");
-                        int dia = Integer.parseInt(fecha.substring(8, 10));
-                        int mes = Integer.parseInt(fecha.substring(5, 7));
-                        
-                        if (mes == month + 1) {
-                            Alquiler alquiler = new Alquiler(rst.getInt("alqID"));
-                            modelo.setValueAt(alquiler, row, dia);
-                        }
-                    }
-                    rst.close();
-                    pstm.close();
-                }
+			String query = "SELECT dalqFecha, alqID, alqUF FROM DetAlquileres " +
+						   "INNER JOIN Alquileres ON dalqAlq = alqID " +
+						   "WHERE YEAR(dalqFecha) = ? AND MONTH(dalqFecha) = ? ORDER BY alqUF";
+			PreparedStatement pstm = cnx.prepareStatement(query);
+			pstm.setInt(1, year);
+			pstm.setInt(2, month + 1);
+			ResultSet rst = pstm.executeQuery();
+
+			while(rst.next()){
+				int ufID = rst.getInt("alqUF");
+				int row = ufIDs.indexOf(ufID);
+				if (row >= 0 && ufID > 0){
+					String fecha = rst.getString("dalqFecha");
+					int dia = Integer.parseInt(fecha.substring(8, 10));
+					int mes = Integer.parseInt(fecha.substring(5, 7));
+					
+					Alquiler alquiler = new Alquiler(rst.getInt("alqID"));
+					modelo.setValueAt(alquiler, row, dia);
+				}
             }
-            
+			rst.close();
+			pstm.close();
         }catch (SQLException sqle){
             
         }

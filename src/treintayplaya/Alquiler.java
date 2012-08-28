@@ -172,8 +172,8 @@ public class Alquiler{
             java.sql.Connection cnx = Conexion.getInstance().getConnection();
             String query = "DELETE Alquileres, DetAlquileres, Movimientos "+
 					       "FROM Alquileres "+
-						   "INNER JOIN DetAlquileres ON alqID = dalqAlq "+
-						   "INNER JOIN Movimientos ON alqID = movAlqID "+
+						   "LEFT JOIN DetAlquileres ON alqID = dalqAlq "+
+						   "LEFT JOIN Movimientos ON alqID = movAlqID "+
 					       "WHERE alqID = ?";
             java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
             pstm.setInt(1, id);

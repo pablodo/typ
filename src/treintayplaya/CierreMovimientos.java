@@ -251,7 +251,7 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
 					"INNER JOIN Alquileres ON movAlqID = alqID " +
 					"INNER JOIN Propietarios ON alqCuentaImpPropID = propID " +
 					"INNER JOIN UnidadesFuncionales ON alqUF = ufID " +
-					"WHERE propID = ? AND movSaldado = ? AND movAlqID != 0 " +
+					"WHERE propID = ? AND alqEstado = 2 AND movSaldado = ? AND movAlqID != 0 " +
 					"ORDER BY";
 			if (historico){
 				query += " alqID, movFechaSaldado, movFecha DESC";
@@ -324,10 +324,7 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
 			if (historico){
 				totales.fechaSaldado = fechaSaldadoAnt;
 				totales.calcularTotales();
-//				Object[] fila = {totales.fechaSaldado, totales.getComercializadora(), totales.getNoImputado(), totales.getSinComision(), totales.getComisiones(), totales.getPropietario(), totales.getAPagar(), totales.getACobrar(), totales.getGanancia()};
-//				Object[] fila = {"a", "b", "c", "d", "e", "f"};
 				modeloHistorico.addRow(totales.toRow());
-//				modeloHistorico.addRow(fila);
 			}else{
 				totales.calcularTotales();
 				jtblTotales.setModel(new DefaultTableModel(new Object[][]{totales.toRow()}, totalesHeaders)); 
