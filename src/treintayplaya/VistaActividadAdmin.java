@@ -109,6 +109,11 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
 
         reservaPropietarioMenuItem.setText("Reserva Propietario");
         reservaPropietarioMenuItem.setEnabled(false);
+        reservaPropietarioMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reservaPropietarioMenuItemActionPerformed(evt);
+            }
+        });
         jpmEstado.add(reservaPropietarioMenuItem);
 
         modificarMenuItem.setMnemonic('M');
@@ -190,7 +195,7 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
             .add(layout.createSequentialGroup()
                 .add(jToolBar1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 25, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 522, Short.MAX_VALUE))
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 528, Short.MAX_VALUE))
         );
 
         pack();
@@ -277,6 +282,16 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
             aAlquiler.toFront();
         }
     }//GEN-LAST:event_modificarMenuItemActionPerformed
+
+	private void reservaPropietarioMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reservaPropietarioMenuItemActionPerformed
+		AltaAlquiler aAlquiler = new AltaAlquiler(this, Alquiler.PROPIETARIO);
+		aAlquiler.selectUF(ufIDs.get(jtblVistaMensual.getSelectedRow()));
+		aAlquiler.setFechaInicial(getFechaInicial());
+		aAlquiler.setFechaFinal(getFechaFinal());
+		AppPrincipal.desktopPane.add(aAlquiler);
+		aAlquiler.show();
+		aAlquiler.toFront();
+	}//GEN-LAST:event_reservaPropietarioMenuItemActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem anularMenuItem;
@@ -389,7 +404,7 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
         try{
             Connection cnx = Conexion.getInstance().getConnection();
 			String query = "SELECT dalqFecha, alqID, alqUF FROM DetAlquileres " +
-						   "INNER JOIN Alquileres ON dalqAlq = alqID " +
+						   "LEFT JOIN Alquileres ON dalqAlq = alqID " +
 						   "WHERE YEAR(dalqFecha) = ? AND MONTH(dalqFecha) = ? ORDER BY alqUF";
 			PreparedStatement pstm = cnx.prepareStatement(query);
 			pstm.setInt(1, year);
@@ -403,8 +418,8 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
 					String fecha = rst.getString("dalqFecha");
 					int dia = Integer.parseInt(fecha.substring(8, 10));
 					int mes = Integer.parseInt(fecha.substring(5, 7));
-					
-					Alquiler alquiler = new Alquiler(rst.getInt("alqID"));
+					int alqID = rst.getInt("alqID");
+					Alquiler alquiler = new Alquiler(alqID);
 					modelo.setValueAt(alquiler, row, dia);
 				}
             }

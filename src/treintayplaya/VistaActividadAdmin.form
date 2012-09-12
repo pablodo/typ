@@ -59,6 +59,9 @@
             <Property name="text" type="java.lang.String" value="Reserva Propietario"/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="reservaPropietarioMenuItemActionPerformed"/>
+          </Events>
         </MenuItem>
         <MenuItem class="javax.swing.JMenuItem" name="modificarMenuItem">
           <Properties>
@@ -107,7 +110,7 @@
           <Group type="102" alignment="0" attributes="0">
               <Component id="jToolBar1" min="-2" pref="25" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollPane1" pref="525" max="32767" attributes="0"/>
+              <Component id="jScrollPane1" pref="528" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>

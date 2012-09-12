@@ -41,23 +41,27 @@ public class MiRender extends DefaultTableCellRenderer implements TableCellRende
             setHorizontalAlignment(LEFT);
 
             if (value instanceof Alquiler){
+                setHorizontalAlignment(0);
+                setText("");
                 if(((Alquiler)value).isReserva()) {
                     setBackground(Color.yellow);
                     table.setForeground(Color.black);
                 }
-
                 if(((Alquiler)value).isConfirmacion()) {
                     setBackground(Color.green);
                     table.setForeground(Color.black);
                 }
-
                 if(((Alquiler)value).isCancelacion()) {
                     setBackground(Color.cyan);
                     table.setForeground(Color.white);
                 }
-                setHorizontalAlignment(0);
-                setText("");
-                setToolTipText(((Alquiler)value).apellido + ", " + ((Alquiler)value).nombre);
+                if(((Alquiler)value).isPropietario()) {
+                    setBackground(Color.ORANGE);
+                    table.setForeground(Color.white);
+					setToolTipText(((Alquiler)value).apellido_propietario + ", " + ((Alquiler)value).nombre_propietario);
+                }else{
+					setToolTipText(((Alquiler)value).apellido + ", " + ((Alquiler)value).nombre);
+				}
             }else{
                 setText(String.valueOf(value));
                 setToolTipText(null);

@@ -19,6 +19,7 @@ public class Alquiler{
     final static int CONFIRMAR=1;
     final static int CANCELAR=2;
     final static int MODIFICAR=3;
+	final static int PROPIETARIO=4;
 	Double dblTotal;
 	Double dblTotalImputado;
 	Double dblSaldoPendiente;
@@ -27,6 +28,8 @@ public class Alquiler{
 	Double reservaMinima;
     Double diferenciaImputacion;
     Integer id = 0;
+	String nombre_propietario = "";
+	String apellido_propietario = "";
     @Tag String nombre = "";
 	@Tag String apellido = "";
     @Tag Integer tipo = 0;
@@ -84,13 +87,16 @@ public class Alquiler{
     boolean isCancelacion() {
         return tipo == CANCELAR;
     }
+    boolean isPropietario() {
+        return tipo == PROPIETARIO;
+    }
 
     private void cargarAlquiler() {
         try {
             java.sql.Connection cnx = Conexion.getInstance().getConnection();
             String query = "SELECT * FROM Alquileres " + 
                            "INNER JOIN UnidadesFuncionales ON alqUF = ufID " + 
-                           "INNER JOIN Clientes ON alqCliente = cliID " +
+                           "LEFT JOIN Clientes ON alqCliente = cliID " +
                            "LEFT JOIN Propietarios as p1 ON p1.propID = alqCuentaOpePropID " +
                            "LEFT JOIN TCuentas as t1 ON p1.propTCuenta = t1.tcID " +
                            "LEFT JOIN Bancos as b1 ON p1.propBanco = b1.bancoID " +
@@ -143,6 +149,8 @@ public class Alquiler{
 			tipo_cuenta_imputada = rst.getString("t2.tcNombre");
 			banco_imputado = rst.getString("b2.bancoNombre");
 			titular_cuenta_imputada = rst.getString("p2.propTitularCuenta");
+			nombre_propietario = rst.getString("p2.propNombre");
+			apellido_propietario = rst.getString("p2.propApellido");
             
             limpiar();
             rst.close();

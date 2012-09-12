@@ -224,7 +224,7 @@
                       <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jScrollPane1" min="-2" pref="50" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="3" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="9" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -296,6 +296,11 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="jcbxCliente">
+      <Properties>
+        <Property name="enabled" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="operacion != Alquiler.PROPIETARIO &amp;&amp; ! alquiler.isPropietario()" type="code"/>
+        </Property>
+      </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new treintayplaya.ComboTabla()"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
@@ -511,6 +516,9 @@
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="0"/>
         </Property>
+        <Property name="enabled" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="operacion != Alquiler.PROPIETARIO &amp;&amp; ! alquiler.isPropietario()" type="code"/>
+        </Property>
       </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new treintayplaya.ComboTabla()"/>
@@ -524,6 +532,9 @@
     <Component class="com.toedter.calendar.JDateChooser" name="jdcVencimiento">
       <Properties>
         <Property name="dateFormatString" type="java.lang.String" value="dd-MM-yyyy"/>
+        <Property name="enabled" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="operacion != Alquiler.PROPIETARIO &amp;&amp; ! alquiler.isPropietario()" type="code"/>
+        </Property>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblDifImputacion">
@@ -537,6 +548,9 @@
           <Format format="#,##0.00" subtype="-1" type="0"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="enabled" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="operacion != Alquiler.PROPIETARIO &amp;&amp; ! alquiler.isPropietario()" type="code"/>
+        </Property>
         <Property name="value" type="java.lang.Object" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="0" type="code"/>
         </Property>
@@ -630,6 +644,9 @@
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="0"/>
             </Property>
+            <Property name="enabled" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="operacion != Alquiler.PROPIETARIO &amp;&amp; ! alquiler.isPropietario()" type="code"/>
+            </Property>
           </Properties>
           <Events>
             <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="jcbxFormaPagoOperacionItemStateChanged"/>
@@ -653,6 +670,9 @@
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="0"/>
             </Property>
+            <Property name="enabled" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="operacion != Alquiler.PROPIETARIO &amp;&amp; ! alquiler.isPropietario()" type="code"/>
+            </Property>
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new ComboTabla()"/>
@@ -668,6 +688,9 @@
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="0"/>
             </Property>
+            <Property name="enabled" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="operacion != Alquiler.PROPIETARIO &amp;&amp; ! alquiler.isPropietario()" type="code"/>
+            </Property>
           </Properties>
           <Events>
             <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="jcbxCuentaItemStateChanged"/>
@@ -682,6 +705,11 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="jcbxCuentaImputada">
+          <Properties>
+            <Property name="enabled" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="operacion != Alquiler.PROPIETARIO &amp;&amp; ! alquiler.isPropietario()" type="code"/>
+            </Property>
+          </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new ComboTabla()"/>
           </AuxValues>
@@ -691,6 +719,9 @@
     <Component class="javax.swing.JButton" name="jbtnNuevoInquilino">
       <Properties>
         <Property name="text" type="java.lang.String" value="Nuevo"/>
+        <Property name="enabled" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="operacion != Alquiler.PROPIETARIO &amp;&amp; ! alquiler.isPropietario()" type="code"/>
+        </Property>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnNuevoInquilinoActionPerformed"/>
@@ -726,6 +757,9 @@
           <Format format="#,##0.00" subtype="-1" type="0"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="enabled" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="operacion != Alquiler.PROPIETARIO &amp;&amp; ! alquiler.isPropietario()" type="code"/>
+        </Property>
         <Property name="value" type="java.lang.Object" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="0" type="code"/>
         </Property>
@@ -749,7 +783,7 @@
         </Property>
         <Property name="horizontalAlignment" type="int" value="4"/>
         <Property name="enabled" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="operacion != Alquiler.CANCELAR" type="code"/>
+          <Connection code="operacion != Alquiler.PROPIETARIO &amp;&amp; ! alquiler.isPropietario()" type="code"/>
         </Property>
         <Property name="value" type="java.lang.Object" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="0" type="code"/>
@@ -779,6 +813,9 @@
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="0"/>
         </Property>
+        <Property name="enabled" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="operacion != Alquiler.PROPIETARIO &amp;&amp; ! alquiler.isPropietario()" type="code"/>
+        </Property>
       </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new treintayplaya.ComboTabla()"/>
@@ -800,6 +837,9 @@
           <Format format="#,##0.00" subtype="-1" type="0"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="enabled" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="operacion != Alquiler.PROPIETARIO &amp;&amp; ! alquiler.isPropietario()" type="code"/>
+        </Property>
         <Property name="value" type="java.lang.Object" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="0" type="code"/>
         </Property>
@@ -811,9 +851,12 @@
     <Component class="javax.swing.JCheckBox" name="jchkEnviarMails">
       <Properties>
         <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="operacion != Alquiler.MODIFICAR" type="code"/>
+          <Connection code="operacion != Alquiler.MODIFICAR &amp;&amp; operacion != Alquiler.PROPIETARIO&#xa;" type="code"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Enviar mails?"/>
+        <Property name="enabled" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="operacion != Alquiler.PROPIETARIO &amp;&amp; ! alquiler.isPropietario()" type="code"/>
+        </Property>
       </Properties>
     </Component>
   </SubComponents>

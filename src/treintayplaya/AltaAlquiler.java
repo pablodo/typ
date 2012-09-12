@@ -31,7 +31,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
     Thread fechas;
     private Alquiler alquiler;
     private Integer operacion;
-    String[] titulos = {"Reserva Provisoria", "Confirmar Reserva", "Cancelar Reserva", "Modificar Alquiler"};
+    String[] titulos = {"Reserva Provisoria", "Confirmar Reserva", "Cancelar Reserva", "Modificar Alquiler", "Reserva Propietario"};
     
     
     public AltaAlquiler(VistaActividadAdmin tabla, Alquiler alquiler, Integer operacion) {
@@ -41,7 +41,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         initComponents();
         cnx = Conexion.getInstance().getConnection();
         cargaCombos();
-        if (operacion == Alquiler.RESERVAR){
+        if (operacion == Alquiler.RESERVAR || operacion == Alquiler.PROPIETARIO){
             setearFechas();
         }else{
             cargarAlquiler(alquiler.id);
@@ -59,6 +59,10 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         this(tabla, new Alquiler(), 0);
     }
     
+    public AltaAlquiler(VistaActividadAdmin tabla, Integer operacion){
+        this(tabla, new Alquiler(), operacion);
+    }
+
     public AltaAlquiler(VistaActividadAdmin tabla, Alquiler alquiler){
         this(tabla, alquiler, Alquiler.MODIFICAR);
     }
@@ -173,6 +177,8 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
 
         jlblCliente.setText("Inquilino:");
 
+        jcbxCliente.setEnabled(operacion != Alquiler.PROPIETARIO && ! alquiler.isPropietario());
+
         jlblFIN.setText("Fecha IN:");
 
         jdcFIN.setDateFormatString("dd-MM-yyyy HH:mm");
@@ -255,14 +261,18 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
 
         jlblContratoCli.setText("Contrato Cliente:");
 
+        jcbxContratoCli.setEnabled(operacion != Alquiler.PROPIETARIO && ! alquiler.isPropietario());
+
         jlblvencimiento.setText("Vencimiento de Reserva:");
 
         jdcVencimiento.setDateFormatString("dd-MM-yyyy");
+        jdcVencimiento.setEnabled(operacion != Alquiler.PROPIETARIO && ! alquiler.isPropietario());
 
         lblDifImputacion.setText("Dif. Imputación:");
 
         jftfDifImputacion.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
         jftfDifImputacion.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jftfDifImputacion.setEnabled(operacion != Alquiler.PROPIETARIO && ! alquiler.isPropietario());
         jftfDifImputacion.setValue(0);
         jftfDifImputacion.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -288,6 +298,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
 
         jpnlDetPagos.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Detalles de Pagos", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(255, 0, 0)));
 
+        jcbxFormaPagoOperacion.setEnabled(operacion != Alquiler.PROPIETARIO && ! alquiler.isPropietario());
         jcbxFormaPagoOperacion.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jcbxFormaPagoOperacionItemStateChanged(evt);
@@ -298,8 +309,11 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
 
         jlblFormaPagoImputacion.setText("Forma de Pago de Imputación:");
 
+        jcbxFormaPagoImputacion.setEnabled(operacion != Alquiler.PROPIETARIO && ! alquiler.isPropietario());
+
         jlblCuenta.setText("Cuenta de depósito:");
 
+        jcbxCuenta.setEnabled(operacion != Alquiler.PROPIETARIO && ! alquiler.isPropietario());
         jcbxCuenta.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jcbxCuentaItemStateChanged(evt);
@@ -307,6 +321,8 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         });
 
         lblCuentaImputacion.setText("Cuenta de depósito imputada:");
+
+        jcbxCuentaImputada.setEnabled(operacion != Alquiler.PROPIETARIO && ! alquiler.isPropietario());
 
         org.jdesktop.layout.GroupLayout jpnlDetPagosLayout = new org.jdesktop.layout.GroupLayout(jpnlDetPagos);
         jpnlDetPagos.setLayout(jpnlDetPagosLayout);
@@ -347,6 +363,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         );
 
         jbtnNuevoInquilino.setText("Nuevo");
+        jbtnNuevoInquilino.setEnabled(operacion != Alquiler.PROPIETARIO && ! alquiler.isPropietario());
         jbtnNuevoInquilino.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnNuevoInquilinoActionPerformed(evt);
@@ -362,6 +379,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
 
         jftfTotal.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
         jftfTotal.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jftfTotal.setEnabled(operacion != Alquiler.PROPIETARIO && ! alquiler.isPropietario());
         jftfTotal.setValue(0);
         jftfTotal.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -374,7 +392,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
 
         jftfImporteReserva.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
         jftfImporteReserva.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        jftfImporteReserva.setEnabled(operacion != Alquiler.CANCELAR);
+        jftfImporteReserva.setEnabled(operacion != Alquiler.PROPIETARIO && ! alquiler.isPropietario());
         jftfImporteReserva.setValue(0);
         jftfImporteReserva.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -387,12 +405,15 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         jlblSaldo.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jlblSaldo.setText("Saldo:");
 
+        jcbxContratoProp.setEnabled(operacion != Alquiler.PROPIETARIO && ! alquiler.isPropietario());
+
         jlblContratoProp.setText("Contrato Propietario:");
 
         jlblSinComision.setText("Sin Comisión:");
 
         jftfImporteSinComision.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
         jftfImporteSinComision.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jftfImporteSinComision.setEnabled(operacion != Alquiler.PROPIETARIO && ! alquiler.isPropietario());
         jftfImporteSinComision.setValue(0);
         jftfImporteSinComision.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -400,8 +421,10 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
             }
         });
 
-        jchkEnviarMails.setSelected(operacion != Alquiler.MODIFICAR);
+        jchkEnviarMails.setSelected(operacion != Alquiler.MODIFICAR && operacion != Alquiler.PROPIETARIO
+        );
         jchkEnviarMails.setText("Enviar mails?");
+        jchkEnviarMails.setEnabled(operacion != Alquiler.PROPIETARIO && ! alquiler.isPropietario());
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -560,7 +583,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
                         .add(jLabel3)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 50, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(0, 3, Short.MAX_VALUE)))
+                        .add(0, 9, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -593,8 +616,9 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
                 }
                 insertDetalleAlquiler(alquiler.id);
             }
-            if (operacion == Alquiler.CONFIRMAR || operacion == Alquiler.CANCELAR)
+            if (operacion == Alquiler.CONFIRMAR || operacion == Alquiler.CANCELAR){
                 generarMovimiento(reservaCobrada);
+			}
             cnx.commit();
 
             if (jchkEnviarMails.isSelected())
@@ -778,15 +802,15 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
     private boolean validaFormulario() {
 		if (! Funciones.validaComboTabla(this, (ComboTabla)jcbxUF, "Unidad funcional"))
 			return false;
-		if (! Funciones.validaComboTabla(this, (ComboTabla)jcbxCliente, "Inquilino"))
+		if (operacion != Alquiler.PROPIETARIO && ! Funciones.validaComboTabla(this, (ComboTabla)jcbxCliente, "Inquilino"))
 			return false;
         if (! Funciones.validaDateChooser(this, jdcFIN, "Fecha de ingreso"))
             return false;
         if (! Funciones.validaDateChooser(this, jdcFOUT, "Fecha de salida"))
             return false;
-        if (! Funciones.validaComboTabla(this, (ComboTabla)jcbxFormaPagoOperacion, "Forma de pago"))
+        if (operacion != Alquiler.PROPIETARIO && ! Funciones.validaComboTabla(this, (ComboTabla)jcbxFormaPagoOperacion, "Forma de pago"))
             return false;
-        if (! Funciones.validaComboTabla(this, (ComboTabla)jcbxCuenta, "Cuenta de depósito"))
+        if (operacion != Alquiler.PROPIETARIO && ! Funciones.validaComboTabla(this, (ComboTabla)jcbxCuenta, "Cuenta de depósito"))
             return false;
         return true;
     }
@@ -1038,6 +1062,8 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
 	}
 
 	private void setImputacionesHabilitadas(boolean opcion) {
+		if (operacion == Alquiler.PROPIETARIO || alquiler.isPropietario())
+			return;
 		if (opcion){
 			jcbxDesayunosImp.setEnabled(true);
 			jftfDifImputacion.setEnabled(true);
