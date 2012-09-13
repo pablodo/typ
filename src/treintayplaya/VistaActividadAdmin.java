@@ -130,7 +130,7 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
         setClosable(true);
         setResizable(true);
         setTitle("Vista de Actividad Mensual");
-        setMinimumSize(new java.awt.Dimension(1020, 640));
+        setMinimumSize(new java.awt.Dimension(1000, 200));
 
         jToolBar1.setFloatable(false);
         jToolBar1.setRollover(true);
@@ -187,7 +187,7 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jToolBar1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 996, Short.MAX_VALUE)
+            .add(jToolBar1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 908, Short.MAX_VALUE)
             .add(jScrollPane1)
         );
         layout.setVerticalGroup(
@@ -195,7 +195,7 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
             .add(layout.createSequentialGroup()
                 .add(jToolBar1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 25, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 528, Short.MAX_VALUE))
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE))
         );
 
         pack();
