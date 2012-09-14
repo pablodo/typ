@@ -372,7 +372,10 @@ public class ConsultaMovimientos extends javax.swing.JInternalFrame {
     public void cargaTabla() {
         try {
             java.sql.Statement stm = cnx.createStatement();
-			String query = "SELECT * FROM Movimientos ORDER BY movFecha DESC";
+			String query = "SELECT * FROM Movimientos " +
+                           "LEFT JOIN Alquileres ON movAlqID = alqID " +
+                           "LEFT JOIN UnidadesFuncionales ON alqUF = ufID " +
+                           "ORDER BY movFecha DESC";
             java.sql.ResultSet rst = stm.executeQuery(query);
             
             ids = new ArrayList<Integer>();
@@ -383,7 +386,8 @@ public class ConsultaMovimientos extends javax.swing.JInternalFrame {
                                 "A favor de",
 								"Saldado",
 								"Fecha de Saldado",
-								"Detalle"};
+								"Detalle",
+                                "UF"};
             modelo.setColumnIdentifiers(headers);
             while(rst.next()) {
                 ids.add(rst.getInt("movID"));
@@ -393,7 +397,8 @@ public class ConsultaMovimientos extends javax.swing.JInternalFrame {
                                   Movimientos.destinos[rst.getInt("movDestino")],
 								  Movimientos.saldados[rst.getInt("movSaldado")],
 								  FechasFormatter.getFechaFromMySQL(rst.getString("movFechaSaldado")),
-								  rst.getString("movDetalle")
+								  rst.getString("movDetalle"),
+                                  rst.getString("ufNombre")
                                  };
                 modelo.addRow(fila);
             }

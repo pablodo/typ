@@ -313,7 +313,7 @@
     </Component>
     <Component class="com.toedter.calendar.JDateChooser" name="jdcFIN">
       <Properties>
-        <Property name="dateFormatString" type="java.lang.String" value="dd-MM-yyyy HH:mm"/>
+        <Property name="dateFormatString" type="java.lang.String" value="dd-MM-yyyy"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jlblFOUT">
@@ -323,7 +323,7 @@
     </Component>
     <Component class="com.toedter.calendar.JDateChooser" name="jdcFOUT">
       <Properties>
-        <Property name="dateFormatString" type="java.lang.String" value="dd-MM-yyyy HH:mm"/>
+        <Property name="dateFormatString" type="java.lang.String" value="dd-MM-yyyy"/>
       </Properties>
     </Component>
     <Container class="javax.swing.JPanel" name="jpnlPax">

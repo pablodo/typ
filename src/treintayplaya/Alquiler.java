@@ -50,6 +50,8 @@ public class Alquiler{
     @Tag String banco_imputado= "";
     @Tag String titular_cuenta= "";
     @Tag String titular_cuenta_imputada= "";
+    @Tag String cuit= "";
+    @Tag String cuit_imputado= "";
     @Tag Integer cantidad_personas = 0;
     @Tag Integer desayunos = 0;
     @Tag Integer desayunos_imputados = 0;
@@ -121,9 +123,9 @@ public class Alquiler{
             apellido = rst.getString("cliApellido");
             dni = rst.getString("cliDNI");
             tipo = rst.getInt("alqEstado");
-            fecha_in = FechasFormatter.getFechaFromMySQL(rst.getString("alqFIN"));
-            fecha_out = FechasFormatter.getFechaFromMySQL(rst.getString("alqFOUT"));
-            fecha_vencimiento = FechasFormatter.getFechaFromMySQL(rst.getString("alqVencimiento"));
+            fecha_in = FechasFormatter.getFechaSimpleString(rst.getString("alqFIN"));
+            fecha_out = FechasFormatter.getFechaSimpleString(rst.getString("alqFOUT"));
+            fecha_vencimiento = FechasFormatter.getFechaSimpleString(rst.getString("alqVencimiento"));
             uf = rst.getString("ufNombre");
             email = rst.getString("cliEmail");
             email_propietario = rst.getString("p2.propEmail");
@@ -139,16 +141,21 @@ public class Alquiler{
             menores = rst.getInt("alqOcupantesM");
             bebes = rst.getInt("alqOcupantesB");
             cantidad_personas = adultos + menores + bebes;
+
 			cuenta = rst.getString("p1.propNCuenta");
 			cbu = rst.getString("p1.propCBU");
 			tipo_cuenta = rst.getString("t1.tcNombre");
 			banco = rst.getString("b1.bancoNombre");
+			cuit = rst.getString("p1.propCUIT");
 			titular_cuenta = rst.getString("p1.propTitularCuenta");
+
 			cuenta_imputada = rst.getString("p2.propNCuenta");
 			cbu_imputado = rst.getString("p2.propCBU");
 			tipo_cuenta_imputada = rst.getString("t2.tcNombre");
 			banco_imputado = rst.getString("b2.bancoNombre");
+			cuit_imputado = rst.getString("p2.propCUIT");
 			titular_cuenta_imputada = rst.getString("p2.propTitularCuenta");
+
 			nombre_propietario = rst.getString("p2.propNombre");
 			apellido_propietario = rst.getString("p2.propApellido");
             

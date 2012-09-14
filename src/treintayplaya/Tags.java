@@ -138,7 +138,7 @@ public class Tags extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 	private void jmiCopiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiCopiarActionPerformed
-		if (lista.getSelectedIndex() < 1)
+		if (lista.getSelectedIndex() < 0)
 			return;
 		Funciones.setClipboard(lista.getSelectedValue().toString());
 	}//GEN-LAST:event_jmiCopiarActionPerformed

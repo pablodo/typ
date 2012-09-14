@@ -28,7 +28,6 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
     java.sql.Connection cnx;
     VistaActividadAdmin tabla;
     GregorianCalendar fechaActual;
-    Thread fechas;
     private Alquiler alquiler;
     private Integer operacion;
     String[] titulos = {"Reserva Provisoria", "Confirmar Reserva", "Cancelar Reserva", "Modificar Alquiler", "Reserva Propietario"};
@@ -181,11 +180,11 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
 
         jlblFIN.setText("Fecha IN:");
 
-        jdcFIN.setDateFormatString("dd-MM-yyyy HH:mm");
+        jdcFIN.setDateFormatString("dd-MM-yyyy");
 
         jlblFOUT.setText("Fecha OUT:");
 
-        jdcFOUT.setDateFormatString("dd-MM-yyyy HH:mm");
+        jdcFOUT.setDateFormatString("dd-MM-yyyy");
 
         jpnlPax.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Ocupantes", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(255, 0, 0)));
         jpnlPax.setName("");
@@ -833,9 +832,9 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
 
         int ufID = ((ComboTabla)jcbxUF).getSelectedId();
         int cliID = ((ComboTabla)jcbxCliente).getSelectedId();
-        String fIN = FechasFormatter.getFechaString(jdcFIN.getCalendar());
-        String fOUT = FechasFormatter.getFechaString(jdcFOUT.getCalendar());
-        String vencimiento = FechasFormatter.getFechaString(jdcVencimiento.getCalendar());
+        String fIN = FechasFormatter.getFechaSimpleString(jdcFIN.getCalendar());
+        String fOUT = FechasFormatter.getFechaSimpleString(jdcFOUT.getCalendar());
+        String vencimiento = FechasFormatter.getFechaSimpleString(jdcVencimiento.getCalendar());
         Integer estado = this.operacion == Alquiler.MODIFICAR ? alquiler.tipo : this.operacion;
 
         pstm.setString( 1, jlblAlqFecha.getText());
@@ -902,24 +901,11 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
     }
 
     private void setearFechas() {
-        fechas = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while ( ! isClosed()){
-                    try {
-                        fechaActual = new GregorianCalendar();
-                        GregorianCalendar fechaVencimiento = (GregorianCalendar)fechaActual.clone();
-                        fechaVencimiento.add(GregorianCalendar.HOUR, 48);
-                        jlblAlqFecha.setText(FechasFormatter.getFechaString(fechaActual));
-                        jdcVencimiento.setCalendar(fechaVencimiento);
-                        Thread.sleep(1000);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(AltaAlquiler.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }
-        });
-        fechas.start();
+        fechaActual = new GregorianCalendar();
+        GregorianCalendar fechaVencimiento = (GregorianCalendar)fechaActual.clone();
+        fechaVencimiento.add(GregorianCalendar.HOUR, 48);
+        jlblAlqFecha.setText(FechasFormatter.getFechaSimpleString(fechaActual));
+        jdcVencimiento.setCalendar(fechaVencimiento);
     }
 
     private void cargarAlquiler(Integer alquilerID) {
@@ -933,7 +919,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
             java.sql.ResultSet rst = pstm.executeQuery();
             
             rst.next();
-            jlblAlqFecha.setText(rst.getString("alqFecha").substring(0, 19));
+            jlblAlqFecha.setText(FechasFormatter.getFechaFromMySQL(rst.getString("alqFecha")));
             jdcVencimiento.setCalendar(FechasFormatter.getFechaCalendar(rst.getString("alqVencimiento")));
             jlblAlqOperador.setText(rst.getString("usrEmail"));
             selectUF(rst.getInt("alqUF"));
