@@ -5,12 +5,11 @@
 package treintayplaya;
 
 import java.util.ArrayList;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author sergio
+ * @author pablo
  */
 public class ConsultaPropietarios extends javax.swing.JInternalFrame {
 
@@ -37,17 +36,19 @@ public class ConsultaPropietarios extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable(){     public boolean isCellEditable(int row, int col){         return false;     } };
+        tabla = new javax.swing.JTable(){     public boolean isCellEditable(int row, int col){         return false;     } };
         jbtnAgregar = new javax.swing.JButton();
         jbtnBorrar = new javax.swing.JButton();
         jbtnActualizar = new javax.swing.JButton();
         jbtnCerrar = new javax.swing.JButton();
 
+        setClosable(true);
+        setMaximizable(true);
         setTitle("Consulta de Propietarios");
 
-        jTable1.setModel(modelo);
-        jTable1.setGridColor(new java.awt.Color(204, 204, 204));
-        jTable1.getTableHeader().setReorderingAllowed(false);
+        tabla.setModel(modelo);
+        tabla.setGridColor(new java.awt.Color(204, 204, 204));
+        tabla.getTableHeader().setReorderingAllowed(false);
         modelo.addColumn("Apellido");
         modelo.addColumn("Nombre");
         modelo.addColumn("Teléfono");
@@ -55,8 +56,9 @@ public class ConsultaPropietarios extends javax.swing.JInternalFrame {
         modelo.addColumn("Email");
 
         actualizaTablaPropietarios();
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tabla);
 
+        jbtnAgregar.setMnemonic('A');
         jbtnAgregar.setText("Agregar");
         jbtnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -64,6 +66,7 @@ public class ConsultaPropietarios extends javax.swing.JInternalFrame {
             }
         });
 
+        jbtnBorrar.setMnemonic('B');
         jbtnBorrar.setText("Borrar");
         jbtnBorrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -71,6 +74,7 @@ public class ConsultaPropietarios extends javax.swing.JInternalFrame {
             }
         });
 
+        jbtnActualizar.setMnemonic('t');
         jbtnActualizar.setText("Actualizar");
         jbtnActualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -78,6 +82,7 @@ public class ConsultaPropietarios extends javax.swing.JInternalFrame {
             }
         });
 
+        jbtnCerrar.setMnemonic('C');
         jbtnCerrar.setText("Cerrar");
         jbtnCerrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -92,7 +97,7 @@ public class ConsultaPropietarios extends javax.swing.JInternalFrame {
             .add(layout.createSequentialGroup()
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 972, Short.MAX_VALUE)
+                    .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 910, Short.MAX_VALUE)
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                         .add(0, 0, Short.MAX_VALUE)
                         .add(jbtnAgregar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 115, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -115,7 +120,7 @@ public class ConsultaPropietarios extends javax.swing.JInternalFrame {
                     .add(jbtnBorrar)
                     .add(jbtnActualizar)
                     .add(jbtnCerrar))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         pack();
@@ -136,13 +141,13 @@ public class ConsultaPropietarios extends javax.swing.JInternalFrame {
             
             java.sql.PreparedStatement pstm = cnx.prepareStatement("DELETE from Propietarios WHERE propID = ?");
 
-            pstm.setInt(1, IDs.get(jTable1.getSelectedRow()));
+            pstm.setInt(1, IDs.get(tabla.getSelectedRow()));
             
             int result = pstm.executeUpdate();
             
             if(result == 1) {
-                IDs.remove(jTable1.getSelectedRow());
-                modelo.removeRow(jTable1.getSelectedRow());
+                IDs.remove(tabla.getSelectedRow());
+                modelo.removeRow(tabla.getSelectedRow());
             }
             
         } catch (java.sql.SQLException sqle) {
@@ -151,8 +156,8 @@ public class ConsultaPropietarios extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jbtnBorrarActionPerformed
 
     private void jbtnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnActualizarActionPerformed
-        if (jTable1.getSelectedRow() >= 0) {
-            int propID = IDs.get(this.jTable1.getSelectedRow());
+        if (tabla.getSelectedRow() >= 0) {
+            int propID = IDs.get(this.tabla.getSelectedRow());
             AltaPropietarios aPropietarios = new AltaPropietarios(propID);
             AppPrincipal.desktopPane.add(aPropietarios);
             aPropietarios.show();
@@ -161,22 +166,26 @@ public class ConsultaPropietarios extends javax.swing.JInternalFrame {
 
     public static void actualizaTablaPropietarios() {
         try {
-            
-            while (modelo.getRowCount() > 0)
-                modelo.removeRow(0);
+            modelo = new DefaultTableModel(); 
+            tabla.setModel(modelo);
+            String [] headers = {"Apellido", "Nombre", "Teléfono", "Celular", "Email", "UF"};
+            modelo.setColumnIdentifiers(headers);
             IDs = new ArrayList<Integer>();
-            
+            String query = "SELECT * FROM Propietarios " +
+                           "LEFT JOIN UnidadesFuncionales ON propUF = ufID"; 
             java.sql.Statement stm = cnx.createStatement();
-            java.sql.ResultSet rst = stm.executeQuery("select propID, propApellido, propNombre, propTelefono, propCelular, propEmail from Propietarios");
+            java.sql.ResultSet rst = stm.executeQuery(query);
             
             while(rst.next()) {
                 IDs.add(rst.getInt("propID"));
                 
-                Object [] fila = new Object[5];
-                
-                for(int i = 1; i < 6; i++)
-                    fila[i-1] = rst.getObject(i+1);
-
+                String[] fila = {rst.getString("propApellido"),
+                                 rst.getString("propNombre"),
+                                 rst.getString("propTelefono"),
+                                 rst.getString("propCelular"),
+                                 rst.getString("propEmail"),
+                                 rst.getString("ufNombre")
+                                  };
                 modelo.addRow(fila);
             }
         } catch (java.sql.SQLException sqle) {
@@ -187,10 +196,10 @@ public class ConsultaPropietarios extends javax.swing.JInternalFrame {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JButton jbtnActualizar;
     private javax.swing.JButton jbtnAgregar;
     private javax.swing.JButton jbtnBorrar;
     private javax.swing.JButton jbtnCerrar;
+    private static javax.swing.JTable tabla;
     // End of variables declaration//GEN-END:variables
 }
