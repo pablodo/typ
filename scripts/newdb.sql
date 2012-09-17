@@ -287,6 +287,7 @@ CREATE TABLE IF NOT EXISTS `Movimientos` (
   `movAlqID` int(11) NOT NULL,
   `movImporte` decimal(10,2) NOT NULL,
   `movSaldado` int(1) NOT NULL, /* (0: Sin saldar, 1: Saldado) */
+  `movPropietarioSaldado` int(11) NOT NULL,
   `movDestino` int(1) NOT NULL, /* A favor de (1: Comercializadora, 2: Propietario) */
   `movDetalle` varchar(30) COLLATE utf8_unicode_ci default '',
   PRIMARY KEY (`movID`)

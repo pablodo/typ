@@ -18,7 +18,7 @@ public class Movimientos {
 
 	public static void generarMovimiento(Integer alquilerId, Double importe, int destino) throws SQLException {
 		String query = "INSERT INTO Movimientos (movAlqID, movFecha, movImporte, movDestino, " +
-  					   "movSaldado) VALUES(?, NOW(), ?, ?, 0)";	
+  					   "movSaldado, movPropietarioSaldado) VALUES(?, NOW(), ?, ?, 0, 0)";	
 		java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
 		pstm.setInt(1, alquilerId);
 		pstm.setDouble(2, importe);

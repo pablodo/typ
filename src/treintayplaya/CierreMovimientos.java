@@ -215,10 +215,11 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
                 }
             }
         }
-        String query = "UPDATE Movimientos SET movSaldado=1, movFechaSaldado=?" + where;
+        String query = "UPDATE Movimientos SET movSaldado=1, movFechaSaldado=?, movPropietarioSaldado=?" + where;
         try {
             java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
             pstm.setString(1, FechasFormatter.getFechaString(new GregorianCalendar()));
+            pstm.setInt   (2, ((ComboTabla)jcbxPropietarios).getSelectedId());
             int result = pstm.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(CierreMovimientos.class.getName()).log(Level.SEVERE, null, ex);
@@ -249,21 +250,27 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
         try {
 			String query = "SELECT * FROM Movimientos " +
 					"INNER JOIN Alquileres ON movAlqID = alqID " +
-					"INNER JOIN Propietarios ON alqCuentaImpPropID = propID " +
 					"INNER JOIN UnidadesFuncionales ON alqUF = ufID " +
-					"WHERE propID = ? AND alqEstado = 2 AND movSaldado = ? AND movAlqID != 0 " +
-					"ORDER BY";
+					"LEFT JOIN Propietarios as p1 ON alqCuentaImpPropID = p1.propID " +
+					"LEFT JOIN Propietarios as p2 ON alqUF = p2.propUF " +
+					"WHERE (p1.propID = ? OR p2.propID = ?) AND alqEstado = 2 AND movSaldado = ? AND movAlqID != 0 ";
 			if (historico){
-				query += " alqID, movFechaSaldado, movFecha DESC";
+				query += "AND movPropietarioSaldado = ? GROUP BY movID ORDER BY alqID, movFechaSaldado, movFecha DESC";
 				modeloHistorico = limpiarTabla(jtblHistorico, historicoHeaders);
 			}else{
-				query += " alqID, movFecha DESC";
+				query += "GROUP BY movID ORDER BY alqID, movFecha DESC";
 				ids = new ArrayList<Integer>();
 				modelo = limpiarTabla(jtblMovimientos, headers);
 			}
             java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
 			pstm.setInt(1, propID);
-			pstm.setInt(2, historico ? 1:0);
+			pstm.setInt(2, propID);
+            if (historico){
+                pstm.setInt(3, 1);
+                pstm.setInt(4, propID);
+            }else{
+                pstm.setInt(3, 0);
+            }
             java.sql.ResultSet rst = pstm.executeQuery();
 			TotalMovimientos totales = new TotalMovimientos();
 			Importe importe = new Importe();
@@ -271,6 +278,13 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
 			int alqIDAnt = 0;
 
 			while(rst.next()) {
+                int movPropID = rst.getInt("alqCuentaImpPropID");
+
+                if (movPropID > 0 && movPropID != propID){
+                    //Si tiene una cuenta de deposito, y no es la del propietario actual, que siga de largo
+                    continue;
+                }
+
 				int alqID = rst.getInt("alqID");
 				int destino = rst.getInt("movDestino");
 				importe.setImporte(rst.getDouble("movImporte"));

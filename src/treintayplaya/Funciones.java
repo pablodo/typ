@@ -76,8 +76,8 @@ public class Funciones {
         return true;
     }
     
-    public static boolean validaComboTabla(Component parentComponent, ComboTabla obj, String name){
-        if (obj.getSelectedIndex() < 0 || obj.getSelectedId() <= 0){
+    public static boolean validaComboTabla(Component parentComponent, ComboTabla obj, String name, boolean validaId){
+        if (obj.getSelectedIndex() < 0 || (validaId && obj.getSelectedId() < 1)){
             String msg = "Seleccione " + name + '.';
             String msgTitle = "Error en " + name + '.';
             JOptionPane.showMessageDialog(parentComponent, msg, msgTitle, JOptionPane.ERROR_MESSAGE);
@@ -87,6 +87,9 @@ public class Funciones {
         return true;
     }
 
+    public static boolean validaComboTabla(Component parentComponent, ComboTabla obj, String name){
+        return validaComboTabla(parentComponent, obj, name, true);
+    }
     public static boolean validaDateChooser(Component parentComponent, JDateChooser obj, String name){
         if (obj.getCalendar() == null){
             String msg = "Elija " + name + '.';

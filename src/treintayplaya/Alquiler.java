@@ -40,6 +40,8 @@ public class Alquiler{
     @Tag String uf = "";
     @Tag String email = "";
     @Tag String email_propietario = "";
+    @Tag String forma_de_pago = "";
+    @Tag String forma_de_pago_imputada = "";
     @Tag String cuenta= "";
     @Tag String cuenta_imputada= "";
     @Tag String tipo_cuenta= "";
@@ -99,6 +101,8 @@ public class Alquiler{
             String query = "SELECT * FROM Alquileres " + 
                            "INNER JOIN UnidadesFuncionales ON alqUF = ufID " + 
                            "LEFT JOIN Clientes ON alqCliente = cliID " +
+                           "LEFT JOIN FormasPago as fp1 ON alqFormaPagoOpe = fp1.fpID " +
+                           "LEFT JOIN FormasPago as fp2 ON alqFormaPagoImp = fp2.fpID " +
                            "LEFT JOIN Propietarios as p1 ON p1.propID = alqCuentaOpePropID " +
                            "LEFT JOIN TCuentas as t1 ON p1.propTCuenta = t1.tcID " +
                            "LEFT JOIN Bancos as b1 ON p1.propBanco = b1.bancoID " +
@@ -142,6 +146,7 @@ public class Alquiler{
             bebes = rst.getInt("alqOcupantesB");
             cantidad_personas = adultos + menores + bebes;
 
+            forma_de_pago = rst.getString("fp1.fpNombre");
 			cuenta = rst.getString("p1.propNCuenta");
 			cbu = rst.getString("p1.propCBU");
 			tipo_cuenta = rst.getString("t1.tcNombre");
@@ -149,6 +154,7 @@ public class Alquiler{
 			cuit = rst.getString("p1.propCUIT");
 			titular_cuenta = rst.getString("p1.propTitularCuenta");
 
+            forma_de_pago_imputada = rst.getString("fp2.fpNombre");
 			cuenta_imputada = rst.getString("p2.propNCuenta");
 			cbu_imputado = rst.getString("p2.propCBU");
 			tipo_cuenta_imputada = rst.getString("t2.tcNombre");

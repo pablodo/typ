@@ -721,7 +721,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         Funciones.cargarComboTabla((ComboTabla)jcbxContratoProp, "SELECT conTipo, ID FROM Contratos ORDER BY ID", "conTipo", "ID", true);
         String[] destinos = {"", "Comercializadora", "Propietario"};
         Funciones.cargarComboTablaEspecial((ComboTabla)jcbxFormaPagoOperacion, "SELECT fpNombre, fpDestino, fpID FROM FormasPago ORDER BY fpDestino, fpNombre", "fpNombre", "fpID", "fpDestino", destinos);
-        Funciones.cargarComboTablaEspecial((ComboTabla)jcbxFormaPagoImputacion, "SELECT fpNombre, fpDestino, fpID FROM FormasPago WHERE fpDestino=2 ORDER BY fpDestino, fpNombre", "fpNombre", "fpID", "fpDestino", destinos);
+        Funciones.cargarComboTablaEspecial((ComboTabla)jcbxFormaPagoImputacion, "SELECT fpNombre, fpDestino, fpID FROM FormasPago ORDER BY fpDestino, fpNombre", "fpNombre", "fpID", "fpDestino", destinos);
         jcbxUF.setSelectedIndex(-1);
         jcbxFormaPagoImputacion.setSelectedIndex(-1);
         jcbxFormaPagoOperacion.setSelectedIndex(-1);
@@ -801,16 +801,18 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
     private boolean validaFormulario() {
 		if (! Funciones.validaComboTabla(this, (ComboTabla)jcbxUF, "Unidad funcional"))
 			return false;
-		if (operacion != Alquiler.PROPIETARIO && ! Funciones.validaComboTabla(this, (ComboTabla)jcbxCliente, "Inquilino"))
-			return false;
         if (! Funciones.validaDateChooser(this, jdcFIN, "Fecha de ingreso"))
             return false;
         if (! Funciones.validaDateChooser(this, jdcFOUT, "Fecha de salida"))
             return false;
-        if (operacion != Alquiler.PROPIETARIO && ! Funciones.validaComboTabla(this, (ComboTabla)jcbxFormaPagoOperacion, "Forma de pago"))
-            return false;
-        if (operacion != Alquiler.PROPIETARIO && ! Funciones.validaComboTabla(this, (ComboTabla)jcbxCuenta, "Cuenta de depósito"))
-            return false;
+        if (operacion != Alquiler.PROPIETARIO) {
+            if (! Funciones.validaComboTabla(this, (ComboTabla)jcbxCliente, "Inquilino"))
+                return false;
+            if (! Funciones.validaComboTabla(this, (ComboTabla)jcbxFormaPagoOperacion, "Forma de pago"))
+                return false;
+            if (! Funciones.validaComboTabla(this, (ComboTabla)jcbxCuenta, "Cuenta de depósito", false))
+                return false;
+        }
         return true;
     }
 
@@ -1036,8 +1038,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         if (! cuentaComercializadora)
             propID = ((ComboTabla)jcbxUF).getSelectedId().toString();
 		String query = "SELECT propNCuenta, propID FROM Propietarios WHERE propUF = " + propID ;
-        Funciones.cargarComboTabla(combo, query, "propNCuenta", "propID");
-        jcbxCuenta.setSelectedIndex(-1);
+        Funciones.cargarComboTabla(combo, query, "propNCuenta", "propID", true);
     }
 
 	private void generarMovimiento(Double importeAnterior) throws SQLException {
