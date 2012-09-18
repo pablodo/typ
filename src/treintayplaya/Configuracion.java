@@ -23,6 +23,7 @@ public class Configuracion {
     public String email;
     public String emailPassword;
 	public Properties properties;
+	public String asunto;
     
     public Configuracion(){
 		properties = new Properties();
@@ -32,6 +33,7 @@ public class Configuracion {
 			baseUsr = properties.getProperty("baseUsr", "db_30yplaya");
 			basePass = properties.getProperty("basePass", "30ypl4y42012");
 			mailingActivado = "true".equals(properties.getProperty("mailingActivado", "false")) ? true:false;
+			asunto = properties.getProperty("asunto", "");
 		} catch (Exception ex) {
 			String msj = "Error al cargar la configuración del sistema. El sistema deberá cerrarse.\n\n";
 			if (ex.getMessage() != null) msj += ex.getMessage();

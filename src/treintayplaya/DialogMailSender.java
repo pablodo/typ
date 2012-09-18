@@ -68,6 +68,8 @@ public class DialogMailSender extends javax.swing.JDialog {
         mensaje.setRows(5);
         jScrollPane1.setViewportView(mensaje);
 
+        asunto.setText(Configuracion.getInstance().asunto);
+
         jLabel1.setText("Asunto");
 
         jLabel2.setText("Mensaje");

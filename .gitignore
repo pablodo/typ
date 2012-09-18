@@ -1,2 +1,4 @@
 *.class
 /dist/
+TablaMensual.java
+/build/
