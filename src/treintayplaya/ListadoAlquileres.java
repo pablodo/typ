@@ -17,8 +17,7 @@ import javax.swing.JOptionPane;
  */
 public class ListadoAlquileres extends javax.swing.JInternalFrame {
     final static int DEUDORES=0;
-    final static int VENCIMIENTOS=1;
-    final static int ENTRANTES=2;
+    final static int ENTRANTES=1;
     java.sql.Connection cnx;
     javax.swing.table.DefaultTableModel modelo;
     Integer listado;
@@ -54,6 +53,8 @@ public class ListadoAlquileres extends javax.swing.JInternalFrame {
         fechaHasta = new com.toedter.calendar.JDateChooser();
         cerrar = new javax.swing.JButton();
         listar = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jcbxTipoAlquiler = new javax.swing.JComboBox();
 
         menu.setComponentPopupMenu(menu);
 
@@ -78,7 +79,7 @@ public class ListadoAlquileres extends javax.swing.JInternalFrame {
         tabla.setComponentPopupMenu(menu);
         jScrollPane1.setViewportView(tabla);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Fechas", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 12), new java.awt.Color(255, 0, 0))); // NOI18N
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, getFechasTitle(), javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 12), new java.awt.Color(255, 0, 0))); // NOI18N
 
         fechaDesde.setCalendar(new GregorianCalendar());
 
@@ -127,6 +128,27 @@ public class ListadoAlquileres extends javax.swing.JInternalFrame {
             }
         });
 
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Estado del Alquiler", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 12), java.awt.Color.red)); // NOI18N
+
+        jcbxTipoAlquiler.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Todos", "Reserva provisoria", "Reserva confirmada", "Reserva cancelada" }));
+
+        org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(jcbxTipoAlquiler, 0, 234, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(jcbxTipoAlquiler, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -134,7 +156,6 @@ public class ListadoAlquileres extends javax.swing.JInternalFrame {
             .add(layout.createSequentialGroup()
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 817, Short.MAX_VALUE)
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                         .add(0, 0, Short.MAX_VALUE)
                         .add(listar)
@@ -142,17 +163,22 @@ public class ListadoAlquileres extends javax.swing.JInternalFrame {
                         .add(cerrar))
                     .add(layout.createSequentialGroup()
                         .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(0, 0, Short.MAX_VALUE)))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(0, 0, Short.MAX_VALUE))
+                    .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 817, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+            .add(layout.createSequentialGroup()
                 .addContainerGap()
-                .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                    .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 367, Short.MAX_VALUE)
+                .add(6, 6, 6)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(listar)
                     .add(cerrar))
@@ -190,6 +216,9 @@ public class ListadoAlquileres extends javax.swing.JInternalFrame {
     private void listarDeudores(){
         try {
             String query = "SELECT *, (alqTotal - alqImporteReserva) as Saldo FROM Alquileres, Clientes, UnidadesFuncionales WHERE alqCliente = cliID AND alqUF = ufID AND CAST(alqFecha AS DATE) >= ? AND CAST(alqFecha AS DATE) <= ? AND (alqTotal - alqImporteReserva) != 0";
+			if (jcbxTipoAlquiler.getSelectedIndex() > 0){
+				query += " AND alqEstado = " + String.valueOf(jcbxTipoAlquiler.getSelectedIndex() - 1);
+			}
             java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
             pstm.setString(1, FechasFormatter.getFechaSimpleString(fechaDesde.getCalendar()));
             pstm.setString(2, FechasFormatter.getFechaSimpleString(fechaHasta.getCalendar()));
@@ -227,6 +256,46 @@ public class ListadoAlquileres extends javax.swing.JInternalFrame {
         }
     }
 
+    private void listarEntrantes(){
+        try {
+            String query = "SELECT * FROM Alquileres, Clientes, UnidadesFuncionales " +
+					       "WHERE alqCliente = cliID AND alqUF = ufID AND CAST(alqFIN AS DATE) >= ? AND CAST(alqFIN AS DATE) <= ?";
+			if (jcbxTipoAlquiler.getSelectedIndex() > 0){
+				query += " AND alqEstado = " + String.valueOf(jcbxTipoAlquiler.getSelectedIndex() - 1);
+			}
+            java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
+            pstm.setString(1, FechasFormatter.getFechaSimpleString(fechaDesde.getCalendar()));
+            pstm.setString(2, FechasFormatter.getFechaSimpleString(fechaHasta.getCalendar()));
+            java.sql.ResultSet rst = pstm.executeQuery();
+            
+            modelo = new javax.swing.table.DefaultTableModel();
+            Object[] headers = {"Ingreso", "UF", "Apellido", "Nombre", "A", "M", "B", "D", "Observaciones"}; 
+            modelo.setColumnIdentifiers(headers);
+            tabla.setModel(modelo);
+            rst.last();
+            alquileres = new Alquiler[rst.getRow()];
+            rst.beforeFirst();
+            while (rst.next()){
+                alquileres[rst.getRow()-1] = new Alquiler(rst.getInt("alqID"));
+                Object[] fila = {FechasFormatter.getFechaSimpleString(rst.getString("alqFIN")),
+                                 rst.getString("ufNombre"),
+                                 rst.getString("cliApellido"),
+                                 rst.getString("cliNombre"),
+                                 rst.getString("alqOcupantesA"),
+                                 rst.getString("alqOcupantesM"),
+                                 rst.getString("alqOcupantesB"),
+                                 rst.getString("alqDesayunos"),
+                                 rst.getString("alqObservaciones"),
+				};
+                modelo.addRow(fila);
+            }
+            rst.close();
+            pstm.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ListadoAlquileres.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cerrar;
     private javax.swing.JMenuItem enviarMail;
@@ -234,7 +303,9 @@ public class ListadoAlquileres extends javax.swing.JInternalFrame {
     private com.toedter.calendar.JDateChooser fechaHasta;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JComboBox jcbxTipoAlquiler;
     private javax.swing.JButton listar;
     private javax.swing.JPopupMenu menu;
     private javax.swing.JTable tabla;
@@ -245,9 +316,6 @@ public class ListadoAlquileres extends javax.swing.JInternalFrame {
         switch(listado){
             case DEUDORES:
                 titulo = "Listado de inquilinos deudores";
-                break;
-            case VENCIMIENTOS:
-                titulo = "Listado de reservas vencidas";
                 break;
             case ENTRANTES:
                 titulo = "Listado de inquilinos entrantes";
@@ -261,11 +329,20 @@ public class ListadoAlquileres extends javax.swing.JInternalFrame {
             case DEUDORES:
                 listarDeudores();
                 break;
-            case VENCIMIENTOS:
-                break;
             case ENTRANTES:
+                listarEntrantes();
                 break;
         }
     }
+
+	private String getFechasTitle(){
+		switch(listado){
+			case DEUDORES:
+				return "Fechas";
+			case ENTRANTES:
+				return "Fechas de ingreso";
+		}
+		return "Fechas";
+	}
 
 }

@@ -65,8 +65,9 @@ public class AppPrincipal extends javax.swing.JFrame {
         jmiCerrarMovimientos = new javax.swing.JMenuItem();
         propMenu = new javax.swing.JMenu();
         jmiPropResumenes = new javax.swing.JMenuItem();
-        deudoresMenu = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        listadosMenu = new javax.swing.JMenu();
+        jmniDeudores = new javax.swing.JMenuItem();
+        jmniEntrantes = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         tagsMenuItem = new javax.swing.JMenuItem();
         contentMenuItem = new javax.swing.JMenuItem();
@@ -94,7 +95,7 @@ public class AppPrincipal extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(835, Short.MAX_VALUE)
+                .addContainerGap(827, Short.MAX_VALUE)
                 .add(jlblAppUsuario)
                 .addContainerGap())
         );
@@ -294,20 +295,29 @@ public class AppPrincipal extends javax.swing.JFrame {
 
         AppMenuBar.add(propMenu);
 
-        deudoresMenu.setMnemonic('L');
-        deudoresMenu.setText("Listados");
-        deudoresMenu.setEnabled(false);
+        listadosMenu.setMnemonic('L');
+        listadosMenu.setText("Listados");
+        listadosMenu.setEnabled(false);
 
-        jMenuItem1.setMnemonic('D');
-        jMenuItem1.setText("Deudores");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        jmniDeudores.setMnemonic('D');
+        jmniDeudores.setText("Deudores");
+        jmniDeudores.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                jmniDeudoresActionPerformed(evt);
             }
         });
-        deudoresMenu.add(jMenuItem1);
+        listadosMenu.add(jmniDeudores);
 
-        AppMenuBar.add(deudoresMenu);
+        jmniEntrantes.setMnemonic('E');
+        jmniEntrantes.setText("Entrantes");
+        jmniEntrantes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmniEntrantesActionPerformed(evt);
+            }
+        });
+        listadosMenu.add(jmniEntrantes);
+
+        AppMenuBar.add(listadosMenu);
 
         helpMenu.setMnemonic('y');
         helpMenu.setText("Ayuda");
@@ -447,13 +457,13 @@ public class AppPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jmiContratosActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void jmniDeudoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmniDeudoresActionPerformed
         if(isAdmin()) {
             ListadoAlquileres listado = new ListadoAlquileres(ListadoAlquileres.DEUDORES);
             desktopPane.add(listado);
             listado.show();
         }
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_jmniDeudoresActionPerformed
 
     private void jmiFormasPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiFormasPagoActionPerformed
         if(isAdmin()) {
@@ -498,6 +508,14 @@ public class AppPrincipal extends javax.swing.JFrame {
 			usuarios.show();
 		}
     }//GEN-LAST:event_jmiUsrWebActionPerformed
+
+	private void jmniEntrantesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmniEntrantesActionPerformed
+		if(isAdmin() || isUsuario()) {
+            ListadoAlquileres listado = new ListadoAlquileres(ListadoAlquileres.ENTRANTES);
+            desktopPane.add(listado);
+            listado.show();
+        }
+	}//GEN-LAST:event_jmniEntrantesActionPerformed
 
     public static boolean isAdmin(){
         return DatosGlobales.usrNivel == 1 && DatosGlobales.usrEstado == 1 && DatosGlobales.appSesion;
@@ -548,11 +566,9 @@ public class AppPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu consultasMenu;
     private javax.swing.JMenuItem contentMenuItem;
     public static javax.swing.JDesktopPane desktopPane;
-    public static javax.swing.JMenu deudoresMenu;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator4;
@@ -570,6 +586,9 @@ public class AppPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jmiUF;
     private javax.swing.JMenuItem jmiUsrWeb;
     private javax.swing.JMenuItem jmiVistaMensual;
+    private javax.swing.JMenuItem jmniDeudores;
+    private javax.swing.JMenuItem jmniEntrantes;
+    public static javax.swing.JMenu listadosMenu;
     private javax.swing.JMenuItem loginMenuItem;
     private javax.swing.JMenuItem logoutMenuItem;
     private javax.swing.JMenu mantenimientoMenu;

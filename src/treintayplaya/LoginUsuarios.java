@@ -156,7 +156,7 @@ public class LoginUsuarios extends javax.swing.JInternalFrame {
                         vistaAdmin.toFront();
                         vistaAdmin.show();
                         AppPrincipal.admMenu.setEnabled(true);
-                        AppPrincipal.deudoresMenu.setEnabled(true);
+                        AppPrincipal.listadosMenu.setEnabled(true);
                     } else {
                         if(DatosGlobales.usrNivel == 2 && DatosGlobales.usrEstado == 0) {
                             AppPrincipal.propMenu.setEnabled(true);

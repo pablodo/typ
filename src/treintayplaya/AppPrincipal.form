@@ -233,7 +233,7 @@
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="deudoresMenu">
+        <Menu class="javax.swing.JMenu" name="listadosMenu">
           <Properties>
             <Property name="mnemonic" type="int" value="76"/>
             <Property name="text" type="java.lang.String" value="Listados"/>
@@ -243,13 +243,22 @@
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
           </AuxValues>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
+            <MenuItem class="javax.swing.JMenuItem" name="jmniDeudores">
               <Properties>
                 <Property name="mnemonic" type="int" value="68"/>
                 <Property name="text" type="java.lang.String" value="Deudores"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem1ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jmniDeudoresActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jmniEntrantes">
+              <Properties>
+                <Property name="mnemonic" type="int" value="69"/>
+                <Property name="text" type="java.lang.String" value="Entrantes"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jmniEntrantesActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>
@@ -360,7 +369,7 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace pref="835" max="32767" attributes="0"/>
+                  <EmptySpace pref="827" max="32767" attributes="0"/>
                   <Component id="jlblAppUsuario" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
