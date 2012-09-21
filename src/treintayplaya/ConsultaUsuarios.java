@@ -147,10 +147,11 @@ public class ConsultaUsuarios extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jbtnCerrarActionPerformed
 
     private void jbtnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnAgregarActionPerformed
-       NuevoUsuario nUsr = new NuevoUsuario(this);
-       AppPrincipal.desktopPane.add(nUsr);
-       nUsr.toFront();
-       nUsr.show(); 
+		jtblUsuarios.clearSelection();		
+        NuevoUsuario nUsr = new NuevoUsuario(this);
+        AppPrincipal.desktopPane.add(nUsr);
+        nUsr.toFront();
+        nUsr.show(); 
     }//GEN-LAST:event_jbtnAgregarActionPerformed
 
     private void jbtnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnBorrarActionPerformed

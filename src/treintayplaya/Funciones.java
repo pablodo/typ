@@ -31,8 +31,8 @@ public class Funciones {
     public static void cargarComboTabla(ComboTabla combo, String query, String campoNombre, String campoId, boolean primerItemVacio){
         try {
             combo.removeAllItems();
-	    if (primerItemVacio)
-		combo.addItem("Ninguno");
+			if (primerItemVacio)
+				combo.addItem("Ninguno");
             java.sql.Connection cnx = Conexion.getInstance().getConnection();
             java.sql.Statement stm = cnx.createStatement();
             java.sql.ResultSet rst = stm.executeQuery(query);
@@ -139,10 +139,14 @@ public class Funciones {
     public static String formatNumber(Double number) {
         return formatNumber(number, "###,###,##0.00");
     }
-
 	public static void cargarComboTablaApellidoNombre(ComboTabla combo, String query, String campoApellido, String campoNombre, String campoId) {
+		cargarComboTablaApellidoNombre(combo, query, campoApellido, campoNombre, campoId, false);
+	}
+	public static void cargarComboTablaApellidoNombre(ComboTabla combo, String query, String campoApellido, String campoNombre, String campoId, boolean primerItemVacio){
         try {
             combo.removeAllItems();
+			if (primerItemVacio)
+				combo.addItem("Ninguno");
             java.sql.Connection cnx = Conexion.getInstance().getConnection();
             java.sql.Statement stm = cnx.createStatement();
             java.sql.ResultSet rst = stm.executeQuery(query);
@@ -152,7 +156,7 @@ public class Funciones {
                 String nombre = rst.getString(campoNombre);
                 ((ComboTabla)combo).addItem(apellido + ", " + nombre, id);
             }
-			combo.setSelectedIndex(-1);
+			combo.setSelectedIndex(primerItemVacio?0:-1);
             rst.close();
             stm.close();
         } catch (SQLException ex) {

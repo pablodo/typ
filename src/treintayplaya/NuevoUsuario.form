@@ -27,15 +27,17 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jlblValPass" alignment="0" pref="135" max="32767" attributes="1"/>
+                          <Component id="jlblValPass" alignment="0" max="32767" attributes="1"/>
                           <Component id="jlblPass" alignment="0" max="32767" attributes="1"/>
                           <Component id="jlblUsuario" alignment="0" max="32767" attributes="1"/>
+                          <Component id="lblPropietario" alignment="0" min="-2" max="-2" attributes="1"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jpfValPass" alignment="0" pref="341" max="32767" attributes="1"/>
                           <Component id="jtxfUsuario" alignment="0" pref="341" max="32767" attributes="1"/>
                           <Component id="jpfPass" alignment="0" pref="341" max="32767" attributes="1"/>
+                          <Component id="jcbxPropietario" alignment="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
@@ -71,14 +73,23 @@
                   <Component id="jlblValPass" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jpfValPass" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="jchkAdmin" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jbtnCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jbtnAceptar" alignment="3" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="jchkAdmin" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jbtnCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jbtnAceptar" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jcbxPropietario" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblPropietario" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
-              <EmptySpace pref="18" max="32767" attributes="0"/>
+              <EmptySpace pref="22" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -131,6 +142,13 @@
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="jchkAdmin.setVisible(AppPrincipal.isAdmin());"/>
       </AuxValues>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblPropietario">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Propietario:"/>
+      </Properties>
+    </Component>
+    <Component class="treintayplaya.ComboTabla" name="jcbxPropietario">
     </Component>
   </SubComponents>
 </Form>
