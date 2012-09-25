@@ -85,7 +85,7 @@ public class AltaContrato extends javax.swing.JInternalFrame {
 
         jScrollPane2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Detalle", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 12), new java.awt.Color(255, 0, 0))); // NOI18N
 
-        jtxaDetalle.setDocument(new FixedLengthDocument(1000));
+        jtxaDetalle.setDocument(new FixedLengthDocument(3000));
         jtxaDetalle.setTabSize(4);
         jtxaDetalle.setComponentPopupMenu(menu);
         jScrollPane2.setViewportView(jtxaDetalle);
@@ -117,7 +117,7 @@ public class AltaContrato extends javax.swing.JInternalFrame {
                     .add(jlblNombre)
                     .add(jtxfTipo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE)
+                .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)
                 .add(18, 18, 18)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jbtnAceptar)

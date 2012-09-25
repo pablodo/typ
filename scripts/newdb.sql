@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS `Clientes` (
 CREATE TABLE IF NOT EXISTS `Contratos` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `conTipo` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
-  `conDetalle` varchar(1000) COLLATE utf8_unicode_ci NOT NULL,
+  `conDetalle` varchar(3000) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 --
@@ -129,14 +129,14 @@ CREATE TABLE IF NOT EXISTS `Propietarios` (
   `propApellido` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `propNombre` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `propEmail` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
-  `propTelefono` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
-  `propCelular` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
+  `propTelefono` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `propCelular` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `propCUIT` varchar(13) COLLATE utf8_unicode_ci NOT NULL,
   `propBanco` int(11) NOT NULL,
   `propNCuenta` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `propCBU` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
+  `propCBU` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `propTCuenta` int(11) NOT NULL,
-  `propTitularCuenta` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `propTitularCuenta` varchar(65) COLLATE utf8_unicode_ci NOT NULL,
   `propUF` int(11) NOT NULL,
   PRIMARY KEY (`propID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;

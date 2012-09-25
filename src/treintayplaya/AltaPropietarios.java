@@ -118,7 +118,7 @@ public class AltaPropietarios extends javax.swing.JInternalFrame {
         jlblTelefono.setText("Teléfono:");
 
         try {
-            jftfTelefono.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####-####-####")));
+            jftfTelefono.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##################################################")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
@@ -127,7 +127,7 @@ public class AltaPropietarios extends javax.swing.JInternalFrame {
         jlblCelular.setText("Celular:");
 
         try {
-            jftfCelular.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####-####-####")));
+            jftfCelular.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##################################################")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
@@ -203,7 +203,7 @@ public class AltaPropietarios extends javax.swing.JInternalFrame {
                 .add(jpnlUFLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jlblUF)
                     .add(jcbxUF, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(0, 10, Short.MAX_VALUE))
+                .add(0, 1, Short.MAX_VALUE))
         );
 
         jpnlBancario.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Bancarios"));
@@ -227,12 +227,12 @@ public class AltaPropietarios extends javax.swing.JInternalFrame {
 
         jlblCBU.setText("CBU:");
 
-        jtxfCBU.setDocument(new FixedLengthDocument(24));
+        jtxfCBU.setDocument(new FixedLengthDocument(30));
         jtxfCBU.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jlblTitular.setText("Titular:");
 
-        jtxfTitular.setDocument(new FixedLengthDocument(50));
+        jtxfTitular.setDocument(new FixedLengthDocument(65));
         jtxfTitular.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jtxfTitular.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -325,7 +325,7 @@ public class AltaPropietarios extends javax.swing.JInternalFrame {
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jbtnAceptar)
                     .add(jbtnCancelar))
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         pack();
