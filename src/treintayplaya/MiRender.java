@@ -6,6 +6,8 @@ package treintayplaya;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -65,6 +67,15 @@ public class MiRender extends DefaultTableCellRenderer implements TableCellRende
             }else{
                 setText(String.valueOf(value));
                 setToolTipText(null);
+
+				if (column > 0){
+					int mes = VistaActividadAdmin.month;
+					int year = VistaActividadAdmin.year;
+					GregorianCalendar calendar = new GregorianCalendar(year, mes, column);
+					if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY){
+						setBackground(new Color(230,255,150));
+					}
+				}
             }
             
             

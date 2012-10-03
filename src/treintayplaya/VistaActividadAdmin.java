@@ -27,8 +27,8 @@ import javax.swing.table.DefaultTableModel;
  * @author sergio
  */
 public class VistaActividadAdmin extends javax.swing.JInternalFrame {
-    private static int year;
-    private static int month;
+    public static int year;
+    public static int month;
     private static ArrayList<Integer> ufIDs = new ArrayList<Integer>();
     private static GregorianCalendar calendar = new GregorianCalendar();
     public static DefaultTableModel modelo = new DefaultTableModel();
