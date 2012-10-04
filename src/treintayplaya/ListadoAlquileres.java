@@ -269,7 +269,7 @@ public class ListadoAlquileres extends javax.swing.JInternalFrame {
             java.sql.ResultSet rst = pstm.executeQuery();
             
             modelo = new javax.swing.table.DefaultTableModel();
-            Object[] headers = {"Ingreso", "UF", "Apellido", "Nombre", "A", "M", "B", "D", "Observaciones"}; 
+            Object[] headers = {"Ingreso", "UF", "Apellido", "Nombre", "A", "M", "B", "D", "Observaciones", "Saldo"}; 
             modelo.setColumnIdentifiers(headers);
             tabla.setModel(modelo);
             rst.last();
@@ -277,6 +277,7 @@ public class ListadoAlquileres extends javax.swing.JInternalFrame {
             rst.beforeFirst();
             while (rst.next()){
                 alquileres[rst.getRow()-1] = new Alquiler(rst.getInt("alqID"));
+				Double saldo = rst.getDouble("alqTotal") - rst.getDouble("alqImporteReserva");
                 Object[] fila = {FechasFormatter.getFechaSimpleString(rst.getString("alqFIN")),
                                  rst.getString("ufNombre"),
                                  rst.getString("cliApellido"),
@@ -286,6 +287,7 @@ public class ListadoAlquileres extends javax.swing.JInternalFrame {
                                  rst.getString("alqOcupantesB"),
                                  rst.getString("alqDesayunos"),
                                  rst.getString("alqObservaciones"),
+								 Funciones.formatNumber(saldo)
 				};
                 modelo.addRow(fila);
             }
