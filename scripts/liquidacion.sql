@@ -2,6 +2,8 @@ CREATE TABLE IF NOT EXISTS `Liquidaciones` (
   `liqID` int(11) NOT NULL AUTO_INCREMENT,
   `liqFecha` datetime NOT NULL,
   `liqPropietario` int(11) NOT NULL,
+  `liqEnComercializadora` decimal(10,2) NOT NULL,
+  `liqEnPropietario` decimal(10,2) NOT NULL,
   `liqImporte` decimal(10,2) NOT NULL,
   `liqACobrar` decimal(10,2) NOT NULL,
   `liqAPagar` decimal(10,2) NOT NULL,

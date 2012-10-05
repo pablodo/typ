@@ -20,6 +20,9 @@ import javax.swing.table.TableColumnModel;
  */
 public class MiRender extends DefaultTableCellRenderer implements TableCellRenderer {
 
+	private static Color sabados = new Color(255, 230, 200);
+	private static Color invalido = new Color(250, 200, 190);
+
     @Override
     public Component getTableCellRendererComponent(JTable table,
                                                    Object value, 
@@ -72,15 +75,14 @@ public class MiRender extends DefaultTableCellRenderer implements TableCellRende
 					int year = VistaActividadAdmin.year;
 					GregorianCalendar calendar = new GregorianCalendar(year, mes, column);
 					if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY){
-						setBackground(new Color(255, 230, 200));
+						setBackground(sabados);
 					}
 				}
             }
-            
-            
-            for(int i = 0; i < table.getRowCount(); i++)
-                if(column == 1)
-                    table.setBackground(new Color(240, 240, 240));
+
+			if (VistaActividadAdmin.ufIDs.get(row) == 0){
+				setBackground(invalido);
+			}	
             
             super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);         
             

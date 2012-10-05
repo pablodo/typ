@@ -13,6 +13,8 @@ import java.util.GregorianCalendar;
  * @author administrador
  */
 class FechasFormatter {
+
+	private final static String sep = "-";
     
     static String getFechaString(Calendar calendar) {
 		if (calendar == null)
@@ -27,7 +29,7 @@ class FechasFormatter {
         min  = formatter.format(calendar.get(GregorianCalendar.MINUTE));
         seg  = formatter.format(calendar.get(GregorianCalendar.SECOND));
             
-        return (anio + "-" + mes + "-" + dia  + " " + hr + ":" + min + ":" + seg);
+        return (anio + sep + mes + sep + dia  + sep + hr + ":" + min + ":" + seg);
     }
     
     static String getFechaSimpleString(Calendar calendar) {
@@ -38,18 +40,23 @@ class FechasFormatter {
         mes  = formatter.format(calendar.get(GregorianCalendar.MONTH) + 1);
         anio = String.valueOf(calendar.get(GregorianCalendar.YEAR));
         
-        return (anio + "-" + mes + "-" + dia);
+        return (dia + sep + mes + sep + anio);
     }
     
     static String getFechaSimpleString(String fecha) {
         fecha = getFechaFromMySQL(fecha);
-        return fecha.split(" ")[0];
+		fecha = fecha.split(" ")[0]; 
+		String dia, mes, anio;
+        dia  = fecha.split(sep)[2]; 
+        mes  = fecha.split(sep)[1];
+        anio = fecha.split(sep)[0];
+        return (dia + sep + mes + sep + anio);
     }
 
     static Calendar getFechaCalendar(String fecha) {
         fecha = getFechaFromMySQL(fecha);
         int dia, mes, anio, hr, min, seg;
-        String[] fechaSplit = fecha.split(" ")[0].split("-");
+        String[] fechaSplit = fecha.split(" ")[0].split(sep);
         String[] horaSplit = fecha.split(" ")[1].split(":");
         anio = Integer.parseInt(fechaSplit[0]);
         mes  = Integer.parseInt(fechaSplit[1]) - 1;
@@ -67,6 +74,27 @@ class FechasFormatter {
             fecha = fecha.substring(0, fecha.length()-2);
         }
         return fecha;
+    }
+
+    static String getFechaToMySQL(Calendar calendar) {
+        NumberFormat formatter = NumberFormat.getInstance();
+        formatter.setMinimumIntegerDigits(2);
+        String dia, mes, anio;
+        dia  = formatter.format(calendar.get(GregorianCalendar.DAY_OF_MONTH));
+        mes  = formatter.format(calendar.get(GregorianCalendar.MONTH) + 1);
+        anio = String.valueOf(calendar.get(GregorianCalendar.YEAR));
+        
+        return (anio + sep + mes + sep + dia);
+    }
+
+    static String getFechaToMySQL(String fecha) {
+		//Suponemos que recibimos una fecha con formato dd-mm-aaaa
+        String dia, mes, anio;
+        dia  = fecha.split(sep)[0]; 
+        mes  = fecha.split(sep)[1];
+        anio = fecha.split(sep)[2];
+        
+        return (anio + sep + mes + sep + dia);
     }
     
     static long getTimeFromFecha(String fecha) {

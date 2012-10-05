@@ -29,7 +29,7 @@ import javax.swing.table.DefaultTableModel;
 public class VistaActividadAdmin extends javax.swing.JInternalFrame {
     public static int year;
     public static int month;
-    private static ArrayList<Integer> ufIDs = new ArrayList<Integer>();
+    public static ArrayList<Integer> ufIDs = new ArrayList<Integer>();
     private static GregorianCalendar calendar = new GregorianCalendar();
     public static DefaultTableModel modelo = new DefaultTableModel();
     /** Creates new form VistaActividadAdmin */

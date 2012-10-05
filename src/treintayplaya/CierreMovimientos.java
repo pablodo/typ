@@ -17,7 +17,7 @@ import javax.swing.table.*;
 
 /**
  *
- * @author sergio
+ * @author pablo
  */
 public class CierreMovimientos extends javax.swing.JInternalFrame {
 
@@ -385,6 +385,7 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
         if (! option){
             jtblMovimientos.setModel(new DefaultTableModel());
             jtblTotales.setModel(new DefaultTableModel());
+			jftfImporteLiquidacion.setValue(0);
         }
     }
     

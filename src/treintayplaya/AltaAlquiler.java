@@ -834,12 +834,13 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
 
         int ufID = ((ComboTabla)jcbxUF).getSelectedId();
         int cliID = ((ComboTabla)jcbxCliente).getSelectedId();
-        String fIN = FechasFormatter.getFechaSimpleString(jdcFIN.getCalendar());
-        String fOUT = FechasFormatter.getFechaSimpleString(jdcFOUT.getCalendar());
-        String vencimiento = FechasFormatter.getFechaSimpleString(jdcVencimiento.getCalendar());
+		String fechaAlquiler = FechasFormatter.getFechaToMySQL(jlblAlqFecha.getText());
+        String fIN = FechasFormatter.getFechaToMySQL(jdcFIN.getCalendar());
+        String fOUT = FechasFormatter.getFechaToMySQL(jdcFOUT.getCalendar());
+        String vencimiento = FechasFormatter.getFechaToMySQL(jdcVencimiento.getCalendar());
         Integer estado = this.operacion == Alquiler.MODIFICAR ? alquiler.tipo : this.operacion;
 
-        pstm.setString( 1, jlblAlqFecha.getText());
+        pstm.setString( 1, fechaAlquiler);
         pstm.setInt   ( 2, estado); 
         pstm.setInt   ( 3, DatosGlobales.usrID);
         pstm.setInt   ( 4, ufID);
@@ -890,10 +891,10 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
                 
         String query = "INSERT INTO DetAlquileres (dalqAlq, dalqFecha) VALUES ";
         for (int i=0; i<=dias; i++){         
-            String aux = "(" + String.valueOf(alqID) + ", '" + FechasFormatter.getFechaSimpleString(calendar) + "')";
-            if (i < dias)
+            String aux = "(" + String.valueOf(alqID) + ", '" + FechasFormatter.getFechaToMySQL(calendar) + "')";
+            if (i < dias){
                 aux += ", ";
-            
+			}
             query += aux;
             calendar.add(GregorianCalendar.DATE, 1);
         }
@@ -921,7 +922,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
             java.sql.ResultSet rst = pstm.executeQuery();
             
             rst.next();
-            jlblAlqFecha.setText(FechasFormatter.getFechaFromMySQL(rst.getString("alqFecha")));
+            jlblAlqFecha.setText(FechasFormatter.getFechaSimpleString(rst.getString("alqFecha")));
             jdcVencimiento.setCalendar(FechasFormatter.getFechaCalendar(rst.getString("alqVencimiento")));
             jlblAlqOperador.setText(rst.getString("usrEmail"));
             selectUF(rst.getInt("alqUF"));
@@ -1045,7 +1046,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
 		Double importe = Double.valueOf(jftfImporteReserva.getValue().toString());
 		importe -= importeAnterior;
 		int destino = ((ComboTabla)jcbxFormaPagoOperacion).isItemBeforeEspecial(1)? 1:2;
-        String fecha = FechasFormatter.getFechaSimpleString(new GregorianCalendar());
+        String fecha = FechasFormatter.getFechaToMySQL(new GregorianCalendar());
 		Movimientos.guardarMovimiento(0, fecha, importe, destino, "", alquiler.id);
 	}
 

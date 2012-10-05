@@ -258,8 +258,8 @@ public class ConsultaMovimientos extends javax.swing.JInternalFrame {
     private void jbtnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnOKActionPerformed
         if (! valida()) return;
         try {
-            String fecha = FechasFormatter.getFechaString(jdcFecha.getCalendar());
-            Double importe = Double.valueOf(jftfImporte.getValue().toString());
+            String fecha = FechasFormatter.getFechaSimpleString(jdcFecha.getCalendar());
+            Double importe = Double.valueOf(String.valueOf(jftfImporte.getValue()));;
             int destino = jcbxDestino.getSelectedIndex() + 1;
             String detalle = jtaDetalle.getText();
             int id = 0;
@@ -270,7 +270,6 @@ public class ConsultaMovimientos extends javax.swing.JInternalFrame {
             
             cargaTabla();
             altaMovimiento(false);
-            
         } catch (java.sql.SQLException sqle) {
             sqle.printStackTrace();
         }

@@ -220,8 +220,8 @@ public class ListadoAlquileres extends javax.swing.JInternalFrame {
 				query += " AND alqEstado = " + String.valueOf(jcbxTipoAlquiler.getSelectedIndex() - 1);
 			}
             java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
-            pstm.setString(1, FechasFormatter.getFechaSimpleString(fechaDesde.getCalendar()));
-            pstm.setString(2, FechasFormatter.getFechaSimpleString(fechaHasta.getCalendar()));
+            pstm.setString(1, FechasFormatter.getFechaToMySQL(fechaDesde.getCalendar()));
+            pstm.setString(2, FechasFormatter.getFechaToMySQL(fechaHasta.getCalendar()));
             java.sql.ResultSet rst = pstm.executeQuery();
             
             modelo = new javax.swing.table.DefaultTableModel();
@@ -264,8 +264,8 @@ public class ListadoAlquileres extends javax.swing.JInternalFrame {
 				query += " AND alqEstado = " + String.valueOf(jcbxTipoAlquiler.getSelectedIndex() - 1);
 			}
             java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
-            pstm.setString(1, FechasFormatter.getFechaSimpleString(fechaDesde.getCalendar()));
-            pstm.setString(2, FechasFormatter.getFechaSimpleString(fechaHasta.getCalendar()));
+            pstm.setString(1, FechasFormatter.getFechaToMySQL(fechaDesde.getCalendar()));
+            pstm.setString(2, FechasFormatter.getFechaToMySQL(fechaHasta.getCalendar()));
             java.sql.ResultSet rst = pstm.executeQuery();
             
             modelo = new javax.swing.table.DefaultTableModel();
