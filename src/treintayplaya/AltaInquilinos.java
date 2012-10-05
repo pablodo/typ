@@ -57,13 +57,13 @@ public class AltaInquilinos extends javax.swing.JInternalFrame {
         jlblNombre = new javax.swing.JLabel();
         jtxfNombre = new javax.swing.JTextField();
         jlblTelefono = new javax.swing.JLabel();
-        jftfTelefono = new javax.swing.JFormattedTextField();
         jlblCelular = new javax.swing.JLabel();
-        jftfCelular = new javax.swing.JFormattedTextField();
         jlblEmail = new javax.swing.JLabel();
         jtxfEmail = new javax.swing.JTextField();
         jbtnAceptar = new javax.swing.JButton();
         jbtnCancelar = new javax.swing.JButton();
+        jtxfTelefono = new javax.swing.JTextField();
+        jtxfCelular = new javax.swing.JTextField();
 
         setClosable(true);
         setTitle("Alta de Inquilinos");
@@ -83,21 +83,7 @@ public class AltaInquilinos extends javax.swing.JInternalFrame {
 
         jlblTelefono.setText("Teléfono:");
 
-        try {
-            jftfTelefono.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#####-####-####")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-        jftfTelefono.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);
-
         jlblCelular.setText("Celular:");
-
-        try {
-            jftfCelular.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####-####-####")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-        jftfCelular.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);
 
         jlblEmail.setText("Email:");
 
@@ -115,6 +101,10 @@ public class AltaInquilinos extends javax.swing.JInternalFrame {
             }
         });
 
+        jtxfTelefono.setDocument(new FixedLengthDocument(50));
+
+        jtxfCelular.setDocument(new FixedLengthDocument(50));
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -125,21 +115,21 @@ public class AltaInquilinos extends javax.swing.JInternalFrame {
                     .add(jlblDNI, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 111, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jlblApellido, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 102, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jlblNombre, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 102, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jlblTelefono, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 94, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jlblEmail, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 94, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jlblCelular, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 94, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jlblEmail, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 94, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jlblTelefono, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 94, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(18, 18, 18)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                    .add(layout.createSequentialGroup()
-                        .add(jbtnAceptar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 118, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                        .add(jbtnAceptar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 89, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jbtnCancelar, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE))
-                    .add(jftfDNI)
-                    .add(jtxfApellido)
+                        .add(jbtnCancelar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 95, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                     .add(jtxfNombre)
-                    .add(jftfTelefono)
-                    .add(jftfCelular)
-                    .add(jtxfEmail))
+                    .add(jtxfApellido)
+                    .add(jtxfTelefono)
+                    .add(jtxfCelular)
+                    .add(jtxfEmail)
+                    .add(jftfDNI, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE))
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -159,21 +149,21 @@ public class AltaInquilinos extends javax.swing.JInternalFrame {
                     .add(jtxfNombre, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jftfTelefono, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jtxfTelefono, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jlblTelefono))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jlblCelular)
-                    .add(jftfCelular, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jtxfCelular, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jlblCelular))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jtxfEmail, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jlblEmail))
-                .add(18, 18, 18)
+                .add(9, 9, 9)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jbtnAceptar)
                     .add(jbtnCancelar))
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         pack();
@@ -200,9 +190,7 @@ public class AltaInquilinos extends javax.swing.JInternalFrame {
                         throw new java.sql.SQLException();
                     }
                 }
-                
             }
- 
         } catch(java.sql.SQLException sqle) {
             sqle.printStackTrace();
             try {
@@ -219,9 +207,7 @@ public class AltaInquilinos extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jbtnAceptar;
     private javax.swing.JButton jbtnCancelar;
-    private javax.swing.JFormattedTextField jftfCelular;
     private javax.swing.JFormattedTextField jftfDNI;
-    private javax.swing.JFormattedTextField jftfTelefono;
     private javax.swing.JLabel jlblApellido;
     private javax.swing.JLabel jlblCelular;
     private javax.swing.JLabel jlblDNI;
@@ -229,8 +215,10 @@ public class AltaInquilinos extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jlblNombre;
     private javax.swing.JLabel jlblTelefono;
     private javax.swing.JTextField jtxfApellido;
+    private javax.swing.JTextField jtxfCelular;
     private javax.swing.JTextField jtxfEmail;
     private javax.swing.JTextField jtxfNombre;
+    private javax.swing.JTextField jtxfTelefono;
     // End of variables declaration//GEN-END:variables
 
     private void cargarCliente(Integer cliID) {
@@ -246,8 +234,8 @@ public class AltaInquilinos extends javax.swing.JInternalFrame {
             jtxfNombre.setText(rst.getString("cliNombre"));
             jtxfEmail.setText(rst.getString("cliEmail"));
             jftfDNI.setText(rst.getString("cliDNI"));
-            jftfCelular.setText(rst.getString("cliCelular").replaceAll("-", ""));
-            jftfTelefono.setText(rst.getString("cliTelefono"));
+            jtxfCelular.setText(rst.getString("cliCelular").replaceAll("-", ""));
+            jtxfTelefono.setText(rst.getString("cliTelefono"));
             
         }catch(java.sql.SQLException sqle){
             sqle.printStackTrace();
@@ -263,8 +251,8 @@ public class AltaInquilinos extends javax.swing.JInternalFrame {
         pstm.setString(1, jftfDNI.getText());
         pstm.setString(2, jtxfApellido.getText());
         pstm.setString(3, jtxfNombre.getText());
-        pstm.setString(4, jftfTelefono.getText());
-        pstm.setString(5, jftfCelular.getText());
+        pstm.setString(4, jtxfTelefono.getText());
+        pstm.setString(5, jtxfCelular.getText());
         pstm.setString(6, jtxfEmail.getText());
         if (cliID > 0)
             pstm.setInt(7, cliID);
