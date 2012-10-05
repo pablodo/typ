@@ -53,10 +53,10 @@
                   <Component id="jcbxPropietarios" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jpnlMovimientos" max="32767" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="jpnlMovimientos" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jbtnCerrar" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -87,11 +87,7 @@
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          <Component id="jbtnSaldar" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Component id="jScrollPane2" pref="888" max="32767" attributes="0"/>
+                      <Component id="jScrollPane2" pref="880" max="32767" attributes="0"/>
                       <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
                       <Component id="jScrollPane3" alignment="0" max="32767" attributes="0"/>
                       <Group type="102" attributes="0">
@@ -100,6 +96,14 @@
                               <Component id="lblMovimientos" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <Component id="jlblImporteLiquidacion" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="jftfImporteLiquidacion" min="-2" pref="181" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jbtnSaldar" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -116,12 +120,16 @@
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="lblMovimientos" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" pref="245" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" min="-2" pref="181" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jScrollPane2" min="-2" pref="69" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jbtnSaldar" min="-2" max="-2" attributes="0"/>
+                  <Component id="jScrollPane2" min="-2" pref="51" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jbtnSaldar" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jftfImporteLiquidacion" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jlblImporteLiquidacion" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -154,8 +162,8 @@
         </Component>
         <Component class="javax.swing.JButton" name="jbtnSaldar">
           <Properties>
-            <Property name="mnemonic" type="int" value="83"/>
-            <Property name="text" type="java.lang.String" value="Saldar movimientos"/>
+            <Property name="mnemonic" type="int" value="76"/>
+            <Property name="text" type="java.lang.String" value="Liquidar"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnSaldarActionPerformed"/>
@@ -202,6 +210,21 @@
         <Component class="javax.swing.JLabel" name="lblHistorico">
           <Properties>
             <Property name="text" type="java.lang.String" value="Hist&#xf3;rico"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JFormattedTextField" name="jftfImporteLiquidacion">
+          <Properties>
+            <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
+              <Format format="##,###,##0.00" subtype="-1" type="0"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jftfImporteLiquidacionFocusLost"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jlblImporteLiquidacion">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Importe liquidaci&#xf3;n:"/>
           </Properties>
         </Component>
       </SubComponents>

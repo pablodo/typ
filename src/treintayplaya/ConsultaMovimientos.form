@@ -52,7 +52,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollPane1" pref="260" max="32767" attributes="0"/>
+              <Component id="jScrollPane1" pref="263" max="32767" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="jpnlAltaMovimiento" min="-2" pref="158" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -142,36 +142,17 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="jlblDetalle" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="jlblDetalle" min="-2" pref="59" max="-2" attributes="0"/>
                       <Component id="jlblFecha" min="-2" max="-2" attributes="0"/>
-                      <Component id="jlblImporte" max="32767" attributes="0"/>
+                      <Component id="jlblDestino" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="jdcFecha" min="-2" pref="223" max="-2" attributes="0"/>
-                              <Component id="jftfImporte" min="-2" pref="223" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jchkSaldado" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jlblDestino" alignment="0" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
-                                  <Component id="jdcFechaSaldado" min="-2" pref="183" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                              </Group>
-                              <Component id="jcbxDestino" max="32767" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <Component id="jScrollPane2" max="32767" attributes="0"/>
+                                  <Component id="jScrollPane2" pref="555" max="32767" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Component id="jbtnOK" min="-2" pref="117" max="-2" attributes="0"/>
                               </Group>
@@ -180,10 +161,21 @@
                                   <Component id="jbtnCancelar" min="-2" pref="117" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="jdcFecha" pref="223" max="32767" attributes="0"/>
+                              <Component id="jcbxDestino" max="32767" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
+                          <Component id="jlblImporte" max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jftfImporte" min="-2" pref="223" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="154" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -192,17 +184,15 @@
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="2" attributes="0">
-                      <Component id="jdcFechaSaldado" alignment="2" min="-2" max="-2" attributes="0"/>
-                      <Component id="jchkSaldado" alignment="2" min="-2" max="-2" attributes="0"/>
-                      <Component id="jdcFecha" alignment="2" min="-2" max="-2" attributes="0"/>
                       <Component id="jlblFecha" alignment="2" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="2" attributes="0">
-                      <Component id="jcbxDestino" alignment="2" min="-2" max="-2" attributes="0"/>
-                      <Component id="jlblDestino" alignment="2" min="-2" max="-2" attributes="0"/>
                       <Component id="jftfImporte" alignment="2" min="-2" max="-2" attributes="0"/>
                       <Component id="jlblImporte" alignment="2" min="-2" max="-2" attributes="0"/>
+                      <Component id="jdcFecha" alignment="2" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jcbxDestino" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jlblDestino" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -266,20 +256,6 @@
         <Component class="com.toedter.calendar.JDateChooser" name="jdcFecha">
           <Properties>
             <Property name="dateFormatString" type="java.lang.String" value="dd/MM/yyyy HH:mm:ss"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JCheckBox" name="jchkSaldado">
-          <Properties>
-            <Property name="mnemonic" type="int" value="83"/>
-            <Property name="text" type="java.lang.String" value="Saldado?"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jchkSaldadoActionPerformed"/>
-          </Events>
-        </Component>
-        <Component class="com.toedter.calendar.JDateChooser" name="jdcFechaSaldado">
-          <Properties>
-            <Property name="toolTipText" type="java.lang.String" value="Fecha de Saldado"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jlblDetalle">

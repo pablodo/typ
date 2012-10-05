@@ -1045,7 +1045,8 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
 		Double importe = Double.valueOf(jftfImporteReserva.getValue().toString());
 		importe -= importeAnterior;
 		int destino = ((ComboTabla)jcbxFormaPagoOperacion).isItemBeforeEspecial(1)? 1:2;
-		Movimientos.generarMovimiento(alquiler.id, importe, destino);
+        String fecha = FechasFormatter.getFechaSimpleString(new GregorianCalendar());
+		Movimientos.guardarMovimiento(0, fecha, importe, destino, "", alquiler.id);
 	}
 
 	private void setImputacionesHabilitadas(boolean opcion) {

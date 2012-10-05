@@ -8,8 +8,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTable;
@@ -49,7 +49,9 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
 									     "En el Propietario",
 									     "A Pagar",
 									     "A Cobrar",
-									     "Ganancia"};
+									     "Ganancia",
+                                         "Liquidado"}; 
+    private TotalMovimientos totales;
     
     public CierreMovimientos() {
         cnx = Conexion.getInstance().getConnection();
@@ -78,6 +80,8 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         jtblHistorico = new javax.swing.JTable(){     public boolean isCellEditable(int row, int col){         return false;     } };
         lblHistorico = new javax.swing.JLabel();
+        jftfImporteLiquidacion = new javax.swing.JFormattedTextField();
+        jlblImporteLiquidacion = new javax.swing.JLabel();
         lblPropietario = new javax.swing.JLabel();
         jcbxPropietarios = new treintayplaya.ComboTabla();
 
@@ -103,8 +107,8 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
 
         lblMovimientos.setText("Movimientos");
 
-        jbtnSaldar.setMnemonic('S');
-        jbtnSaldar.setText("Saldar movimientos");
+        jbtnSaldar.setMnemonic('L');
+        jbtnSaldar.setText("Liquidar");
         jbtnSaldar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnSaldarActionPerformed(evt);
@@ -119,6 +123,15 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
 
         lblHistorico.setText("Histórico");
 
+        jftfImporteLiquidacion.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("##,###,##0.00"))));
+        jftfImporteLiquidacion.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jftfImporteLiquidacionFocusLost(evt);
+            }
+        });
+
+        jlblImporteLiquidacion.setText("Importe liquidación:");
+
         org.jdesktop.layout.GroupLayout jpnlMovimientosLayout = new org.jdesktop.layout.GroupLayout(jpnlMovimientos);
         jpnlMovimientos.setLayout(jpnlMovimientosLayout);
         jpnlMovimientosLayout.setHorizontalGroup(
@@ -126,17 +139,21 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
             .add(jpnlMovimientosLayout.createSequentialGroup()
                 .addContainerGap()
                 .add(jpnlMovimientosLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jpnlMovimientosLayout.createSequentialGroup()
-                        .add(0, 0, Short.MAX_VALUE)
-                        .add(jbtnSaldar))
-                    .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 888, Short.MAX_VALUE)
+                    .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 880, Short.MAX_VALUE)
                     .add(jScrollPane1)
                     .add(jScrollPane3)
                     .add(jpnlMovimientosLayout.createSequentialGroup()
                         .add(jpnlMovimientosLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(lblHistorico)
                             .add(lblMovimientos))
-                        .add(0, 0, Short.MAX_VALUE)))
+                        .add(0, 0, Short.MAX_VALUE))
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jpnlMovimientosLayout.createSequentialGroup()
+                        .add(0, 0, Short.MAX_VALUE)
+                        .add(jlblImporteLiquidacion)
+                        .add(18, 18, 18)
+                        .add(jftfImporteLiquidacion, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 181, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jbtnSaldar)))
                 .addContainerGap())
         );
         jpnlMovimientosLayout.setVerticalGroup(
@@ -149,12 +166,15 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(lblMovimientos)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 181, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 69, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(jbtnSaldar)
-                .addContainerGap())
+                .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 51, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jpnlMovimientosLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(jbtnSaldar)
+                    .add(jftfImporteLiquidacion, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jlblImporteLiquidacion))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         lblPropietario.setText("Propietario:");
@@ -192,10 +212,10 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
                     .add(lblPropietario)
                     .add(jcbxPropietarios, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jpnlMovimientos, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(jpnlMovimientos, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(18, 18, 18)
                 .add(jbtnCerrar)
-                .addContainerGap())
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -206,23 +226,25 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jbtnCerrarActionPerformed
 
     private void jbtnSaldarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnSaldarActionPerformed
-        String where = " WHERE";
-        for (Integer id: ids){
-            if(id > 0){
-                where += " movID=" + String.valueOf(id);
-                if (ids.indexOf(id) < ids.size()-1){
-                    where += " OR";
-                }
-            }
-        }
-        String query = "UPDATE Movimientos SET movSaldado=1, movFechaSaldado=?, movPropietarioSaldado=?" + where;
+        int propID = ((ComboTabla)jcbxPropietarios).getSelectedId();
+        double importe = Double.valueOf(String.valueOf(jftfImporteLiquidacion.getValue()));
         try {
-            java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
-            pstm.setString(1, FechasFormatter.getFechaString(new GregorianCalendar()));
-            pstm.setInt   (2, ((ComboTabla)jcbxPropietarios).getSelectedId());
-            int result = pstm.executeUpdate();
+            cnx.setAutoCommit(false);
+            insertLiquidacion(propID, importe);
+            int liquidacion = getUltimaLiquidacion();
+            updateMovimientos(liquidacion);
+            cnx.commit();
         } catch (SQLException ex) {
+            try {
+                cnx.rollback();
+            } catch (SQLException ex1) {}
             Logger.getLogger(CierreMovimientos.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                cnx.setAutoCommit(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(CierreMovimientos.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         habilitarMovimientos(false);
 		jtblHistorico.setModel(new DefaultTableModel());
@@ -231,50 +253,75 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jbtnSaldarActionPerformed
 
 	private void jcbxPropietariosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbxPropietariosItemStateChanged
+        jlblImporteLiquidacion.setText("Importe liquidación:");
         if (jcbxPropietarios.getSelectedIndex() < 0){
             return;
         }
 		int propID = ((ComboTabla)jcbxPropietarios).getSelectedId();
 		if (propID > 0){
-			cargaTablas(propID, true);
-			cargaTablas(propID, false);
+			cargaLiquidaciones(propID);
+			cargaMovimientos(propID);
 			habilitarMovimientos(jtblMovimientos.getRowCount() > 0);
 		}else{
 			habilitarMovimientos(false);
 		}
 	}//GEN-LAST:event_jcbxPropietariosItemStateChanged
 
-	public void cargaTablas(int propID, boolean historico) {
-		DefaultTableModel modeloHistorico = null;
-		DefaultTableModel modelo = null;
+    private void jftfImporteLiquidacionFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jftfImporteLiquidacionFocusLost
+        try {
+            jftfImporteLiquidacion.commitEdit();
+        } catch (ParseException ex) {
+            Logger.getLogger(CierreMovimientos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jftfImporteLiquidacionFocusLost
+
+    public void cargaLiquidaciones(int propID){
+		DefaultTableModel modelo;
+        try {
+            String query = "SELECT * FROM Liquidaciones "
+                         + "WHERE liqPropietario = ?";
+            java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
+            modelo = limpiarTabla(jtblHistorico, historicoHeaders);
+            pstm.setInt(1, propID);
+            java.sql.ResultSet rst = pstm.executeQuery();
+            while (rst.next()){
+                Object[] row = {
+                    FechasFormatter.getFechaFromMySQL(rst.getString("liqFecha")),
+                    Funciones.formatNumber(rst.getDouble("liqEnComercializadora")),
+                    Funciones.formatNumber(rst.getDouble("liqNoImputado")),
+                    Funciones.formatNumber(rst.getDouble("liqSinComision")),
+                    Funciones.formatNumber(rst.getDouble("liqComisiones")),
+                    Funciones.formatNumber(rst.getDouble("liqEnPropietario")),
+                    Funciones.formatNumber(rst.getDouble("liqAPagar")),
+                    Funciones.formatNumber(rst.getDouble("liqACobrar")),
+                    Funciones.formatNumber(rst.getDouble("liqGanancia")),
+                    Funciones.formatNumber(rst.getDouble("liqImporte"))
+                };
+                modelo.addRow(row);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CierreMovimientos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+	public void cargaMovimientos(int propID) {
+		DefaultTableModel modelo;
         try {
 			String query = "SELECT * FROM Movimientos " +
 					"INNER JOIN Alquileres ON movAlqID = alqID " +
 					"INNER JOIN UnidadesFuncionales ON alqUF = ufID " +
 					"LEFT JOIN Propietarios as p1 ON alqCuentaImpPropID = p1.propID " +
 					"LEFT JOIN Propietarios as p2 ON alqUF = p2.propUF " +
-					"WHERE (p1.propID = ? OR p2.propID = ?) AND alqEstado = 2 AND movSaldado = ? AND movAlqID != 0 ";
-			if (historico){
-				query += "AND movPropietarioSaldado = ? GROUP BY movID ORDER BY alqID, movFechaSaldado, movFecha DESC";
-				modeloHistorico = limpiarTabla(jtblHistorico, historicoHeaders);
-			}else{
-				query += "GROUP BY movID ORDER BY alqID, movFecha DESC";
-				ids = new ArrayList<Integer>();
-				modelo = limpiarTabla(jtblMovimientos, headers);
-			}
+					"WHERE (p1.propID = ? OR p2.propID = ?) AND alqEstado = 2 AND movLiquidacion = 0 AND movAlqID != 0 " +
+                    "GROUP BY movID ORDER BY alqID, movFecha DESC";
+            ids = new ArrayList<Integer>();
+            modelo = limpiarTabla(jtblMovimientos, headers);
             java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
 			pstm.setInt(1, propID);
 			pstm.setInt(2, propID);
-            if (historico){
-                pstm.setInt(3, 1);
-                pstm.setInt(4, propID);
-            }else{
-                pstm.setInt(3, 0);
-            }
             java.sql.ResultSet rst = pstm.executeQuery();
-			TotalMovimientos totales = new TotalMovimientos();
+            totales = new TotalMovimientos();
 			Importe importe = new Importe();
-			String fechaSaldadoAnt = "";
 			int alqIDAnt = 0;
 
 			while(rst.next()) {
@@ -289,60 +336,41 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
 				int destino = rst.getInt("movDestino");
 				importe.setImporte(rst.getDouble("movImporte"));
 				importe.porcentajeComision = rst.getDouble("ufPrecio");
-				String fechaSaldado = FechasFormatter.getFechaFromMySQL(rst.getString("movFechaSaldado"));
-				
-				boolean agregarHistorico = historico && ! fechaSaldadoAnt.equals(fechaSaldado) && ! fechaSaldadoAnt.equals("");
-				if (agregarHistorico){
-					totales.fechaSaldado = fechaSaldadoAnt;
-					totales.calcularTotales();
-					modeloHistorico.addRow(totales.toRow());
-					totales = new TotalMovimientos();
-				}
-				fechaSaldadoAnt = fechaSaldado;
 				if (alqID != alqIDAnt){
 					alqIDAnt = alqID;
 					importe.sinComision = rst.getDouble("alqImporteSinComision");
 					importe.diferenciaImputacion = rst.getDouble("alqDifImputacion");
 					totales.sinComision += importe.sinComision;
 					totales.noImputado += importe.diferenciaImputacion;
-					if(! historico){
-						String[] row = {"Alquiler " + String.valueOf(alqID),
-										"Total: " + Funciones.formatNumber(rst.getDouble("alqTotal")),
-										"No imputado: " + importe.getDiferenciaImputacion(),
-										"Sin comisión: " + importe.getSinComision(),
-										"Comision(%): " + Funciones.formatNumber(importe.porcentajeComision, "#0.00")
-										};
-						modelo.addRow(row);
-						ids.add(0);
-					}
+                    String[] row = {"Alquiler " + String.valueOf(alqID),
+                                    "Total: " + Funciones.formatNumber(rst.getDouble("alqTotal")),
+                                    "No imputado: " + importe.getDiferenciaImputacion(),
+                                    "Sin comisión: " + importe.getSinComision(),
+                                    "Comision(%): " + Funciones.formatNumber(importe.porcentajeComision, "#0.00")
+                                    };
+                    modelo.addRow(row);
+                    ids.add(0);
 				}
 				importe.actualizar();
 				//Movimientos
 				totales.comisiones += importe.comision;
-				if (! historico){
-					ids.add(rst.getInt("movID"));
-					Object [] fila = {FechasFormatter.getFechaFromMySQL(rst.getString("movFecha")),
-									  importe.getImporte(),
-									  importe.getImporteConDescuentos(),
-									  Movimientos.destinos[destino],
-									  rst.getString("propNCuenta"),
-									  importe.getComision(),
-									  rst.getString("movDetalle")};
-					modelo.addRow(fila);
-				}
+                ids.add(rst.getInt("movID"));
+                Object [] fila = {FechasFormatter.getFechaFromMySQL(rst.getString("movFecha")),
+                                  importe.getImporte(),
+                                  importe.getImporteConDescuentos(),
+                                  Movimientos.destinos[destino],
+                                  rst.getString("propNCuenta"),
+                                  importe.getComision(),
+                                  rst.getString("movDetalle")};
+                modelo.addRow(fila);
 				if (destino == 1)
 					totales.comercializadora += importe.importe;
 				if (destino == 2)
 					totales.propietario += importe.importe;
 			}
-			if (historico){
-				totales.fechaSaldado = fechaSaldadoAnt;
-				totales.calcularTotales();
-				modeloHistorico.addRow(totales.toRow());
-			}else{
-				totales.calcularTotales();
-				jtblTotales.setModel(new DefaultTableModel(new Object[][]{totales.toRow()}, totalesHeaders)); 
-			}
+            totales.calcularTotales();
+            jtblTotales.setModel(new DefaultTableModel(new Object[][]{totales.toRow()}, totalesHeaders)); 
+
             rst.close();
             pstm.close();
         } catch (java.sql.SQLException sqle) {
@@ -367,6 +395,8 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
     private javax.swing.JButton jbtnCerrar;
     private javax.swing.JButton jbtnSaldar;
     private javax.swing.JComboBox jcbxPropietarios;
+    private javax.swing.JFormattedTextField jftfImporteLiquidacion;
+    private javax.swing.JLabel jlblImporteLiquidacion;
     private javax.swing.JPanel jpnlMovimientos;
     private javax.swing.JTable jtblHistorico;
     private javax.swing.JTable jtblMovimientos;
@@ -461,6 +491,15 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
 			if (aCobrar < 0) aCobrar = 0.0;
 			aPagar = comercializadora - comisiones - noImputado;
 			if (aPagar < 0) aPagar = 0.0;
+            if (aPagar > aCobrar){
+                jlblImporteLiquidacion.setText("Pagar");
+                jftfImporteLiquidacion.setValue(aPagar - aCobrar);
+            }else if(aCobrar > aPagar){
+                jlblImporteLiquidacion.setText("Cobrar");
+                jftfImporteLiquidacion.setValue(aCobrar - aPagar);
+            } else {
+                jftfImporteLiquidacion.setValue(0);
+            }
 		}
 		public Object[] toRow() {
 			ArrayList list = new ArrayList();
@@ -530,4 +569,51 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
 			return Funciones.formatNumber(comision);
 		}
 	}
+
+    private int insertLiquidacion(int propID, Double importe) throws SQLException{
+        String query = "INSERT INTO Liquidaciones (liqFecha, liqPropietario, liqImporte, "
+                + "liqACobrar, liqAPagar, liqNoImputado, liqSinComision, liqComisiones, "
+                + "liqGanancia, liqEnComercializadora, liqEnPropietario) "
+                + "VALUES (NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
+        pstm.setDouble(1, propID);
+        pstm.setDouble(2, importe);
+        pstm.setDouble(3, totales.aCobrar);
+        pstm.setDouble(4, totales.aPagar);
+        pstm.setDouble(5, totales.noImputado);
+        pstm.setDouble(6, totales.sinComision);
+        pstm.setDouble(7, totales.comisiones);
+        pstm.setDouble(8, totales.ganancia);
+        pstm.setDouble(9, totales.comercializadora);
+        pstm.setDouble(10, totales.propietario);
+        return pstm.executeUpdate();
+    }
+
+    private int getUltimaLiquidacion() throws SQLException {
+        String query = "SELECT LAST_INSERT_ID() as id FROM Liquidaciones LIMIT 1";
+        java.sql.Statement st  = cnx.createStatement();
+        java.sql.ResultSet rst = st.executeQuery(query);
+        rst.next();
+        int id = rst.getInt("id");
+        rst.close();
+        st.close();
+        return id;
+    }
+
+    private int updateMovimientos(int liquidacion) throws SQLException{
+        String where = " WHERE";
+        for (Integer id: ids){
+            if(id > 0){
+                where += " movID=" + String.valueOf(id);
+                if (ids.indexOf(id) < ids.size()-1){
+                    where += " OR";
+                }
+            }
+        }
+        String query = "UPDATE Movimientos SET movLiquidacion=?" + where;
+        java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
+        pstm.setInt   (1, liquidacion);
+        return pstm.executeUpdate();
+    }
+
 }

@@ -16,13 +16,31 @@ public class Movimientos {
     public static String[] destinos = {"", "Comercializadora", "Propietario"};
 	public static String[] saldados = {"No", "Si"};
 
-	public static void generarMovimiento(Integer alquilerId, Double importe, int destino) throws SQLException {
-		String query = "INSERT INTO Movimientos (movAlqID, movFecha, movImporte, movDestino, " +
-  					   "movSaldado, movPropietarioSaldado) VALUES(?, NOW(), ?, ?, 0, 0)";	
+	public static boolean guardarMovimiento(Integer id, String fecha, Double importe, int destino, String detalle) throws SQLException {
+        return guardarMovimiento(id, fecha, importe, destino, detalle, 0);
+    }
+
+	public static boolean guardarMovimiento(Integer id, String fecha, Double importe, int destino, String detalle, int alquilerId) throws SQLException {
+        String query = "INSERT INTO Movimientos (movAlqID, movFecha, movImporte, movDestino, movDetalle, " +
+                       "movLiquidacion) VALUES(?, ?, ?, ?, ?, 0)";	
+        if (id > 0){
+            query = "UPDATE Movimientos SET movFecha=?, movImporte=?, movDestino=?, movDetalle=? " +
+                    "WHERE movID=?";	
+        }
 		java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
-		pstm.setInt(1, alquilerId);
-		pstm.setDouble(2, importe);
-		pstm.setInt(3, destino);
-		pstm.execute();
+        if (id > 0){
+            pstm.setString(1, fecha);
+            pstm.setDouble(2, importe);
+            pstm.setInt   (3, destino);
+            pstm.setString(4, detalle);
+            pstm.setInt   (5, id);
+        }else{
+            pstm.setInt   (1, alquilerId);
+            pstm.setString(2, fecha);
+            pstm.setDouble(3, importe);
+            pstm.setInt   (4, destino);
+            pstm.setString(5, detalle);
+        }
+		return pstm.execute();
 	}
 }

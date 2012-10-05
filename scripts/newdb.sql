@@ -283,12 +283,29 @@ INSERT INTO `Configuracion` (`mailing`, `email`, `emailPassword`) VALUES (1, 'te
 CREATE TABLE IF NOT EXISTS `Movimientos` (
   `movID` int(11) NOT NULL AUTO_INCREMENT,
   `movFecha` datetime NOT NULL,
-  `movFechaSaldado` datetime default NULL,
   `movAlqID` int(11) NOT NULL,
   `movImporte` decimal(10,2) NOT NULL,
-  `movSaldado` int(1) NOT NULL, /* (0: Sin saldar, 1: Saldado) */
-  `movPropietarioSaldado` int(11) NOT NULL,
   `movDestino` int(1) NOT NULL, /* A favor de (1: Comercializadora, 2: Propietario) */
   `movDetalle` varchar(30) COLLATE utf8_unicode_ci default '',
+  `movLiquidacion` int(11) NOT NULL,
   PRIMARY KEY (`movID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
+-- --------------------------------------------------------
+--
+-- Estructura de tabla para la tabla `Liquidaciones`
+--
+CREATE TABLE IF NOT EXISTS `Liquidaciones` (
+  `liqID` int(11) NOT NULL AUTO_INCREMENT,
+  `liqFecha` datetime NOT NULL,
+  `liqPropietario` int(11) NOT NULL,
+  `liqEnComercializadora` decimal(10,2) NOT NULL,
+  `liqEnPropietario` decimal(10,2) NOT NULL,
+  `liqImporte` decimal(10,2) NOT NULL,
+  `liqACobrar` decimal(10,2) NOT NULL,
+  `liqAPagar` decimal(10,2) NOT NULL,
+  `liqNoImputado` decimal(10,2) NOT NULL,
+  `liqSinComision` decimal(10,2) NOT NULL,
+  `liqComisiones` decimal(10,2) NOT NULL,
+  `liqGanancia` decimal(10,2) NOT NULL,
+  PRIMARY KEY (`liqID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
