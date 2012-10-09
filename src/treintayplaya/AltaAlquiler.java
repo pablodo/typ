@@ -369,6 +369,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
             }
         });
 
+        jtaObservaciones.setDocument(new FixedLengthDocument(100));
         jScrollPane1.setViewportView(jtaObservaciones);
 
         jLabel3.setText("Observaciones:");
@@ -922,6 +923,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
             java.sql.ResultSet rst = pstm.executeQuery();
             
             rst.next();
+			alquiler = new Alquiler(alquiler.id);
             jlblAlqFecha.setText(FechasFormatter.getFechaSimpleString(rst.getString("alqFecha")));
             jdcVencimiento.setCalendar(FechasFormatter.getFechaCalendar(rst.getString("alqVencimiento")));
             jlblAlqOperador.setText(rst.getString("usrEmail"));

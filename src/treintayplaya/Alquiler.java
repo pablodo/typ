@@ -76,6 +76,15 @@ public class Alquiler{
         this.id = id;
         cargarAlquiler();
     }
+
+    public Alquiler(java.sql.ResultSet rst) throws SQLException {
+        this.id = rst.getInt("alqID");
+		this.tipo = rst.getInt("alqEstado");
+		this.nombre = rst.getString("cliNombre");
+		this.apellido = rst.getString("cliApellido");
+		this.nombre_propietario = rst.getString("propNombre");
+		this.apellido_propietario = rst.getString("propApellido");
+    }
     
     @Override
     public String toString(){

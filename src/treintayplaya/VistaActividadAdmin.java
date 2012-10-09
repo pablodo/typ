@@ -403,8 +403,10 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
     private static void cargarAlquileres() {
         try{
             Connection cnx = Conexion.getInstance().getConnection();
-			String query = "SELECT dalqFecha, alqID, alqUF FROM DetAlquileres " +
+			String query = "SELECT * FROM DetAlquileres " +
 						   "LEFT JOIN Alquileres ON dalqAlq = alqID " +
+						   "LEFT JOIN Propietarios ON alqUF = propUF " +
+						   "LEFT JOIN Clientes ON alqCliente = cliID " +
 						   "WHERE YEAR(dalqFecha) = ? AND MONTH(dalqFecha) = ? ORDER BY alqUF";
 			PreparedStatement pstm = cnx.prepareStatement(query);
 			pstm.setInt(1, year);
@@ -417,9 +419,7 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
 				if (row >= 0 && ufID > 0){
 					String fecha = rst.getString("dalqFecha");
 					int dia = Integer.parseInt(fecha.substring(8, 10));
-					int mes = Integer.parseInt(fecha.substring(5, 7));
-					int alqID = rst.getInt("alqID");
-					Alquiler alquiler = new Alquiler(alqID);
+					Alquiler alquiler = new Alquiler(rst);
 					modelo.setValueAt(alquiler, row, dia);
 				}
             }
@@ -457,7 +457,7 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
     }
 
     private boolean isReservaEnabled() {
-        if(jtblVistaMensual.getSelectedRow() < 0 || jtblVistaMensual.getSelectedColumn() <= 1){
+        if(jtblVistaMensual.getSelectedRow() < 0 || jtblVistaMensual.getSelectedColumn() < 1){
             return false;
         }
         Alquiler alquiler = getSelectedAlquiler();
@@ -468,7 +468,7 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
     }
 
     private boolean isConfirmarEnabled() {
-        if(jtblVistaMensual.getSelectedRow() < 0 || jtblVistaMensual.getSelectedColumn() <= 1){
+        if(jtblVistaMensual.getSelectedRow() < 0 || jtblVistaMensual.getSelectedColumn() < 1){
             return false;
         }
         Alquiler alquiler = getSelectedAlquiler();
