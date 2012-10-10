@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `Alquileres` (
   `alqVencimiento` datetime NOT NULL,
   `alqFormaPagoOpe` int(11) NOT NULL,
   `alqFormaPagoImp` int(11) NOT NULL,
-  `alqObservaciones` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `alqObservaciones` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`alqID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 -- --------------------------------------------------------
@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS `Clientes` (
   `cliApellido` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `cliNombre` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `cliTelefono` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `cliCelular` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
+  `cliCelular` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `cliEmail` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`cliID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
@@ -288,6 +288,7 @@ CREATE TABLE IF NOT EXISTS `Movimientos` (
   `movDestino` int(1) NOT NULL, /* A favor de (1: Comercializadora, 2: Propietario) */
   `movDetalle` varchar(30) COLLATE utf8_unicode_ci default '',
   `movLiquidacion` int(11) NOT NULL,
+  `movOperacion` int(11) NOT NULL, /* Igual que los Alquileres */
   PRIMARY KEY (`movID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
 -- --------------------------------------------------------
