@@ -369,7 +369,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
             }
         });
 
-        jtaObservaciones.setDocument(new FixedLengthDocument(100));
+        jtaObservaciones.setDocument(new FixedLengthDocument(600));
         jScrollPane1.setViewportView(jtaObservaciones);
 
         jLabel3.setText("Observaciones:");

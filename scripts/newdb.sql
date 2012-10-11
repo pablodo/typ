@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `Alquileres` (
   `alqVencimiento` datetime NOT NULL,
   `alqFormaPagoOpe` int(11) NOT NULL,
   `alqFormaPagoImp` int(11) NOT NULL,
-  `alqObservaciones` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `alqObservaciones` varchar(600) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`alqID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 -- --------------------------------------------------------
