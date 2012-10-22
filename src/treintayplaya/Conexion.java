@@ -6,6 +6,7 @@ package treintayplaya;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -32,7 +33,9 @@ public class Conexion {
 			Class.forName("org.gjt.mm.mysql.Driver"); 
 			conn = java.sql.DriverManager.getConnection("jdbc:mysql://" + baseURL, baseUsr, basePass);
         } catch (Exception ex) {
-            System.out.println("Error al conectarse con la base de datos: " + ex.getMessage());
+            String msj = "Error al conectarse con la base de datos. El programa deberá cerrarse. \n\n\n" + ex.toString();
+            JOptionPane.showMessageDialog(null, msj, "Error en conexión", JOptionPane.ERROR_MESSAGE, null);
+            System.exit(1);
         }
 		return conn;
 	}
