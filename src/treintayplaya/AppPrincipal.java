@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  * @author sergio
  */
 public class AppPrincipal extends javax.swing.JFrame {
-    public final static MailSender mailSender = new MailSender(Configuracion.getInstance().email, Configuracion.getInstance().emailPassword);
+    public final static MailSender mailSender = new MailSender(Configuracion.getInstance());
 
     /** Creates new form AppPrincipal */
     public AppPrincipal() {

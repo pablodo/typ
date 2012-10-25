@@ -23,11 +23,22 @@ public class MailSender {
     String servidorSMTP = "mail.30yplaya.com.ar";
     String puertoEnvio = "587";
     Address[] mailsTo = null;
+    Address[] bbcMails = null;
     String asunto = null;
     String cuerpo = null;
     Properties props;
     SMTPAuthenticator smtpAuth;
     Session session;
+
+	public MailSender(Configuracion configuracion){
+		this(configuracion.email, configuracion.emailPassword);
+		bbcMails = new InternetAddress[1];
+		try {
+			bbcMails[0] = new InternetAddress(configuracion.emailCCO);
+		} catch (AddressException ex) {
+			Logger.getLogger(MailSender.class.getName()).log(Level.SEVERE, null, ex);
+		}
+	}
     
     public MailSender(String mailFrom, String passFrom){
         this(new String[0], mailFrom, passFrom);
@@ -87,6 +98,9 @@ public class MailSender {
             msg.setText(mensaje);
             msg.setSubject(asunto);
             msg.addRecipients(Message.RecipientType.TO, mailsTo);
+			if (bbcMails != null){
+				msg.addRecipients(Message.RecipientType.BCC, bbcMails);
+			}
             msg.setFrom(new InternetAddress(mailFrom));
             
             Transport.send(msg);

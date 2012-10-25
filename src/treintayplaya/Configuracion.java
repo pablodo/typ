@@ -21,6 +21,7 @@ public class Configuracion {
     public String basePass;
     public boolean mailingActivado;
     public String email;
+    public String emailCCO;
     public String emailPassword;
 	public Properties properties;
 	public String asunto;
@@ -44,9 +45,10 @@ public class Configuracion {
 		java.sql.Connection cnx = Conexion.getNewConnection(baseURL, baseUsr, basePass);
         try {
             java.sql.Statement stm = cnx.createStatement();
-            java.sql.ResultSet rst = stm.executeQuery("SELECT AES_DECRYPT(emailPassword,'typ2012') as emailPassword, email, mailing FROM Configuracion");
+            java.sql.ResultSet rst = stm.executeQuery("SELECT AES_DECRYPT(emailPassword,'typ2012') as emailPassword, email, emailCCo, mailing FROM Configuracion");
             if (rst.next()){
                 email = rst.getString("email");
+                emailCCO = rst.getString("emailCCO");
                 emailPassword = rst.getString("emailPassword");
                 mailingActivado = rst.getInt("mailing") == 1;
             }

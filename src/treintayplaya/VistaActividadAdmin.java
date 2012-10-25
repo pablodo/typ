@@ -10,16 +10,14 @@
  */
 package treintayplaya;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -320,8 +318,8 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
 					   "FROM UnidadesFuncionales INNER JOIN TiposUF ON ufTipo = tufID " +
 					   "ORDER BY tufAmbientes, tufMetros2, ufNombre";
         try {
-            PreparedStatement pstm = cnx.prepareStatement(query);
-            ResultSet rst = pstm.executeQuery();
+            Statement stm = cnx.createStatement();
+            ResultSet rst = stm.executeQuery(query);
             Vector data = new Vector();
             ufIDs = new ArrayList<Integer>();
             Integer tufID = 0;
@@ -340,7 +338,7 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
             }
             modelo.setDataVector(data, columns);
             rst.close();
-            pstm.close();
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(VistaActividadAdmin.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -403,8 +401,10 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
     private static void cargarAlquileres() {
         try{
             Connection cnx = Conexion.getInstance().getConnection();
-			String query = "SELECT * FROM DetAlquileres " +
-						   "LEFT JOIN Alquileres ON dalqAlq = alqID " +
+			String query = "SELECT alqUF, dalqFecha, alqID, alqEstado, " +
+						          "cliNombre, cliApellido, propNombre, propApellido " +
+						   "FROM DetAlquileres " +
+						   "INNER JOIN Alquileres ON dalqAlq = alqID " +
 						   "LEFT JOIN Propietarios ON alqUF = propUF " +
 						   "LEFT JOIN Clientes ON alqCliente = cliID " +
 						   "WHERE YEAR(dalqFecha) = ? AND MONTH(dalqFecha) = ? ORDER BY alqUF";
@@ -426,7 +426,7 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
 			rst.close();
 			pstm.close();
         }catch (SQLException sqle){
-            
+			JOptionPane.showMessageDialog(null, "Error al cargar los alquileres.\n\n" + sqle.toString(), "Error", JOptionPane.ERROR_MESSAGE);	
         }
         jtblVistaMensual.setDefaultRenderer(Object.class, new MiRender());
     }

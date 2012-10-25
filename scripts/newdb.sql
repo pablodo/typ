@@ -267,6 +267,7 @@ INSERT INTO `FormasPago` (`fpNombre`, `fpDestino`) VALUES
 CREATE TABLE IF NOT EXISTS `Configuracion` (
   `email` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `emailPassword` blob,
+  `emailCCO` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `mailing` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
