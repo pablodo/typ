@@ -27,6 +27,7 @@ public class Alquiler{
 	Double reservaCobrada;
 	Double reservaMinima;
     Double diferenciaImputacion;
+    Integer operador = 0;
     Integer id = 0;
 	String nombre_propietario = "";
 	String apellido_propietario = "";
@@ -80,6 +81,7 @@ public class Alquiler{
     public Alquiler(java.sql.ResultSet rst) throws SQLException {
         this.id = rst.getInt("alqID");
 		this.tipo = rst.getInt("alqEstado");
+        this.operador = rst.getInt("alqOperador");
 		this.nombre = rst.getString("cliNombre");
 		this.apellido = rst.getString("cliApellido");
 		this.nombre_propietario = rst.getString("propNombre");

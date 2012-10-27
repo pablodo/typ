@@ -128,8 +128,11 @@ public class LoginUsuarios extends javax.swing.JInternalFrame {
         if((jtxfUsuario.getText().length() > 0) && (jpfPass.getPassword().length > 0)) {
             try {
                 java.sql.Connection cnx = Conexion.getInstance().getConnection();
+                String query = "SELECT usrID, usrNivel, usrActivo "
+                             + "FROM UsuariosWeb "
+                             + "WHERE usrEmail = ? and AES_DECRYPT(usrPass, 'typ2012') = ?";
 
-                java.sql.PreparedStatement pstm = cnx.prepareStatement("select usrID, usrNivel, usrActivo from UsuariosWeb where usrEmail = ? and AES_DECRYPT(usrPass, 'typ2012') = ?") ;
+                java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
 
                 char [] charPass = jpfPass.getPassword();
                 usrPass = new String(charPass);

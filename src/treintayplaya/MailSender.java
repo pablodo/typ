@@ -32,7 +32,11 @@ public class MailSender {
 
 	public MailSender(Configuracion configuracion){
 		this(configuracion.email, configuracion.emailPassword);
+
 		bbcMails = new InternetAddress[1];
+        if ("".equals(configuracion.emailCCO.trim())){
+            return;
+        }
 		try {
 			bbcMails[0] = new InternetAddress(configuracion.emailCCO);
 		} catch (AddressException ex) {

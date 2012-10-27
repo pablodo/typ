@@ -63,7 +63,7 @@
                   <Component id="jlblPass" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jpfPass" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="26" max="32767" attributes="0"/>
+              <EmptySpace pref="29" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jbtnLogin" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jbtnRegistrar" alignment="3" min="-2" max="-2" attributes="0"/>

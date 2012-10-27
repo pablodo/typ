@@ -401,7 +401,7 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
     private static void cargarAlquileres() {
         try{
             Connection cnx = Conexion.getInstance().getConnection();
-			String query = "SELECT alqUF, dalqFecha, alqID, alqEstado, " +
+			String query = "SELECT alqUF, dalqFecha, alqID, alqEstado, alqOperador, " +
 						          "cliNombre, cliApellido, propNombre, propApellido " +
 						   "FROM DetAlquileres " +
 						   "INNER JOIN Alquileres ON dalqAlq = alqID " +
@@ -426,7 +426,8 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
 			rst.close();
 			pstm.close();
         }catch (SQLException sqle){
-			JOptionPane.showMessageDialog(null, "Error al cargar los alquileres.\n\n" + sqle.toString(), "Error", JOptionPane.ERROR_MESSAGE);	
+            String msj = "Error al cargar los alquileres.\n\n" + sqle.toString();
+			JOptionPane.showMessageDialog(null, msj, "Error", JOptionPane.ERROR_MESSAGE);	
         }
         jtblVistaMensual.setDefaultRenderer(Object.class, new MiRender());
     }
@@ -475,6 +476,9 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
         if (alquiler.id < 1){
             return false;
         }
+        if(DatosGlobales.usrID != alquiler.operador){
+            return false;
+        }
         if (!alquiler.isReserva()){
             return false;
         }
@@ -489,6 +493,9 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
         if (alquiler.id < 1){
             return false;
         }
+        if(DatosGlobales.usrID != alquiler.operador){
+            return false;
+        }
         if(!( (alquiler.isReserva()) || alquiler.isConfirmacion()) ){
             return false;
         }
@@ -501,6 +508,9 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
         }
         Alquiler alquiler = getSelectedAlquiler();
         if (alquiler.id < 1){
+            return false;
+        }
+        if(DatosGlobales.usrID != alquiler.operador){
             return false;
         }
         return true;
