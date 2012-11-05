@@ -21,6 +21,16 @@ import java.util.logging.Logger;
 public class AppPrincipal extends javax.swing.JFrame {
     public final static MailSender mailSender = new MailSender(Configuracion.getInstance());
 
+	static void habilitarMenues() {
+		loginMenuItem.setEnabled(! isAdmin() && ! isUsuario()); 
+		logoutMenuItem.setEnabled(isAdmin() || isUsuario());
+
+		vistaMensualMenu.setEnabled(isAdmin() || isUsuario());
+		admMenu.setEnabled(isAdmin());
+		listadosMenu.setEnabled(isAdmin() || isUsuario());
+		tagsMenuItem.setEnabled(isAdmin());	
+	}
+
     /** Creates new form AppPrincipal */
     public AppPrincipal() {
         initComponents();
@@ -46,6 +56,7 @@ public class AppPrincipal extends javax.swing.JFrame {
         usrMenu = new javax.swing.JMenu();
         loginMenuItem = new javax.swing.JMenuItem();
         logoutMenuItem = new javax.swing.JMenuItem();
+        vistaMensualMenu = new javax.swing.JMenu();
         admMenu = new javax.swing.JMenu();
         consultasMenu = new javax.swing.JMenu();
         jmiVistaMensual = new javax.swing.JMenuItem();
@@ -63,8 +74,6 @@ public class AppPrincipal extends javax.swing.JFrame {
         movimientosMenu = new javax.swing.JMenu();
         jmiABMLMovimientos = new javax.swing.JMenuItem();
         jmiCerrarMovimientos = new javax.swing.JMenuItem();
-        propMenu = new javax.swing.JMenu();
-        jmiPropResumenes = new javax.swing.JMenuItem();
         listadosMenu = new javax.swing.JMenu();
         jmniDeudores = new javax.swing.JMenuItem();
         jmniEntrantes = new javax.swing.JMenuItem();
@@ -151,6 +160,16 @@ public class AppPrincipal extends javax.swing.JFrame {
         usrMenu.add(logoutMenuItem);
 
         AppMenuBar.add(usrMenu);
+
+        vistaMensualMenu.setMnemonic('V');
+        vistaMensualMenu.setText("Vista Mensual");
+        vistaMensualMenu.setEnabled(false);
+        vistaMensualMenu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                vistaMensualMenuMouseClicked(evt);
+            }
+        });
+        AppMenuBar.add(vistaMensualMenu);
 
         admMenu.setMnemonic('d');
         admMenu.setText("Administradores");
@@ -285,16 +304,6 @@ public class AppPrincipal extends javax.swing.JFrame {
 
         AppMenuBar.add(admMenu);
 
-        propMenu.setMnemonic('P');
-        propMenu.setText("Propietarios");
-        propMenu.setEnabled(false);
-
-        jmiPropResumenes.setMnemonic('R');
-        jmiPropResumenes.setText("Resumenes");
-        propMenu.add(jmiPropResumenes);
-
-        AppMenuBar.add(propMenu);
-
         listadosMenu.setMnemonic('L');
         listadosMenu.setText("Listados");
         listadosMenu.setEnabled(false);
@@ -325,6 +334,7 @@ public class AppPrincipal extends javax.swing.JFrame {
         tagsMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.CTRL_MASK));
         tagsMenuItem.setMnemonic('T');
         tagsMenuItem.setText("Tags disponibles");
+        tagsMenuItem.setEnabled(false);
         tagsMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tagsMenuItemActionPerformed(evt);
@@ -382,35 +392,24 @@ public class AppPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_loginMenuItemActionPerformed
 
     private void jmiVistaMensualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiVistaMensualActionPerformed
-        if(isAdmin()) {
-            VistaActividadAdmin vistaAdmin = new VistaActividadAdmin();
-            desktopPane.add(vistaAdmin);
-            vistaAdmin.show();
-        }
     }//GEN-LAST:event_jmiVistaMensualActionPerformed
 
     private void jmiClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiClientesActionPerformed
-        if(isAdmin()) {
-            ConsultaInquilinos listaCliente = new ConsultaInquilinos();
-            desktopPane.add(listaCliente);
-            listaCliente.show();
-        }
+		ConsultaInquilinos listaCliente = new ConsultaInquilinos();
+		desktopPane.add(listaCliente);
+		listaCliente.show();
     }//GEN-LAST:event_jmiClientesActionPerformed
 
     private void jmiPropietariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiPropietariosActionPerformed
-        if(isAdmin()) {
-            ConsultaPropietarios listaPropietarios = new ConsultaPropietarios();
-            desktopPane.add(listaPropietarios);
-            listaPropietarios.show();
-        }
+		ConsultaPropietarios listaPropietarios = new ConsultaPropietarios();
+		desktopPane.add(listaPropietarios);
+		listaPropietarios.show();
     }//GEN-LAST:event_jmiPropietariosActionPerformed
 
     private void jmiUFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiUFActionPerformed
-        if(isAdmin()) {
-            ConsultaUF cUF = new ConsultaUF();
-            desktopPane.add(cUF);
-            cUF.show();
-        }
+		ConsultaUF cUF = new ConsultaUF();
+		desktopPane.add(cUF);
+		cUF.show();
     }//GEN-LAST:event_jmiUFActionPerformed
 
     private void logoutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutMenuItemActionPerformed
@@ -419,82 +418,66 @@ public class AppPrincipal extends javax.swing.JFrame {
         DatosGlobales.usrNivel = -1;
         DatosGlobales.usrEstado = -1;
         
-        admMenu.setEnabled(false);
-        propMenu.setEnabled(false);
+		habilitarMenues();
+
+		desktopPane.removeAll();
+		desktopPane.repaint();
         
         jlblAppUsuario.setText("Sesión NO Iniciada.");
     }//GEN-LAST:event_logoutMenuItemActionPerformed
 
     private void jmiBancosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiBancosActionPerformed
-        if(isAdmin()) {
-            MantenimientoBancos mBancos = new MantenimientoBancos();
-            desktopPane.add(mBancos);
-            mBancos.show();
-        }
+		MantenimientoBancos mBancos = new MantenimientoBancos();
+		desktopPane.add(mBancos);
+		mBancos.show();
     }//GEN-LAST:event_jmiBancosActionPerformed
 
     private void jmiTCuentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiTCuentasActionPerformed
-        if(isAdmin()) {
-            MantenimientoTipoCuentas mTC = new MantenimientoTipoCuentas();
-            desktopPane.add(mTC);
-            mTC.show();
-        }
+		MantenimientoTipoCuentas mTC = new MantenimientoTipoCuentas();
+		desktopPane.add(mTC);
+		mTC.show();
     }//GEN-LAST:event_jmiTCuentasActionPerformed
 
     private void jmiTiposUFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiTiposUFActionPerformed
-        if(isAdmin()) {
-            MantenimientoTipoUF mTUF = new MantenimientoTipoUF();
-            desktopPane.add(mTUF);
-            mTUF.show();
-        }
+		MantenimientoTipoUF mTUF = new MantenimientoTipoUF();
+		desktopPane.add(mTUF);
+		mTUF.show();
     }//GEN-LAST:event_jmiTiposUFActionPerformed
 
     private void jmiContratosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiContratosActionPerformed
-        if(isAdmin()) {
-            MantenimientoContratos contratos = new MantenimientoContratos();
-            desktopPane.add(contratos);
-            contratos.show();
-        }
+		MantenimientoContratos contratos = new MantenimientoContratos();
+		desktopPane.add(contratos);
+		contratos.show();
     }//GEN-LAST:event_jmiContratosActionPerformed
 
     private void jmniDeudoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmniDeudoresActionPerformed
-        if(isAdmin()) {
-            ListadoAlquileres listado = new ListadoAlquileres(ListadoAlquileres.DEUDORES);
-            desktopPane.add(listado);
-            listado.show();
-        }
+		ListadoAlquileres listado = new ListadoAlquileres(ListadoAlquileres.DEUDORES);
+		desktopPane.add(listado);
+		listado.show();
     }//GEN-LAST:event_jmniDeudoresActionPerformed
 
     private void jmiFormasPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiFormasPagoActionPerformed
-        if(isAdmin()) {
-            MantenimientoFormasPago FormasPago = new MantenimientoFormasPago();
-            desktopPane.add(FormasPago);
-            FormasPago.show();
-        }
+		MantenimientoFormasPago FormasPago = new MantenimientoFormasPago();
+		desktopPane.add(FormasPago);
+		FormasPago.show();
     }//GEN-LAST:event_jmiFormasPagoActionPerformed
 
 	private void tagsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tagsMenuItemActionPerformed
-		if (isAdmin()){
-			Tags tags= new Tags();
-			desktopPane.add(tags);	
-			tags.show();
-		}
+		Tags tags= new Tags();
+		desktopPane.add(tags);	
+		tags.show();
 	}//GEN-LAST:event_tagsMenuItemActionPerformed
 
 	private void jmiABMLMovimientosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiABMLMovimientosActionPerformed
-		if (isAdmin()){
-			ConsultaMovimientos movimientos = new ConsultaMovimientos();
-			desktopPane.add(movimientos);
-			movimientos.show();
-		}
+		ConsultaMovimientos movimientos = new ConsultaMovimientos();
+		desktopPane.add(movimientos);
+		movimientos.show();
 	}//GEN-LAST:event_jmiABMLMovimientosActionPerformed
 
 	private void jmiCerrarMovimientosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiCerrarMovimientosActionPerformed
-		if (isAdmin()){
-			CierreMovimientos movimientos = new CierreMovimientos();
-			desktopPane.add(movimientos);
-			movimientos.show();
-		}
+		CierreMovimientos movimientos = new CierreMovimientos();
+		desktopPane.add(movimientos);
+		movimientos.show();
 	}//GEN-LAST:event_jmiCerrarMovimientosActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
@@ -502,20 +485,23 @@ public class AppPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosed
 
     private void jmiUsrWebActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiUsrWebActionPerformed
-		if (isAdmin()){
-			ConsultaUsuarios usuarios = new ConsultaUsuarios();
-			desktopPane.add(usuarios);
-			usuarios.show();
-		}
+		ConsultaUsuarios usuarios = new ConsultaUsuarios();
+		desktopPane.add(usuarios);
+		usuarios.show();
     }//GEN-LAST:event_jmiUsrWebActionPerformed
 
 	private void jmniEntrantesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmniEntrantesActionPerformed
-		if(isAdmin() || isUsuario()) {
-            ListadoAlquileres listado = new ListadoAlquileres(ListadoAlquileres.ENTRANTES);
-            desktopPane.add(listado);
-            listado.show();
-        }
+		ListadoAlquileres listado = new ListadoAlquileres(ListadoAlquileres.ENTRANTES);
+		desktopPane.add(listado);
+		listado.show();
 	}//GEN-LAST:event_jmniEntrantesActionPerformed
+
+	private void vistaMensualMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_vistaMensualMenuMouseClicked
+		vistaMensualMenu.setSelected(false);
+		VistaActividadAdmin vistaAdmin = new VistaActividadAdmin();
+		desktopPane.add(vistaAdmin);
+		vistaAdmin.show();
+	}//GEN-LAST:event_vistaMensualMenuMouseClicked
 
     public static boolean isAdmin(){
         return DatosGlobales.usrNivel == 1 && DatosGlobales.usrEstado == 1 && DatosGlobales.appSesion;
@@ -579,7 +565,6 @@ public class AppPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jmiClientes;
     private javax.swing.JMenuItem jmiContratos;
     private javax.swing.JMenuItem jmiFormasPago;
-    private javax.swing.JMenuItem jmiPropResumenes;
     private javax.swing.JMenuItem jmiPropietarios;
     private javax.swing.JMenuItem jmiTCuentas;
     private javax.swing.JMenuItem jmiTiposUF;
@@ -589,14 +574,14 @@ public class AppPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jmniDeudores;
     private javax.swing.JMenuItem jmniEntrantes;
     public static javax.swing.JMenu listadosMenu;
-    private javax.swing.JMenuItem loginMenuItem;
-    private javax.swing.JMenuItem logoutMenuItem;
+    private static javax.swing.JMenuItem loginMenuItem;
+    private static javax.swing.JMenuItem logoutMenuItem;
     private javax.swing.JMenu mantenimientoMenu;
     private javax.swing.JMenu movimientosMenu;
-    public static javax.swing.JMenu propMenu;
     private javax.swing.JMenuItem saveMenuItem;
-    private javax.swing.JMenuItem tagsMenuItem;
+    private static javax.swing.JMenuItem tagsMenuItem;
     private javax.swing.JMenu usrMenu;
+    public static javax.swing.JMenu vistaMensualMenu;
     // End of variables declaration//GEN-END:variables
 
     private void exit() {

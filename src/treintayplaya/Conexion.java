@@ -30,7 +30,7 @@ public class Conexion {
 	public static Connection getNewConnection(String baseURL, String baseUsr, String basePass){
 		Connection conn = null;
         try {
-			Class.forName("org.gjt.mm.mysql.Driver"); 
+			Class.forName("com.mysql.jdbc.Driver"); 
 			conn = java.sql.DriverManager.getConnection("jdbc:mysql://" + baseURL, baseUsr, basePass);
         } catch (Exception ex) {
             String msj = "Error al conectarse con la base de datos. El programa deberá cerrarse. \n\n\n" + ex.toString();

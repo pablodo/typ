@@ -153,17 +153,12 @@ public class LoginUsuarios extends javax.swing.JInternalFrame {
                     DatosGlobales.usrEmail  = jtxfUsuario.getText();
                     DatosGlobales.usrID     = usrID;
                     
-                    if(DatosGlobales.usrNivel == 1 && DatosGlobales.usrEstado == 1 && DatosGlobales.appSesion) {
+					AppPrincipal.habilitarMenues();
+                    if(AppPrincipal.isAdmin() || AppPrincipal.isUsuario()) {
                         VistaActividadAdmin vistaAdmin = new VistaActividadAdmin();
                         AppPrincipal.desktopPane.add(vistaAdmin);
                         vistaAdmin.toFront();
                         vistaAdmin.show();
-                        AppPrincipal.admMenu.setEnabled(true);
-                        AppPrincipal.listadosMenu.setEnabled(true);
-                    } else {
-                        if(DatosGlobales.usrNivel == 2 && DatosGlobales.usrEstado == 0) {
-                            AppPrincipal.propMenu.setEnabled(true);
-                        }
                     }
                     
                     AppPrincipal.jlblAppUsuario.setText(DatosGlobales.usrEmail);
@@ -177,10 +172,6 @@ public class LoginUsuarios extends javax.swing.JInternalFrame {
                 }
 
                 cnx.close();
-            /*
-            } catch (ClassNotFoundException cnfe) {
-                javax.swing.JOptionPane.showMessageDialog(this, cnfe.getMessage(), "Error ClassNotFound", javax.swing.JOptionPane.ERROR_MESSAGE);
-            */
             } catch (java.sql.SQLException sqle) {
                 javax.swing.JOptionPane.showMessageDialog(this, sqle.getMessage(), "Error SQL", javax.swing.JOptionPane.ERROR_MESSAGE);
             }

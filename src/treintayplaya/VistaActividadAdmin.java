@@ -200,16 +200,13 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void reservarMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reservarMenuItemActionPerformed
-        
-        if(DatosGlobales.usrNivel == 1 && DatosGlobales.usrEstado == 1 && DatosGlobales.appSesion) {
-            AltaAlquiler aAlquiler = new AltaAlquiler(this);
-            aAlquiler.selectUF(ufIDs.get(jtblVistaMensual.getSelectedRow()));
-            aAlquiler.setFechaInicial(getFechaInicial());
-            aAlquiler.setFechaFinal(getFechaFinal());
-            AppPrincipal.desktopPane.add(aAlquiler);
-            aAlquiler.show();
-            aAlquiler.toFront();
-        }
+		AltaAlquiler aAlquiler = new AltaAlquiler(this);
+		aAlquiler.selectUF(ufIDs.get(jtblVistaMensual.getSelectedRow()));
+		aAlquiler.setFechaInicial(getFechaInicial());
+		aAlquiler.setFechaFinal(getFechaFinal());
+		AppPrincipal.desktopPane.add(aAlquiler);
+		aAlquiler.show();
+		aAlquiler.toFront();
     }//GEN-LAST:event_reservarMenuItemActionPerformed
 
     private void confirmarMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarMenuItemActionPerformed
