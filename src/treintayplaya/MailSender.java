@@ -80,9 +80,10 @@ public class MailSender {
             Logger.getLogger(MailSender.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    public void send(String mailTo, String asunto, String mensaje){
+    public void send(String mailTo, String asunto, String mensaje) throws Exception{
         if (mailTo == null || "".equals(mensaje.trim()))
-            return;
+            throw new Exception("Invalid email address or empty message.");
+
         mailsTo = new InternetAddress[1];
         try {
             mailsTo[0] = new InternetAddress(mailTo);

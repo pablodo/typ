@@ -111,6 +111,7 @@ public class Alquiler{
             java.sql.Connection cnx = Conexion.getInstance().getConnection();
             String query = "SELECT * FROM Alquileres " + 
                            "INNER JOIN UnidadesFuncionales ON alqUF = ufID " + 
+                           "LEFT JOIN Propietarios as p ON propUF = ufID " + 
                            "LEFT JOIN Clientes ON alqCliente = cliID " +
                            "LEFT JOIN FormasPago as fp1 ON alqFormaPagoOpe = fp1.fpID " +
                            "LEFT JOIN FormasPago as fp2 ON alqFormaPagoImp = fp2.fpID " +
@@ -144,6 +145,9 @@ public class Alquiler{
             uf = rst.getString("ufNombre");
             email = rst.getString("cliEmail");
             email_propietario = rst.getString("p2.propEmail");
+			if (email_propietario == null){
+				email_propietario = rst.getString("p.propEmail");
+			}
             reserva_cobrada = Funciones.formatNumber(reservaCobrada);
             reserva_minima = Funciones.formatNumber(reservaMinima);
             total = Funciones.formatNumber(dblTotal);
