@@ -78,7 +78,6 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         jlblFecha = new javax.swing.JLabel();
         jlblAlqFecha = new javax.swing.JLabel();
         jlblOperador = new javax.swing.JLabel();
-        jlblAlqOperador = new javax.swing.JLabel();
         jlblUF = new javax.swing.JLabel();
         jcbxUF = new treintayplaya.ComboTabla();
         jlblCliente = new javax.swing.JLabel();
@@ -130,6 +129,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         jlblSinComision = new javax.swing.JLabel();
         jftfImporteSinComision = new javax.swing.JFormattedTextField();
         jchkEnviarMails = new javax.swing.JCheckBox();
+        jcbxOperador = new treintayplaya.ComboTabla();
 
         setClosable(true);
         setMaximizable(true);
@@ -160,11 +160,6 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         jlblAlqFecha.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
 
         jlblOperador.setText("Operador:");
-
-        jlblAlqOperador.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
-        jlblAlqOperador.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jlblAlqOperador.setText(DatosGlobales.usrEmail);
-        jlblAlqOperador.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
 
         jlblUF.setText("Unidad Funcional:");
 
@@ -426,6 +421,8 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         jchkEnviarMails.setText("Enviar mails?");
         jchkEnviarMails.setEnabled(operacion != Alquiler.PROPIETARIO && ! alquiler.isPropietario());
 
+        jcbxOperador.setEnabled(AppPrincipal.isAdmin());
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -492,13 +489,13 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
                             .add(jlblCliente, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 110, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                             .add(jlblFOUT))
                         .add(7, 7, 7)
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                            .add(jdcFOUT, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 326, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jdcFOUT, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 326, Short.MAX_VALUE)
                             .add(layout.createSequentialGroup()
                                 .add(jcbxCliente, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 245, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .add(jbtnNuevoInquilino))
-                            .add(jlblAlqOperador, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 326, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                            .add(jcbxOperador, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                         .add(0, 0, Short.MAX_VALUE)
                         .add(jpnlPax, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 905, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
@@ -508,11 +505,12 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
                 .add(12, 12, 12)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jlblFecha, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 28, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jlblAlqFecha, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 28, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jlblOperador, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 28, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jlblAlqOperador, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 28, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                        .add(jlblFecha, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 28, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(jlblAlqFecha, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 28, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(jlblOperador, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 28, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jcbxOperador, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(layout.createSequentialGroup()
                         .add(12, 12, 12)
@@ -717,6 +715,8 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jftfImporteSinComisionFocusLost
 
     private void cargaCombos() {
+		Funciones.cargarComboTabla(jcbxOperador, "SELECT usrID, usrEmail FROM UsuariosWeb", "usrEmail", "usrID");
+		jcbxOperador.setSelectedItemById(DatosGlobales.usrID);
         Funciones.cargarComboTabla((ComboTabla)jcbxUF, "SELECT ufNombre, ufID FROM UnidadesFuncionales WHERE ufTipo > 0 ORDER BY ufNombre", "ufNombre", "ufID");
         Funciones.cargarComboTabla((ComboTabla)jcbxContratoCli, "SELECT conTipo, ID FROM Contratos ORDER BY ID", "conTipo", "ID", true);
         Funciones.cargarComboTabla((ComboTabla)jcbxContratoProp, "SELECT conTipo, ID FROM Contratos ORDER BY ID", "conTipo", "ID", true);
@@ -747,6 +747,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox jcbxFormaPagoImputacion;
     private javax.swing.JComboBox jcbxFormaPagoOperacion;
     private javax.swing.JComboBox jcbxMenores;
+    private treintayplaya.ComboTabla jcbxOperador;
     private javax.swing.JComboBox jcbxUF;
     private javax.swing.JCheckBox jchkEnviarMails;
     private com.toedter.calendar.JDateChooser jdcFIN;
@@ -758,7 +759,6 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
     private javax.swing.JFormattedTextField jftfTotal;
     private javax.swing.JLabel jlblAdultos;
     private javax.swing.JLabel jlblAlqFecha;
-    private javax.swing.JLabel jlblAlqOperador;
     private javax.swing.JLabel jlblCliente;
     private javax.swing.JLabel jlblContratoCli;
     private javax.swing.JLabel jlblContratoProp;
@@ -843,7 +843,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
 
         pstm.setString( 1, fechaAlquiler);
         pstm.setInt   ( 2, estado); 
-        pstm.setInt   ( 3, DatosGlobales.usrID);
+        pstm.setInt   ( 3, jcbxOperador.getSelectedId());
         pstm.setInt   ( 4, ufID);
         pstm.setInt   ( 5, cliID);
         pstm.setString( 6, fIN);
@@ -926,7 +926,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
 			alquiler = new Alquiler(alquiler.id);
             jlblAlqFecha.setText(FechasFormatter.getFechaSimpleString(rst.getString("alqFecha")));
             jdcVencimiento.setCalendar(FechasFormatter.getFechaCalendar(rst.getString("alqVencimiento")));
-            jlblAlqOperador.setText(rst.getString("usrEmail"));
+            jcbxOperador.setSelectedItemById(rst.getInt("usrID"));
             selectUF(rst.getInt("alqUF"));
             ((ComboTabla)jcbxCliente).setSelectedItemById(rst.getInt("alqCliente"));
             jdcFIN.setCalendar(FechasFormatter.getFechaCalendar(rst.getString("alqFIN")));

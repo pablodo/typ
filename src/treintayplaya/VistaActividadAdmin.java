@@ -473,7 +473,7 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
         if (alquiler.id < 1){
             return false;
         }
-        if(DatosGlobales.usrID != alquiler.operador){
+        if(! AppPrincipal.isAdmin() && DatosGlobales.usrID != alquiler.operador){
             return false;
         }
         if (!alquiler.isReserva()){
@@ -490,7 +490,7 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
         if (alquiler.id < 1){
             return false;
         }
-        if(DatosGlobales.usrID != alquiler.operador){
+        if(! AppPrincipal.isAdmin() && DatosGlobales.usrID != alquiler.operador){
             return false;
         }
         if(!( (alquiler.isReserva()) || alquiler.isConfirmacion()) ){
@@ -507,7 +507,7 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
         if (alquiler.id < 1){
             return false;
         }
-        if(DatosGlobales.usrID != alquiler.operador){
+        if(! AppPrincipal.isAdmin() && DatosGlobales.usrID != alquiler.operador){
             return false;
         }
         return true;
