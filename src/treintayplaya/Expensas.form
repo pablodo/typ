@@ -38,7 +38,7 @@
                   </Group>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jScrollPane1" alignment="0" min="-2" pref="804" max="-2" attributes="0"/>
+                          <Component id="jScrollPane1" min="-2" pref="804" max="-2" attributes="0"/>
                           <Component id="jpnlAltaMovimiento" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -52,9 +52,9 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollPane1" pref="266" max="32767" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="jpnlAltaMovimiento" min="-2" pref="158" max="-2" attributes="0"/>
+              <Component id="jScrollPane1" pref="281" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jpnlAltaMovimiento" min="-2" pref="92" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jbtnAgregar" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -143,37 +143,26 @@
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jlblDetalle" min="-2" pref="59" max="-2" attributes="0"/>
-                      <Component id="jlblFecha" min="-2" max="-2" attributes="0"/>
-                      <Component id="jlblDestino" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="jlblFecha" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="jlblPropietario" alignment="0" min="-2" pref="92" max="-2" attributes="0"/>
                   </Group>
+                  <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <Component id="jScrollPane2" pref="555" max="32767" attributes="0"/>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="jbtnOK" min="-2" pref="117" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" attributes="0">
-                                  <EmptySpace min="566" pref="566" max="-2" attributes="0"/>
-                                  <Component id="jbtnCancelar" min="-2" pref="117" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
-                          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="jdcFecha" min="-2" pref="223" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="jdcFecha" pref="223" max="32767" attributes="0"/>
-                              <Component id="jcbxDestino" max="32767" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                           <Component id="jlblImporte" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jftfImporte" min="-2" pref="223" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="154" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="175" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Component id="jcbxPropietarios" min="-2" pref="402" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="jbtnOK" min="-2" pref="117" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jbtnCancelar" min="-2" pref="117" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -189,20 +178,12 @@
                       <Component id="jlblImporte" alignment="2" min="-2" max="-2" attributes="0"/>
                       <Component id="jdcFecha" alignment="2" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jcbxDestino" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jlblDestino" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="jlblDetalle" min="-2" max="-2" attributes="0"/>
-                      <Group type="102" attributes="0">
-                          <Component id="jbtnOK" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jbtnCancelar" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Component id="jScrollPane2" alignment="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="jlblPropietario" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jcbxPropietarios" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jbtnOK" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jbtnCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -213,19 +194,6 @@
         <Component class="javax.swing.JLabel" name="jlblImporte">
           <Properties>
             <Property name="text" type="java.lang.String" value="Importe:"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="jlblDestino">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="A favor de:"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JComboBox" name="jcbxDestino">
-          <Properties>
-            <Property name="maximumRowCount" type="int" value="2"/>
-            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="new javax.swing.DefaultComboBoxModel(new String[]{Movimientos.destinos[1], Movimientos.destinos[2]})" type="code"/>
-            </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="jbtnOK">
@@ -254,33 +222,7 @@
           </Properties>
         </Component>
         <Component class="com.toedter.calendar.JDateChooser" name="jdcFecha">
-          <Properties>
-            <Property name="dateFormatString" type="java.lang.String" value="dd/MM/yyyy HH:mm:ss"/>
-          </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="jlblDetalle">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Detalle:"/>
-          </Properties>
-        </Component>
-        <Container class="javax.swing.JScrollPane" name="jScrollPane2">
-          <AuxValues>
-            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-          </AuxValues>
-
-          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-          <SubComponents>
-            <Component class="javax.swing.JTextArea" name="jtaDetalle">
-              <Properties>
-                <Property name="columns" type="int" value="20"/>
-                <Property name="document" type="javax.swing.text.Document" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="new FixedLengthDocument(30)" type="code"/>
-                </Property>
-                <Property name="rows" type="int" value="5"/>
-              </Properties>
-            </Component>
-          </SubComponents>
-        </Container>
         <Component class="javax.swing.JButton" name="jbtnCancelar">
           <Properties>
             <Property name="mnemonic" type="int" value="110"/>
@@ -289,6 +231,13 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnCancelarActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jlblPropietario">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Propietario:"/>
+          </Properties>
+        </Component>
+        <Component class="treintayplaya.ComboTabla" name="jcbxPropietarios">
         </Component>
       </SubComponents>
     </Container>

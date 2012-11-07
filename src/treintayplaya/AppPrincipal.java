@@ -74,6 +74,7 @@ public class AppPrincipal extends javax.swing.JFrame {
         movimientosMenu = new javax.swing.JMenu();
         jmiABMLMovimientos = new javax.swing.JMenuItem();
         jmiCerrarMovimientos = new javax.swing.JMenuItem();
+        jmiExpensas = new javax.swing.JMenuItem();
         listadosMenu = new javax.swing.JMenu();
         jmniDeudores = new javax.swing.JMenuItem();
         jmniEntrantes = new javax.swing.JMenuItem();
@@ -104,7 +105,7 @@ public class AppPrincipal extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(827, Short.MAX_VALUE)
+                .addContainerGap(835, Short.MAX_VALUE)
                 .add(jlblAppUsuario)
                 .addContainerGap())
         );
@@ -300,6 +301,15 @@ public class AppPrincipal extends javax.swing.JFrame {
         });
         movimientosMenu.add(jmiCerrarMovimientos);
 
+        jmiExpensas.setMnemonic('E');
+        jmiExpensas.setText("Expensas");
+        jmiExpensas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiExpensasActionPerformed(evt);
+            }
+        });
+        movimientosMenu.add(jmiExpensas);
+
         admMenu.add(movimientosMenu);
 
         AppMenuBar.add(admMenu);
@@ -369,7 +379,7 @@ public class AppPrincipal extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .add(desktopPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 541, Short.MAX_VALUE)
+                .add(desktopPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 545, Short.MAX_VALUE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 30, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
         );
@@ -503,6 +513,12 @@ public class AppPrincipal extends javax.swing.JFrame {
 		vistaAdmin.show();
 	}//GEN-LAST:event_vistaMensualMenuMouseClicked
 
+    private void jmiExpensasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiExpensasActionPerformed
+		Expensas expensas = new Expensas();
+		desktopPane.add(expensas);
+		expensas.show();
+    }//GEN-LAST:event_jmiExpensasActionPerformed
+
     public static boolean isAdmin(){
         return DatosGlobales.usrNivel == 1 && DatosGlobales.usrEstado == 1 && DatosGlobales.appSesion;
     }
@@ -564,6 +580,7 @@ public class AppPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jmiCerrarMovimientos;
     private javax.swing.JMenuItem jmiClientes;
     private javax.swing.JMenuItem jmiContratos;
+    private javax.swing.JMenuItem jmiExpensas;
     private javax.swing.JMenuItem jmiFormasPago;
     private javax.swing.JMenuItem jmiPropietarios;
     private javax.swing.JMenuItem jmiTCuentas;

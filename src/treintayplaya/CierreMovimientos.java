@@ -40,7 +40,8 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
 									   "En el Propietario",
 									   "A Pagar",
 									   "A Cobrar",
-									   "Ganancia"};
+									   "Ganancia",
+                                       "Expensas"};
 	private String[] historicoHeaders = {"Fecha saldado", 
 										 "En Comercializadora",
   									     "No imputado",
@@ -50,6 +51,7 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
 									     "A Pagar",
 									     "A Cobrar",
 									     "Ganancia",
+									     "Expensas",
                                          "Liquidado"}; 
     private TotalMovimientos totales;
     
@@ -295,6 +297,7 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
                     Funciones.formatNumber(rst.getDouble("liqAPagar")),
                     Funciones.formatNumber(rst.getDouble("liqACobrar")),
                     Funciones.formatNumber(rst.getDouble("liqGanancia")),
+                    Funciones.formatNumber(rst.getDouble("liqExpensas")),
                     Funciones.formatNumber(rst.getDouble("liqImporte"))
                 };
                 modelo.addRow(row);
@@ -307,7 +310,11 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
 	public void cargaMovimientos(int propID) {
 		DefaultTableModel modelo;
         try {
-			String query = "SELECT * FROM Movimientos " +
+			String query = "SELECT alqID, ufID, alqUF, alqCuentaImpPropID, " +
+                    "p1.propID, p2.propID, alqEstado, movLiquidacion, movAlqID, " +
+                    "movID, movDestino, movImporte, ufPrecio, alqImporteSinComision, " +
+                    "alqDifImputacion, alqTotal, movFecha, p1.propNCuenta, movDetalle " +
+                    "FROM Movimientos " +
 					"INNER JOIN Alquileres ON movAlqID = alqID " +
 					"INNER JOIN UnidadesFuncionales ON alqUF = ufID " +
 					"LEFT JOIN Propietarios as p1 ON alqCuentaImpPropID = p1.propID " +
@@ -359,7 +366,7 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
                                   importe.getImporte(),
                                   importe.getImporteConDescuentos(),
                                   Movimientos.destinos[destino],
-                                  rst.getString("propNCuenta"),
+                                  rst.getString("p1.propNCuenta"),
                                   importe.getComision(),
                                   rst.getString("movDetalle")};
                 modelo.addRow(fila);
@@ -368,6 +375,27 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
 				if (destino == 2)
 					totales.propietario += importe.importe;
 			}
+            rst.close();
+            pstm.close();
+            
+            //Expensas
+            query = "SELECT movID, movImporte, movDestino, movDetalle, movFecha " +
+                    "FROM Movimientos " +
+                    "WHERE movPropietario = ? AND movLiquidacion = 0 AND movOperacion = -1"; //Operacion -1 = Expensas 
+            pstm = cnx.prepareStatement(query);
+            pstm.setInt(1, propID);
+            rst = pstm.executeQuery();
+            while (rst.next()){
+                if (rst.isFirst()){
+                    modelo.addRow(new Object[]{"Expensas"});
+                }
+                ids.add(rst.getInt("movID"));
+                Double importeExpensas = rst.getDouble("movImporte");
+                Object [] fila = {FechasFormatter.getFechaFromMySQL(rst.getString("movFecha")),
+                                  Funciones.formatNumber(importeExpensas)};
+                modelo.addRow(fila);
+                totales.expensas += importeExpensas;
+            }
             totales.calcularTotales();
             jtblTotales.setModel(new DefaultTableModel(new Object[][]{totales.toRow()}, totalesHeaders)); 
 
@@ -439,6 +467,9 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
                     if (rowValue.toString().startsWith("Alquiler")){
                         setBackground(new Color(100, 255,100));
                         font = font.deriveFont(Font.BOLD);
+                    }else if(rowValue.toString().startsWith("Expensas")){
+                        setBackground(new Color(100, 200,100));
+                        font = font.deriveFont(Font.BOLD);
                     }else{
                         setBackground(Color.WHITE);
                         font = font.deriveFont(Font.PLAIN);
@@ -460,6 +491,7 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
 		public double aPagar = 0.0;
 		public double aCobrar = 0.0;
 		public double ganancia = 0.0;
+        public double expensas = 0.0;
 		public String fechaSaldado = "";
 
 		public String getComercializadora(){
@@ -486,11 +518,14 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
 		public String getGanancia(){
 			return Funciones.formatNumber(ganancia);
 		}
+		public String getExpensas(){
+			return Funciones.formatNumber(expensas);
+		}
 		public void calcularTotales(){
 			ganancia = comisiones + noImputado;
-			aCobrar = comisiones - comercializadora;
+			aCobrar = comisiones - comercializadora + expensas;
 			if (aCobrar < 0) aCobrar = 0.0;
-			aPagar = comercializadora - comisiones - noImputado;
+			aPagar = comercializadora - comisiones - noImputado - expensas;
 			if (aPagar < 0) aPagar = 0.0;
             if (aPagar > aCobrar){
                 jlblImporteLiquidacion.setText("Pagar");
@@ -514,6 +549,7 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
 			list.add(getAPagar());
 			list.add(getACobrar());
 			list.add(getGanancia());
+			list.add(getExpensas());
 			return list.toArray();
 		}
 	}
@@ -574,8 +610,8 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
     private int insertLiquidacion(int propID, Double importe) throws SQLException{
         String query = "INSERT INTO Liquidaciones (liqFecha, liqPropietario, liqImporte, "
                 + "liqACobrar, liqAPagar, liqNoImputado, liqSinComision, liqComisiones, "
-                + "liqGanancia, liqEnComercializadora, liqEnPropietario) "
-                + "VALUES (NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                + "liqGanancia, liqExpensas, liqEnComercializadora, liqEnPropietario) "
+                + "VALUES (NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
         pstm.setDouble(1, propID);
         pstm.setDouble(2, importe);
@@ -585,8 +621,9 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
         pstm.setDouble(6, totales.sinComision);
         pstm.setDouble(7, totales.comisiones);
         pstm.setDouble(8, totales.ganancia);
-        pstm.setDouble(9, totales.comercializadora);
-        pstm.setDouble(10, totales.propietario);
+        pstm.setDouble(9, totales.expensas);
+        pstm.setDouble(10, totales.comercializadora);
+        pstm.setDouble(11, totales.propietario);
         return pstm.executeUpdate();
     }
 

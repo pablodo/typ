@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  *
  * @author sergio
  */
-public class ConsultaMovimientos extends javax.swing.JInternalFrame {
+public class Expensas extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form mantenimientoBancos
@@ -23,12 +23,14 @@ public class ConsultaMovimientos extends javax.swing.JInternalFrame {
     public static javax.swing.table.DefaultTableModel modelo;
     public static java.sql.Connection cnx;
     private ArrayList<Integer> ids;
+    private ArrayList<Integer> propIds;
     private boolean actualizar;
     
-    public ConsultaMovimientos() {
+    public Expensas() {
         modelo = new javax.swing.table.DefaultTableModel();
         cnx = Conexion.getInstance().getConnection();
         initComponents();
+        cargarCombos();
         altaMovimiento(false);
     }
 
@@ -49,16 +51,13 @@ public class ConsultaMovimientos extends javax.swing.JInternalFrame {
         jbtnCerrar = new javax.swing.JButton();
         jpnlAltaMovimiento = new javax.swing.JPanel();
         jlblImporte = new javax.swing.JLabel();
-        jlblDestino = new javax.swing.JLabel();
-        jcbxDestino = new javax.swing.JComboBox();
         jbtnOK = new javax.swing.JButton();
         jftfImporte = new javax.swing.JFormattedTextField();
         jlblFecha = new javax.swing.JLabel();
         jdcFecha = new com.toedter.calendar.JDateChooser();
-        jlblDetalle = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jtaDetalle = new javax.swing.JTextArea();
         jbtnCancelar = new javax.swing.JButton();
+        jlblPropietario = new javax.swing.JLabel();
+        jcbxPropietarios = new treintayplaya.ComboTabla();
 
         setClosable(true);
         setTitle("Consulta de movimientos");
@@ -110,11 +109,6 @@ public class ConsultaMovimientos extends javax.swing.JInternalFrame {
 
         jlblImporte.setText("Importe:");
 
-        jlblDestino.setText("A favor de:");
-
-        jcbxDestino.setMaximumRowCount(2);
-        jcbxDestino.setModel(new javax.swing.DefaultComboBoxModel(new String[]{Movimientos.destinos[1], Movimientos.destinos[2]}));
-
         jbtnOK.setMnemonic('e');
         jbtnOK.setText("Aceptar");
         jbtnOK.addActionListener(new java.awt.event.ActionListener() {
@@ -129,15 +123,6 @@ public class ConsultaMovimientos extends javax.swing.JInternalFrame {
 
         jlblFecha.setText("Fecha:");
 
-        jdcFecha.setDateFormatString("dd/MM/yyyy HH:mm:ss");
-
-        jlblDetalle.setText("Detalle:");
-
-        jtaDetalle.setColumns(20);
-        jtaDetalle.setDocument(new FixedLengthDocument(30));
-        jtaDetalle.setRows(5);
-        jScrollPane2.setViewportView(jtaDetalle);
-
         jbtnCancelar.setMnemonic('n');
         jbtnCancelar.setText("Cancelar");
         jbtnCancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -146,6 +131,8 @@ public class ConsultaMovimientos extends javax.swing.JInternalFrame {
             }
         });
 
+        jlblPropietario.setText("Propietario:");
+
         org.jdesktop.layout.GroupLayout jpnlAltaMovimientoLayout = new org.jdesktop.layout.GroupLayout(jpnlAltaMovimiento);
         jpnlAltaMovimiento.setLayout(jpnlAltaMovimientoLayout);
         jpnlAltaMovimientoLayout.setHorizontalGroup(
@@ -153,31 +140,24 @@ public class ConsultaMovimientos extends javax.swing.JInternalFrame {
             .add(jpnlAltaMovimientoLayout.createSequentialGroup()
                 .addContainerGap()
                 .add(jpnlAltaMovimientoLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jlblDetalle, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 59, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jlblFecha)
-                    .add(jlblDestino))
+                    .add(jlblPropietario, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 92, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .add(jpnlAltaMovimientoLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jpnlAltaMovimientoLayout.createSequentialGroup()
-                        .add(14, 14, 14)
-                        .add(jpnlAltaMovimientoLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(jpnlAltaMovimientoLayout.createSequentialGroup()
-                                .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 555, Short.MAX_VALUE)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                                .add(jbtnOK, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 117, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                            .add(jpnlAltaMovimientoLayout.createSequentialGroup()
-                                .add(566, 566, 566)
-                                .add(jbtnCancelar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 117, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                        .add(18, 18, 18))
-                    .add(jpnlAltaMovimientoLayout.createSequentialGroup()
+                        .add(jdcFecha, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 223, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jpnlAltaMovimientoLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                            .add(jdcFecha, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE)
-                            .add(jcbxDestino, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .add(33, 33, 33)
                         .add(jlblImporte, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(jftfImporte, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 223, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(154, 154, 154))))
+                        .add(175, 175, 175))
+                    .add(jpnlAltaMovimientoLayout.createSequentialGroup()
+                        .add(jcbxPropietarios, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 402, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .add(jbtnOK, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 117, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jbtnCancelar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 117, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(9, 9, 9))))
         );
         jpnlAltaMovimientoLayout.setVerticalGroup(
             jpnlAltaMovimientoLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -188,18 +168,12 @@ public class ConsultaMovimientos extends javax.swing.JInternalFrame {
                     .add(jftfImporte, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jlblImporte)
                     .add(jdcFecha, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(jpnlAltaMovimientoLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jcbxDestino, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jlblDestino))
-                .add(12, 12, 12)
-                .add(jpnlAltaMovimientoLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                    .add(jlblDetalle)
-                    .add(jpnlAltaMovimientoLayout.createSequentialGroup()
-                        .add(jbtnOK)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jbtnCancelar))
-                    .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .add(jlblPropietario)
+                    .add(jcbxPropietarios, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jbtnOK)
+                    .add(jbtnCancelar))
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -230,9 +204,9 @@ public class ConsultaMovimientos extends javax.swing.JInternalFrame {
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
                 .addContainerGap()
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(jpnlAltaMovimiento, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 158, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jpnlAltaMovimiento, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 92, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jbtnAgregar)
@@ -260,14 +234,16 @@ public class ConsultaMovimientos extends javax.swing.JInternalFrame {
         try {
             String fecha = FechasFormatter.getFechaToMySQL(jdcFecha.getCalendar());
             Double importe = Double.valueOf(String.valueOf(jftfImporte.getValue()));;
-            int destino = jcbxDestino.getSelectedIndex() + 1;
-            String detalle = jtaDetalle.getText();
+            int destino = 2;
+            String detalle = "Expensas";
+            int propID = jcbxPropietarios.getSelectedId();
             int id = 0;
+            int operacion = -1;
+            int alqID = 0;
             if (actualizar)
                 id = ids.get(jtblMovimientos.getSelectedRow());
 
-            boolean result = Movimientos.guardarMovimiento(id, fecha, importe, destino, detalle); 
-            
+            boolean result = Movimientos.guardarMovimiento(id, fecha, importe, destino, detalle, alqID, operacion, propID); 
             cargaTabla();
             altaMovimiento(false);
         } catch (java.sql.SQLException sqle) {
@@ -284,7 +260,7 @@ public class ConsultaMovimientos extends javax.swing.JInternalFrame {
             cargaTabla();
             pstm.close();
         } catch (SQLException ex) {
-            Logger.getLogger(ConsultaMovimientos.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Expensas.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jbtnBorrarActionPerformed
 
@@ -301,10 +277,9 @@ public class ConsultaMovimientos extends javax.swing.JInternalFrame {
 			jftfImporte.setText(jtblMovimientos.getValueAt(row, 1).toString());
 			jftfImporte.commitEdit();
 		} catch (ParseException ex) {
-			Logger.getLogger(ConsultaMovimientos.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(Expensas.class.getName()).log(Level.SEVERE, null, ex);
 		}
-        jcbxDestino.setSelectedItem(jtblMovimientos.getValueAt(row, 2).toString());
-		jtaDetalle.setText(jtblMovimientos.getValueAt(row, 3).toString());
+        jcbxPropietarios.setSelectedItemById(propIds.get(row));
     }//GEN-LAST:event_jbtnActualizarActionPerformed
 
 	private void jbtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnCancelarActionPerformed
@@ -317,34 +292,35 @@ public class ConsultaMovimientos extends javax.swing.JInternalFrame {
         try {
             java.sql.Statement stm = cnx.createStatement();
 			String query = "SELECT * FROM Movimientos " +
-                           "LEFT JOIN Alquileres ON movAlqID = alqID " +
-                           "LEFT JOIN UnidadesFuncionales ON alqUF = ufID " +
+                           "LEFT JOIN Propietarios ON movPropietario = propID " +
+                           "LEFT JOIN UnidadesFuncionales ON propUF = ufID " +
+                           "WHERE movOperacion = -1 " +
                            "ORDER BY movFecha DESC";
             java.sql.ResultSet rst = stm.executeQuery(query);
             
             ids = new ArrayList<Integer>();
+            propIds = new ArrayList<Integer>();
             modelo = new javax.swing.table.DefaultTableModel();
             jtblMovimientos.setModel(modelo);
             Object[] headers = {"Fecha", 
 								"Importe",
-                                "A favor de",
-								"Detalle",
-                                "Estado",
-                                "UF"};
+                                "Propietario",
+                                "UF",
+                                "Estado"};
             modelo.setColumnIdentifiers(headers);
             while(rst.next()) {
                 ids.add(rst.getInt("movID"));
+                propIds.add(rst.getInt("propID"));
 				Double importe = rst.getDouble("movImporte");
                 String estado = "Sin liquidar";
                 if (rst.getInt("movLiquidacion") > 0){
                     estado = "Liquidado";
                 }
-                Object [] fila = {FechasFormatter.getFechaFromMySQL(rst.getString("movFecha")),
+                Object [] fila = {FechasFormatter.getFechaSimpleString(rst.getString("movFecha")),
 								  Funciones.formatNumber(importe),
-                                  Movimientos.destinos[rst.getInt("movDestino")],
-								  rst.getString("movDetalle"),
+                                  rst.getString("propApellido") + ", " + rst.getString("propNombre"),
+                                  rst.getString("ufNombre"),
                                   estado,
-                                  rst.getString("ufNombre")
                                  };
                 modelo.addRow(fila);
             }
@@ -358,41 +334,42 @@ public class ConsultaMovimientos extends javax.swing.JInternalFrame {
     private void altaMovimiento(boolean option){
 		jdcFecha.setEnabled(option);
         jftfImporte.setEnabled(option);
-        jcbxDestino.setEnabled(option);
+        jcbxPropietarios.setEnabled(option);
         jbtnOK.setEnabled(option);
 		jbtnCancelar.setEnabled(option);
         jtblMovimientos.setEnabled(! option);
 		jdcFecha.setCalendar(new GregorianCalendar());
 		jftfImporte.setValue(0);
-        jcbxDestino.setSelectedIndex(-1);
-		jtaDetalle.setEnabled(option);
-		jtaDetalle.setText("");
+        jcbxPropietarios.setSelectedIndex(-1);
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton jbtnActualizar;
     private javax.swing.JButton jbtnAgregar;
     private javax.swing.JButton jbtnBorrar;
     private javax.swing.JButton jbtnCancelar;
     private javax.swing.JButton jbtnCerrar;
     private javax.swing.JButton jbtnOK;
-    private javax.swing.JComboBox jcbxDestino;
+    private treintayplaya.ComboTabla jcbxPropietarios;
     private com.toedter.calendar.JDateChooser jdcFecha;
     private javax.swing.JFormattedTextField jftfImporte;
-    private javax.swing.JLabel jlblDestino;
-    private javax.swing.JLabel jlblDetalle;
     private javax.swing.JLabel jlblFecha;
     private javax.swing.JLabel jlblImporte;
+    private javax.swing.JLabel jlblPropietario;
     private javax.swing.JPanel jpnlAltaMovimiento;
-    private javax.swing.JTextArea jtaDetalle;
     private javax.swing.JTable jtblMovimientos;
     // End of variables declaration//GEN-END:variables
 
     private boolean valida() {
         if (! Funciones.validaTextField(this, jftfImporte, "Importe")) return false;
-        if (! Funciones.validaCombo(this, jcbxDestino, "Destino")) return false;
+        if (! Funciones.validaCombo(this, jcbxPropietarios, "Propietario")) return false;
         return true;
+    }
+
+    private void cargarCombos() {
+        String query = "SELECT propID, concat(propApellido, ', ', propNombre, ' (', ufNombre, ')') as nombre " +
+                       "FROM Propietarios INNER JOIN UnidadesFuncionales ON ufID = propUF";
+        Funciones.cargarComboTabla(jcbxPropietarios, query, "nombre", "propID");
     }
 }

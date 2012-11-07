@@ -1,1 +1,1 @@
-ALTER TABLE Movimientos ADD movPropietarioSaldado int(11) after movSaldado;
+ALTER TABLE Movimientos ADD movPropietario int(11) after movLiquidacion;
