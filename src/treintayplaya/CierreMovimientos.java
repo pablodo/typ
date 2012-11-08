@@ -54,7 +54,8 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
 									     "Expensas",
                                          "Liquidado"}; 
     private TotalMovimientos totales;
-    
+    private Double saldo;    
+
     public CierreMovimientos() {
         cnx = Conexion.getInstance().getConnection();
         initComponents();
@@ -84,6 +85,7 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
         lblHistorico = new javax.swing.JLabel();
         jftfImporteLiquidacion = new javax.swing.JFormattedTextField();
         jlblImporteLiquidacion = new javax.swing.JLabel();
+        jlblSaldo = new javax.swing.JLabel();
         lblPropietario = new javax.swing.JLabel();
         jcbxPropietarios = new treintayplaya.ComboTabla();
 
@@ -134,6 +136,8 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
 
         jlblImporteLiquidacion.setText("Importe liquidación:");
 
+        jlblSaldo.setText("Saldo");
+
         org.jdesktop.layout.GroupLayout jpnlMovimientosLayout = new org.jdesktop.layout.GroupLayout(jpnlMovimientos);
         jpnlMovimientos.setLayout(jpnlMovimientosLayout);
         jpnlMovimientosLayout.setHorizontalGroup(
@@ -150,7 +154,8 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
                             .add(lblMovimientos))
                         .add(0, 0, Short.MAX_VALUE))
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, jpnlMovimientosLayout.createSequentialGroup()
-                        .add(0, 0, Short.MAX_VALUE)
+                        .add(jlblSaldo)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .add(jlblImporteLiquidacion)
                         .add(18, 18, 18)
                         .add(jftfImporteLiquidacion, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 181, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -175,7 +180,8 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
                 .add(jpnlMovimientosLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jbtnSaldar)
                     .add(jftfImporteLiquidacion, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jlblImporteLiquidacion))
+                    .add(jlblImporteLiquidacion)
+                    .add(jlblSaldo))
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -217,7 +223,7 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
                 .add(jpnlMovimientos, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(18, 18, 18)
                 .add(jbtnCerrar)
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         pack();
@@ -256,6 +262,7 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
 
 	private void jcbxPropietariosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbxPropietariosItemStateChanged
         jlblImporteLiquidacion.setText("Importe liquidación:");
+        jlblSaldo.setText("");
         if (jcbxPropietarios.getSelectedIndex() < 0){
             return;
         }
@@ -279,6 +286,7 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
 
     public void cargaLiquidaciones(int propID){
 		DefaultTableModel modelo;
+        saldo = 0.0;
         try {
             String query = "SELECT * FROM Liquidaciones "
                          + "WHERE liqPropietario = ?";
@@ -287,8 +295,22 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
             pstm.setInt(1, propID);
             java.sql.ResultSet rst = pstm.executeQuery();
             while (rst.next()){
+                Double importe = rst.getDouble("liqImporte");
+                Double aCobrar = rst.getDouble("liqACobrar");
+                Double aPagar = rst.getDouble("liqAPagar");
+
+                //SALDO A FAVOR DEL PROPIETARIO (Negativo)
+                if (aPagar > aCobrar && aPagar - aCobrar != importe){
+                    saldo += aPagar - aCobrar - importe;
+                //SALDO A FAVOR DE LA COMERCIALIZADORA (Positivo)
+                }else if (aCobrar > aPagar && aCobrar - aPagar != importe){
+                    saldo -= aCobrar - aPagar - importe;
+                }else if (aCobrar == 0 && aPagar == 0){
+                    saldo += importe;
+                }
+
                 Object[] row = {
-                    FechasFormatter.getFechaFromMySQL(rst.getString("liqFecha")),
+                    FechasFormatter.getFechaSimpleString(rst.getString("liqFecha")),
                     Funciones.formatNumber(rst.getDouble("liqEnComercializadora")),
                     Funciones.formatNumber(rst.getDouble("liqNoImputado")),
                     Funciones.formatNumber(rst.getDouble("liqSinComision")),
@@ -298,7 +320,7 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
                     Funciones.formatNumber(rst.getDouble("liqACobrar")),
                     Funciones.formatNumber(rst.getDouble("liqGanancia")),
                     Funciones.formatNumber(rst.getDouble("liqExpensas")),
-                    Funciones.formatNumber(rst.getDouble("liqImporte"))
+                    Funciones.formatNumber(importe)
                 };
                 modelo.addRow(row);
             }
@@ -362,7 +384,7 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
 				//Movimientos
 				totales.comisiones += importe.comision;
                 ids.add(rst.getInt("movID"));
-                Object [] fila = {FechasFormatter.getFechaFromMySQL(rst.getString("movFecha")),
+                Object [] fila = {FechasFormatter.getFechaSimpleString(rst.getString("movFecha")),
                                   importe.getImporte(),
                                   importe.getImporteConDescuentos(),
                                   Movimientos.destinos[destino],
@@ -391,7 +413,7 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
                 }
                 ids.add(rst.getInt("movID"));
                 Double importeExpensas = rst.getDouble("movImporte");
-                Object [] fila = {FechasFormatter.getFechaFromMySQL(rst.getString("movFecha")),
+                Object [] fila = {FechasFormatter.getFechaSimpleString(rst.getString("movFecha")),
                                   Funciones.formatNumber(importeExpensas)};
                 modelo.addRow(fila);
                 totales.expensas += importeExpensas;
@@ -409,7 +431,6 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
     private void habilitarMovimientos(boolean option){
         jtblMovimientos.setEnabled(option);
 		jtblTotales.setEnabled(option);
-		jbtnSaldar.setEnabled(option);
         if (! option){
             jtblMovimientos.setModel(new DefaultTableModel());
             jtblTotales.setModel(new DefaultTableModel());
@@ -426,6 +447,7 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox jcbxPropietarios;
     private javax.swing.JFormattedTextField jftfImporteLiquidacion;
     private javax.swing.JLabel jlblImporteLiquidacion;
+    private javax.swing.JLabel jlblSaldo;
     private javax.swing.JPanel jpnlMovimientos;
     private javax.swing.JTable jtblHistorico;
     private javax.swing.JTable jtblMovimientos;
@@ -527,16 +549,22 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
 			if (aCobrar < 0) aCobrar = 0.0;
 			aPagar = comercializadora - comisiones - noImputado - expensas;
 			if (aPagar < 0) aPagar = 0.0;
+
+            Double importeLiquidacion = 0.0;
             if (aPagar > aCobrar){
                 jlblImporteLiquidacion.setText("Pagar");
-                jftfImporteLiquidacion.setValue(aPagar - aCobrar);
+                importeLiquidacion = aPagar - aCobrar;
             }else if(aCobrar > aPagar){
                 jlblImporteLiquidacion.setText("Cobrar");
-                jftfImporteLiquidacion.setValue(aCobrar - aPagar);
-            } else {
-                jftfImporteLiquidacion.setValue(0);
+                importeLiquidacion = aCobrar - aPagar;
             }
+
+            String msj = "Saldo: " + Funciones.formatNumber(importeLiquidacion) +
+                         " - Saldo anterior: " + Funciones.formatNumber(saldo);
+            jlblSaldo.setText(msj);
+            jftfImporteLiquidacion.setValue(importeLiquidacion + saldo);
 		}
+
 		public Object[] toRow() {
 			ArrayList list = new ArrayList();
 			if (! fechaSaldado.equals(""))
@@ -639,6 +667,9 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
     }
 
     private int updateMovimientos(int liquidacion) throws SQLException{
+        if (ids.isEmpty()){
+            return 0;
+        }
         String where = " WHERE";
         for (Integer id: ids){
             if(id > 0){
