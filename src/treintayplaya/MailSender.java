@@ -33,11 +33,11 @@ public class MailSender {
 	public MailSender(Configuracion configuracion){
 		this(configuracion.email, configuracion.emailPassword);
 
-		bbcMails = new InternetAddress[1];
         if ("".equals(configuracion.emailCCO.trim())){
             return;
         }
 		try {
+            bbcMails = new InternetAddress[1];
 			bbcMails[0] = new InternetAddress(configuracion.emailCCO);
 		} catch (AddressException ex) {
 			Logger.getLogger(MailSender.class.getName()).log(Level.SEVERE, null, ex);
@@ -90,7 +90,7 @@ public class MailSender {
             send(asunto, mensaje);
         } catch (Exception ex) {
             String params = "\n" + mailTo + "\n" + asunto + "\n" + mensaje;
-            Logger.getLogger(MailSender.class.getName()).log(Level.SEVERE, ex.toString() + params);
+            Logger.getLogger(MailSender.class.getName()).log(Level.SEVERE, ex + params);
         }
     }
     
@@ -110,7 +110,7 @@ public class MailSender {
             
             Transport.send(msg);
         } catch (MessagingException ex) {
-            throw new Exception(ex.getMessage());
+            throw ex;
         }
     }
     

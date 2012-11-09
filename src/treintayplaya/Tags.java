@@ -37,10 +37,11 @@ public class Tags extends javax.swing.JInternalFrame {
 		for (String tag: tags) {
 			try{
 				Object rawValue = getValueByTag(objeto, tag);
-				if (rawValue != null) {
-					String value = Matcher.quoteReplacement(String.valueOf(rawValue));
-					texto = texto.replaceAll(tag, value);
-				}
+				if (rawValue == null){
+                    rawValue = "";
+                }
+                String value = Matcher.quoteReplacement(String.valueOf(rawValue));
+                texto = texto.replaceAll(tag, value);
 			}catch(Exception e){
 				throw new Exception("Problem with tag " + tag + "\n" + e.getMessage());
 			}
@@ -76,14 +77,14 @@ public class Tags extends javax.swing.JInternalFrame {
 	public @interface Tag{
 	}
 
-//	public static void main(String args[]){
-//		String contrato = "<BANCO> <TITULAR_CUENTA> <BANCO_IMPUTADO> <TITULAR_CUENTA_IMPUTADA>";
-//		try {
-//			System.out.println(Tags.replaceTags(contrato, new Alquiler(10)));
-//		} catch (Exception ex) {
-//			Logger.getLogger(Tags.class.getName()).log(Level.SEVERE, null, ex);
-//		}
-//	}
+	public static void main(String args[]){
+		String contrato = "<BANCO> <TITULAR_CUENTA> <BANCO_IMPUTADO> <TITULAR_CUENTA_IMPUTADA><DNI>";
+		try {
+			System.out.println(Tags.replaceTags(contrato, new Alquiler(22)));
+		} catch (Exception ex) {
+			Logger.getLogger(Tags.class.getName()).log(Level.SEVERE, null, ex);
+		}
+	}
 
 	/**
 	 * This method is called from within the constructor to initialize the

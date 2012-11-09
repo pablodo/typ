@@ -606,6 +606,9 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
             cnx.setAutoCommit(false);
             insert1 = insertAlquiler();
             if (insert1){
+                if (operacion == Alquiler.CONFIRMAR || operacion == Alquiler.CANCELAR){
+                    generarMovimiento(reservaCobrada);
+                }
                 if (alquiler.id == 0){
                     alquiler = new Alquiler(getUltimoAlquiler());
                 }else{
@@ -614,13 +617,11 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
                 }
                 insertDetalleAlquiler(alquiler.id);
             }
-            if (operacion == Alquiler.CONFIRMAR || operacion == Alquiler.CANCELAR){
-                generarMovimiento(reservaCobrada);
-			}
             cnx.commit();
 
-            if (jchkEnviarMails.isSelected())
+            if (jchkEnviarMails.isSelected()){
                 enviarContratos();
+            }
         } catch(java.sql.SQLException sqle) {
             sqle.printStackTrace();
             try {
@@ -1056,13 +1057,11 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
 		if (operacion == Alquiler.PROPIETARIO || alquiler.isPropietario())
 			return;
 		if (opcion){
-			jcbxDesayunosImp.setEnabled(true);
 			jftfDifImputacion.setEnabled(true);
 			jcbxFormaPagoImputacion.setEnabled(true);
 			jcbxCuentaImputada.setEnabled(true);
 		}else{
 			jcbxDesayunosImp.setSelectedIndex(jcbxDesayunos.getSelectedIndex());
-			jcbxDesayunosImp.setEnabled(false);
 			jftfDifImputacion.setValue(0);
 			jftfDifImputacion.setEnabled(false);
 			int idFormaPago = ((ComboTabla)jcbxFormaPagoOperacion).getSelectedId();

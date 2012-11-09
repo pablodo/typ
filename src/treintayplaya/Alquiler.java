@@ -26,6 +26,7 @@ public class Alquiler{
 	Double dblSaldoPendienteImputado;
 	Double reservaCobrada;
 	Double reservaMinima;
+	Double importeCancelado;
     Double diferenciaImputacion;
     Integer operador = 0;
     Integer id = 0;
@@ -66,6 +67,8 @@ public class Alquiler{
     @Tag String reserva_cobrada = "0.00";
     @Tag String reserva_cobrada_imputada = "0.00";
     @Tag String reserva_minima = "0.00";
+    @Tag String importe_cancelado = "0.00";
+    @Tag String importe_cancelado_imputado = "0.00";
     @Tag String saldo_pendiente = "0.00";
     @Tag String saldo_pendiente_imputado = "0.00";
     
@@ -180,9 +183,23 @@ public class Alquiler{
 			nombre_propietario = rst.getString("p2.propNombre");
 			apellido_propietario = rst.getString("p2.propApellido");
             
-            limpiar();
             rst.close();
             pstm.close();
+            
+            if (tipo == CANCELAR) {
+                query = "SELECT movImporte FROM Movimientos WHERE movAlqID = ? ORDER BY movID DESC LIMIT 1";
+                pstm = cnx.prepareStatement(query);
+                pstm.setInt(1, id);
+                rst = pstm.executeQuery();
+
+                rst.next();
+                importeCancelado = rst.getDouble("movImporte");
+                importe_cancelado = Funciones.formatNumber(importeCancelado);
+                importe_cancelado_imputado = Funciones.formatNumber(importeCancelado - diferenciaImputacion);
+                rst.close();
+                pstm.close();
+            }
+            limpiar();
         } catch (SQLException ex) {
             Logger.getLogger(Alquiler.class.getName()).log(Level.SEVERE, null, ex);
         }

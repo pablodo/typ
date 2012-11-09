@@ -263,13 +263,15 @@ public class ListadoAlquileres extends javax.swing.JInternalFrame {
 			if (jcbxTipoAlquiler.getSelectedIndex() > 0){
 				query += " AND alqEstado = " + String.valueOf(jcbxTipoAlquiler.getSelectedIndex() - 1);
 			}
+            query += " ORDER BY alqUF";
             java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
             pstm.setString(1, FechasFormatter.getFechaToMySQL(fechaDesde.getCalendar()));
             pstm.setString(2, FechasFormatter.getFechaToMySQL(fechaHasta.getCalendar()));
             java.sql.ResultSet rst = pstm.executeQuery();
             
             modelo = new javax.swing.table.DefaultTableModel();
-            Object[] headers = {"Ingreso", "UF", "Apellido", "Nombre", "A", "M", "B", "D", "Observaciones", "Saldo"}; 
+            Object[] headers = {"Ingreso", "Egreso", "UF", "Apellido", "Nombre", 
+                "Celular", "A", "M", "B", "D", "Observaciones", "Saldo"}; 
             modelo.setColumnIdentifiers(headers);
             tabla.setModel(modelo);
             rst.last();
@@ -279,9 +281,11 @@ public class ListadoAlquileres extends javax.swing.JInternalFrame {
                 alquileres[rst.getRow()-1] = new Alquiler(rst.getInt("alqID"));
 				Double saldo = rst.getDouble("alqTotal") - rst.getDouble("alqImporteReserva");
                 Object[] fila = {FechasFormatter.getFechaSimpleString(rst.getString("alqFIN")),
+                                 FechasFormatter.getFechaSimpleString(rst.getString("alqFOUT")),
                                  rst.getString("ufNombre"),
                                  rst.getString("cliApellido"),
                                  rst.getString("cliNombre"),
+                                 rst.getString("cliCelular"),
                                  rst.getString("alqOcupantesA"),
                                  rst.getString("alqOcupantesM"),
                                  rst.getString("alqOcupantesB"),
