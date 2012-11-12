@@ -22,12 +22,12 @@ public class AppPrincipal extends javax.swing.JFrame {
     public final static MailSender mailSender = new MailSender(Configuracion.getInstance());
 
 	static void habilitarMenues() {
-		loginMenuItem.setEnabled(! isAdmin() && ! isUsuario()); 
 		logoutMenuItem.setEnabled(isAdmin() || isUsuario());
+		loginMenuItem.setEnabled(! logoutMenuItem.isEnabled()); 
 
 		vistaMensualMenu.setEnabled(isAdmin() || isUsuario());
 		admMenu.setEnabled(isAdmin());
-		listadosMenu.setEnabled(isAdmin() || isUsuario());
+		listadosMenu.setEnabled(isAdmin());
 		tagsMenuItem.setEnabled(isAdmin());	
 	}
 
