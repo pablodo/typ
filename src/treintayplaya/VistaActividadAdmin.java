@@ -513,12 +513,22 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
         return true;
     }
     
+    private boolean isReservaPropietarioEnabled() {
+		if (! isReservaEnabled()){
+			return false;
+		}
+        if(! AppPrincipal.isAdmin()){
+            return false;
+        }
+        return true;
+    }
+
     private void actualizarMenu() {
         reservarMenuItem.setEnabled(isReservaEnabled());
         confirmarMenuItem.setEnabled(isConfirmarEnabled());
         cerrarMenuItem.setEnabled(isCancelarEnabled());
         anularMenuItem.setEnabled(isAnularEnabled());
-        reservaPropietarioMenuItem.setEnabled(isReservaEnabled());
+        reservaPropietarioMenuItem.setEnabled(isReservaPropietarioEnabled());
         modificarMenuItem.setEnabled(isAnularEnabled());
     }
 }
