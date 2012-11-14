@@ -841,9 +841,6 @@
     </Component>
     <Component class="javax.swing.JCheckBox" name="jchkEnviarMails">
       <Properties>
-        <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="operacion != Alquiler.MODIFICAR &amp;&amp; operacion != Alquiler.PROPIETARIO&#xa;" type="code"/>
-        </Property>
         <Property name="text" type="java.lang.String" value="Enviar mails?"/>
         <Property name="enabled" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="operacion != Alquiler.PROPIETARIO &amp;&amp; ! alquiler.isPropietario()" type="code"/>

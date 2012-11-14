@@ -416,8 +416,6 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
             }
         });
 
-        jchkEnviarMails.setSelected(operacion != Alquiler.MODIFICAR && operacion != Alquiler.PROPIETARIO
-        );
         jchkEnviarMails.setText("Enviar mails?");
         jchkEnviarMails.setEnabled(operacion != Alquiler.PROPIETARIO && ! alquiler.isPropietario());
 
@@ -661,14 +659,6 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
     private void jftfImporteReservaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jftfImporteReservaFocusLost
         try {
             jftfImporteReserva.commitEdit();
-			if (operacion == Alquiler.CONFIRMAR){
-				Double importe = Double.valueOf(jftfImporteReserva.getValue().toString());
-				if (importe < alquiler.reservaMinima){
-					int respuesta = JOptionPane.showConfirmDialog(this, "La reserva mínima es de $" + alquiler.reserva_minima + ". ¿Está seguro que desea continuar?", "Importe insuficiente", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
-					if (respuesta != JOptionPane.OK_OPTION)
-						jftfImporteReserva.requestFocus();
-				}
-			}
             calcularSaldo();
         } catch (ParseException ex) {
             Logger.getLogger(AltaAlquiler.class.getName()).log(Level.SEVERE, null, ex);
@@ -816,6 +806,21 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
                 return false;
             if (! Funciones.validaComboTabla(this, (ComboTabla)jcbxCuenta, "Cuenta de depósito", false))
                 return false;
+        }
+        if (operacion == Alquiler.CONFIRMAR){
+            Double importe = Double.valueOf(jftfImporteReserva.getValue().toString());
+            if (importe < alquiler.reservaMinima){
+                String msj = "La reserva mínima es de $" + alquiler.reserva_minima + 
+                             ". ¿Está seguro que desea continuar?";
+
+                int respuesta = JOptionPane.showConfirmDialog(this, msj, "Importe insuficiente", 
+                                    JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+                if (respuesta != JOptionPane.OK_OPTION){
+                    jftfImporteReserva.requestFocus();
+                    return false;
+                }
+            }
         }
         return true;
     }
