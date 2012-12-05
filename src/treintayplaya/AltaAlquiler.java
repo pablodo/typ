@@ -799,6 +799,14 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
             return false;
         if (! Funciones.validaDateChooser(this, jdcFOUT, "Fecha de salida"))
             return false;
+        String fechaIn = FechasFormatter.getFechaToMySQL(jdcFIN.getCalendar());
+        String fechaOut = FechasFormatter.getFechaToMySQL(jdcFOUT.getCalendar());
+        int uf = ((ComboTabla)jcbxUF).getSelectedId();
+        if (operacion == Alquiler.RESERVAR && ! validaFechasDisponibles(fechaIn, fechaOut, uf)){
+            JOptionPane.showMessageDialog(this, "Las fechas ingresadas están ocupadas.", 
+                                          "Fechas ocupadas", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }
         if (operacion != Alquiler.PROPIETARIO) {
             if (! Funciones.validaComboTabla(this, (ComboTabla)jcbxCliente, "Inquilino"))
                 return false;
@@ -1075,5 +1083,25 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
 			jcbxCuentaImputada.setEnabled(false);
 		}
 	}
+
+    private boolean validaFechasDisponibles(String fechaIn, String fechaOut, int uf) {
+        String query = "SELECT alqID "
+                + "FROM Alquileres INNER JOIN DetAlquileres ON alqID = dalqAlq "
+                + "WHERE dalqFecha > ? AND dalqFecha < ? AND alqUF = ?";
+        try {
+            java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
+            pstm.setString(1, fechaIn);
+            pstm.setString(2, fechaOut);
+            pstm.setInt(3, uf);
+            java.sql.ResultSet rst = pstm.executeQuery();
+            int cont = 0;
+            while (rst.next())
+                cont++;
+            return cont == 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(AltaAlquiler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
 
 }
