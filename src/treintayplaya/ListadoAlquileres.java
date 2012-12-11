@@ -219,6 +219,7 @@ public class ListadoAlquileres extends javax.swing.JInternalFrame {
 			if (jcbxTipoAlquiler.getSelectedIndex() > 0){
 				query += " AND alqEstado = " + String.valueOf(jcbxTipoAlquiler.getSelectedIndex() - 1);
 			}
+			query += " ORDER BY alqFIN";
             java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
             pstm.setString(1, FechasFormatter.getFechaToMySQL(fechaDesde.getCalendar()));
             pstm.setString(2, FechasFormatter.getFechaToMySQL(fechaHasta.getCalendar()));
