@@ -1065,7 +1065,9 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
 		importe -= importeAnterior;
 		int destino = ((ComboTabla)jcbxFormaPagoOperacion).isItemBeforeEspecial(1)? 1:2;
         String fecha = FechasFormatter.getFechaToMySQL(new GregorianCalendar());
-		Movimientos.guardarMovimiento(0, fecha, importe, destino, "", alquiler.id, operacion);
+		if (importe != 0){
+			Movimientos.guardarMovimiento(0, fecha, importe, destino, "", alquiler.id, operacion);
+		}
 	}
 
 	private void setImputacionesHabilitadas(boolean opcion) {

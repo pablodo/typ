@@ -476,7 +476,7 @@ public class VistaActividadAdmin extends javax.swing.JInternalFrame {
         if(! AppPrincipal.isAdmin()){
             return false;
         }
-        if (!alquiler.isReserva()){
+        if (alquiler.isCancelacion() || alquiler.isPropietario()){
             return false;
         }
         return true;
