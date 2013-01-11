@@ -292,6 +292,7 @@ CREATE TABLE IF NOT EXISTS `Movimientos` (
   `movDestino` int(1) NOT NULL, /* A favor de (1: Comercializadora, 2: Propietario) */
   `movDetalle` varchar(30) COLLATE utf8_unicode_ci default '',
   `movLiquidacion` int(11) NOT NULL,
+  `movPropietario` int(11) NOT NULL,
   `movOperacion` int(11) NOT NULL, /* Igual que los Alquileres */
   PRIMARY KEY (`movID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;

@@ -333,21 +333,19 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
 		DefaultTableModel modelo;
         try {
 			String query = "SELECT alqID, ufID, alqUF, alqCuentaImpPropID, " +
-                    "p1.propID, p2.propID, alqEstado, movLiquidacion, movAlqID, " +
-                    "movID, movDestino, movImporte, ufPrecio, alqImporteSinComision, " +
-                    "alqDifImputacion, alqTotal, movFecha, p1.propNCuenta, movDetalle " +
+                    "propID, alqEstado, movLiquidacion, movAlqID, movID, " +
+                    "movDestino, movImporte, ufPrecio, alqImporteSinComision, " +
+                    "alqDifImputacion, alqTotal, movFecha, propNCuenta, movDetalle " +
                     "FROM Movimientos " +
 					"INNER JOIN Alquileres ON movAlqID = alqID " +
 					"INNER JOIN UnidadesFuncionales ON alqUF = ufID " +
-					"LEFT JOIN Propietarios as p1 ON alqCuentaImpPropID = p1.propID " +
-					"LEFT JOIN Propietarios as p2 ON alqUF = p2.propUF " +
-					"WHERE (p1.propID = ? OR p2.propID = ?) AND alqEstado = 2 AND movLiquidacion = 0 AND movAlqID != 0 " +
+					"LEFT JOIN Propietarios ON alqPropietarioImp = propID " +
+					"WHERE propID = ? AND alqEstado = 2 AND movLiquidacion = 0 AND movAlqID != 0 " +
                     "GROUP BY movID ORDER BY alqID, movFecha DESC";
             ids = new ArrayList<Integer>();
             modelo = limpiarTabla(jtblMovimientos, headers);
             java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
 			pstm.setInt(1, propID);
-			pstm.setInt(2, propID);
             java.sql.ResultSet rst = pstm.executeQuery();
             totales = new TotalMovimientos();
 			Importe importe = new Importe();
@@ -388,7 +386,7 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
                                   importe.getImporte(),
                                   importe.getImporteConDescuentos(),
                                   Movimientos.destinos[destino],
-                                  rst.getString("p1.propNCuenta"),
+                                  rst.getString("propNCuenta"),
                                   importe.getComision(),
                                   rst.getString("movDetalle")};
                 modelo.addRow(fila);
