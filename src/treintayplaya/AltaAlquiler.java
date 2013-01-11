@@ -14,6 +14,7 @@ import java.awt.Color;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -599,10 +600,11 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
             return;
 
         Double reservaCobrada = alquiler.reservaCobrada;
+		HashMap<String, Integer> propietarios = elegirPropietarios();
         boolean insert1 = false;
         try {
             cnx.setAutoCommit(false);
-            insert1 = insertAlquiler();
+            insert1 = insertAlquiler(propietarios);
             if (insert1){
                 if (operacion == Alquiler.CONFIRMAR || operacion == Alquiler.CANCELAR){
                     generarMovimiento(reservaCobrada);
@@ -833,17 +835,19 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         return true;
     }
 
-    private boolean insertAlquiler() throws SQLException{
+    private boolean insertAlquiler(HashMap<String, Integer> propietarios) throws SQLException{
         String query = "INSERT INTO Alquileres (alqFecha, alqEstado, alqOperador, alqUF, alqCliente, alqFIN, alqFOUT, "
                         + "alqOcupantesA, alqOcupantesM, alqOcupantesB, alqDesayunos, alqDesayunosImp, alqContratoCli, "
                         + "alqContratoProp, alqTotal, alqDifImputacion, alqImporteSinComision, alqVencimiento, alqFormaPagoOpe, "
                         + "alqFormaPagoImp, alqObservaciones, alqImporteMinReserva, alqCuentaOpePropID, alqCuentaImpPropId, "
-                        + "alqImporteReserva) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)";
+                        + "alqImporteReserva, alqEmailPropietario, alqPropietarioOpe, alqPropietarioImp) "
+						+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?)";
         if (alquiler.id > 0){
             query = "UPDATE Alquileres SET alqFecha=?, alqEstado=?, alqOperador=?, alqUF=?, alqCliente=?, alqFIN=?, alqFOUT=?, "
                     + "alqOcupantesA=?, alqOcupantesM=?, alqOcupantesB=?, alqDesayunos=?, alqDesayunosImp=?, alqContratoCli=?, "
                     + "alqContratoProp=?, alqTotal=?, alqDifImputacion=?, alqImporteSinComision=?, alqVencimiento=?, alqFormaPagoOpe=?, "
-                    + "alqFormaPagoImp=?, alqObservaciones=?, alqImporteReserva=?, alqCuentaOpePropId=?, alqCuentaImpPropId=? "
+                    + "alqFormaPagoImp=?, alqObservaciones=?, alqImporteReserva=?, alqCuentaOpePropId=?, alqCuentaImpPropId=?, "
+					+ "alqEmailPropietario=?, alqPropietarioOpe=?, alqPropietarioImp=? "
                     + "WHERE alqID=?";
         }
 
@@ -881,10 +885,12 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         pstm.setDouble(22, Double.valueOf(jftfImporteReserva.getValue().toString()));
 		pstm.setInt   (23, ((ComboTabla)jcbxCuenta).getSelectedId());
 		pstm.setInt   (24, ((ComboTabla)jcbxCuentaImputada).getSelectedId());
+		pstm.setInt   (25, propietarios.get("operacion"));
+		pstm.setInt   (26, propietarios.get("imputacion"));
+		pstm.setInt   (27, propietarios.get("email"));
         if(alquiler.id > 0){
-            pstm.setInt(25, this.alquiler.id);
+            pstm.setInt(28, this.alquiler.id);
         }
-        
         int result = pstm.executeUpdate();
         return result == 1;
     }
@@ -933,7 +939,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
             throw new NullPointerException("alquilerID debe ser mayor a 0");
         }
         try {
-            String query = "SELECT * FROM Alquileres INNER JOIN UsuariosWeb ON alqOperador= usrID WHERE alqID = ?";
+            String query = "SELECT * FROM Alquileres WHERE alqID = ?";
             java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
             pstm.setInt(1, alquilerID);
             java.sql.ResultSet rst = pstm.executeQuery();
@@ -942,7 +948,7 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
 			alquiler = new Alquiler(alquiler.id);
             jlblAlqFecha.setText(FechasFormatter.getFechaSimpleString(rst.getString("alqFecha")));
             jdcVencimiento.setCalendar(FechasFormatter.getFechaCalendar(rst.getString("alqVencimiento")));
-            jcbxOperador.setSelectedItemById(rst.getInt("usrID"));
+            jcbxOperador.setSelectedItemById(rst.getInt("alqOperador"));
             selectUF(rst.getInt("alqUF"));
             ((ComboTabla)jcbxCliente).setSelectedItemById(rst.getInt("alqCliente"));
             jdcFIN.setCalendar(FechasFormatter.getFechaCalendar(rst.getString("alqFIN")));
@@ -1105,5 +1111,69 @@ public class AltaAlquiler extends javax.swing.JInternalFrame {
         }
         return false;
     }
+
+	private HashMap<String, Integer> elegirPropietarios() {
+		/* Casos
+		 * | Destino   | Cuenta    | 
+		 * | Ope | Imp | Ope | Imp | 
+		 * |   C |   C |   X |   X | Pide propietario para email
+		 * |   C |   P |   X |   0 | Pide propietario para imputacion/email 
+		 * |   C |   P |   X |   1 | No pide propietario 
+		 * |   P |   P |   0 |   0 | Pide propietario para ope/imp/email
+		 * |   P |   P |   1 |   1 | No pide propietario
+		 */
+
+		HashMap<String, Integer> propietarios = new HashMap();
+		boolean operacionPropietario = ((ComboTabla)jcbxFormaPagoOperacion).isItemAfterEspecial(1);
+		boolean imputacionPropietario = ((ComboTabla)jcbxFormaPagoImputacion).isItemAfterEspecial(1);
+		ComboTabla comboOperacion = (ComboTabla)jcbxCuenta;
+		ComboTabla comboImputacion = (ComboTabla)jcbxCuentaImputada;
+		int uf = ((ComboTabla)jcbxUF).getSelectedId();
+
+		int idSeleccionado = 0;
+		
+		int id = alquiler.intPropietarioOpeID; 
+		if (id == 0){
+			id = comboOperacion.getSelectedId();
+		}
+		//Si esta en 0 y no es en la comercializadora,
+		//tengo que saber a que propietario le estoy dando la plata
+		if (id == 0 && operacionPropietario){
+			idSeleccionado = elegirPropietario(uf);	
+			id = idSeleccionado;
+		}
+		propietarios.put("operacion", id);
+
+		id = alquiler.intPropietarioImpID; 
+		if (id == 0){
+			id = comboImputacion.getSelectedId();
+		}
+		if (id == 0 && imputacionPropietario){
+			if (idSeleccionado == 0){
+				idSeleccionado = elegirPropietario(uf);	
+			}
+			id = idSeleccionado;
+		}
+		propietarios.put("imputacion", id);
+
+		id = propietarios.get("operacion");
+		if (id < 1){
+			id = propietarios.get("imputacion");
+		}
+		if (id < 1){
+			if (idSeleccionado < 1){
+				idSeleccionado = elegirPropietario(uf);
+			}
+			id = idSeleccionado;
+		}
+		propietarios.put("email", id);
+		return propietarios;
+	}
+
+	private int elegirPropietario(int uf){
+		String query = "SELECT propID, CONCAT(propApellido, ', ', propNombre) as nombre "
+					 + "FROM Propietarios WHERE propUF=" + String.valueOf(uf);
+		return DialogSelector.seleccionar("Seleccione un propietario", query, "propID", "nombre");
+	}
 
 }

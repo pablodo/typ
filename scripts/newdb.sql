@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS `Alquileres` (
   `alqFecha` datetime NOT NULL,
   `alqOperador` int(11) NOT NULL,
   `alqUF` int(11) NOT NULL,
+  `alqEmailPropietario` int(11) NOT NULL,
   `alqCuentaOpePropID` int(11) NOT NULL,
   `alqCuentaImpPropID` int(11) NOT NULL,
   `alqCliente` int(11) NOT NULL,
@@ -45,6 +46,8 @@ CREATE TABLE IF NOT EXISTS `Alquileres` (
   `alqVencimiento` datetime NOT NULL,
   `alqFormaPagoOpe` int(11) NOT NULL,
   `alqFormaPagoImp` int(11) NOT NULL,
+  `alqPropietarioOpe` int(11) NOT NULL,
+  `alqPropietarioImp` int(11) NOT NULL,
   `alqObservaciones` varchar(600) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`alqID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;

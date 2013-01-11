@@ -30,6 +30,9 @@ public class Alquiler{
     Double diferenciaImputacion;
     Integer operador = 0;
     Integer id = 0;
+	Integer intPropietarioOpeID = 0;
+	Integer intPropietarioImpID = 0;
+	Integer intPropietarioEmail = 0;
 	String nombre_propietario = "";
 	String apellido_propietario = "";
     @Tag String nombre = "";
@@ -114,14 +117,14 @@ public class Alquiler{
             java.sql.Connection cnx = Conexion.getInstance().getConnection();
             String query = "SELECT * FROM Alquileres " + 
                            "INNER JOIN UnidadesFuncionales ON alqUF = ufID " + 
-                           "LEFT JOIN Propietarios as p ON propUF = ufID " + 
+                           "LEFT JOIN Propietarios as p ON p.propID = alqEmailPropietario " +
                            "LEFT JOIN Clientes ON alqCliente = cliID " +
-                           "LEFT JOIN FormasPago as fp1 ON alqFormaPagoOpe = fp1.fpID " +
-                           "LEFT JOIN FormasPago as fp2 ON alqFormaPagoImp = fp2.fpID " +
                            "LEFT JOIN Propietarios as p1 ON p1.propID = alqCuentaOpePropID " +
+                           "LEFT JOIN FormasPago as fp1 ON alqFormaPagoOpe = fp1.fpID " +
                            "LEFT JOIN TCuentas as t1 ON p1.propTCuenta = t1.tcID " +
                            "LEFT JOIN Bancos as b1 ON p1.propBanco = b1.bancoID " +
                            "LEFT JOIN Propietarios as p2 ON p2.propID = alqCuentaImpPropID " +
+                           "LEFT JOIN FormasPago as fp2 ON alqFormaPagoImp = fp2.fpID " +
                            "LEFT JOIN TCuentas as t2 ON p2.propTCuenta = t2.tcID " +
                            "LEFT JOIN Bancos as b2 ON p2.propBanco = b2.bancoID " +
                            "WHERE alqID = ?";
@@ -137,6 +140,9 @@ public class Alquiler{
             dblTotalImputado = dblTotal - diferenciaImputacion;
             dblSaldoPendiente = dblTotal - reservaCobrada;
             dblSaldoPendienteImputado = dblTotalImputado - reservaCobrada;
+			intPropietarioEmail = rst.getInt("alqEmailPropietario");
+			intPropietarioOpeID = rst.getInt("alqPropietarioOpe");
+			intPropietarioImpID = rst.getInt("alqPropietarioImp");
 
             nombre = rst.getString("cliNombre");
             apellido = rst.getString("cliApellido");
@@ -147,10 +153,7 @@ public class Alquiler{
             fecha_vencimiento = FechasFormatter.getFechaSimpleString(rst.getString("alqVencimiento"));
             uf = rst.getString("ufNombre");
             email = rst.getString("cliEmail");
-            email_propietario = rst.getString("p2.propEmail");
-			if (email_propietario == null){
-				email_propietario = rst.getString("p.propEmail");
-			}
+            email_propietario = rst.getString("p.propEmail");
             reserva_cobrada = Funciones.formatNumber(reservaCobrada);
             reserva_minima = Funciones.formatNumber(reservaMinima);
             total = Funciones.formatNumber(dblTotal);

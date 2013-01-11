@@ -91,6 +91,7 @@ public class MailSender {
         } catch (Exception ex) {
             String params = "\n" + mailTo + "\n" + asunto + "\n" + mensaje;
             Logger.getLogger(MailSender.class.getName()).log(Level.SEVERE, ex + params);
+			throw new Exception(ex + params);
         }
     }
     
