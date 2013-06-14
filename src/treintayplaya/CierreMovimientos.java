@@ -12,6 +12,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.*;
 
@@ -26,6 +27,7 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
      */
     public static java.sql.Connection cnx;
     private ArrayList<Integer> ids;
+    private ArrayList<Integer> idsHistoricos;
     private String[] headers = {"Fecha", 
 								"Importe",
 								"Importe con Descuentos",
@@ -72,6 +74,8 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        menuHistorico = new javax.swing.JPopupMenu();
+        menuBorrar = new javax.swing.JMenuItem();
         jbtnCerrar = new javax.swing.JButton();
         jpnlMovimientos = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -88,6 +92,15 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
         jlblSaldo = new javax.swing.JLabel();
         lblPropietario = new javax.swing.JLabel();
         jcbxPropietarios = new treintayplaya.ComboTabla();
+
+        menuBorrar.setMnemonic('B');
+        menuBorrar.setText("Borrar");
+        menuBorrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuBorrarActionPerformed(evt);
+            }
+        });
+        menuHistorico.add(menuBorrar);
 
         setClosable(true);
         setMaximizable(true);
@@ -122,7 +135,16 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
         jtblTotales.setGridColor(new java.awt.Color(204, 204, 204));
         jScrollPane2.setViewportView(jtblTotales);
 
+        jtblHistorico.setComponentPopupMenu(menuHistorico);
         jtblHistorico.setGridColor(new java.awt.Color(204, 204, 204));
+        jtblHistorico.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jtblHistoricoMousePressed(evt);
+            }
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtblHistoricoMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(jtblHistorico);
 
         lblHistorico.setText("Histórico");
@@ -223,7 +245,7 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
                 .add(jpnlMovimientos, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(18, 18, 18)
                 .add(jbtnCerrar)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         pack();
@@ -254,12 +276,15 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
                 Logger.getLogger(CierreMovimientos.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        limpiarTodo();
+    }//GEN-LAST:event_jbtnSaldarActionPerformed
+
+    private void limpiarTodo(){
         habilitarMovimientos(false);
 		jtblHistorico.setModel(new DefaultTableModel());
         jcbxPropietarios.setSelectedIndex(-1);
         jcbxPropietarios.requestFocus();
-    }//GEN-LAST:event_jbtnSaldarActionPerformed
-
+    }
 	private void jcbxPropietariosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbxPropietariosItemStateChanged
         jlblImporteLiquidacion.setText("Importe liquidación:");
         jlblSaldo.setText("");
@@ -274,6 +299,7 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
 		}else{
 			habilitarMovimientos(false);
 		}
+        actualizarMenuHistorico();
 	}//GEN-LAST:event_jcbxPropietariosItemStateChanged
 
     private void jftfImporteLiquidacionFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jftfImporteLiquidacionFocusLost
@@ -284,6 +310,33 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jftfImporteLiquidacionFocusLost
 
+    private void jtblHistoricoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtblHistoricoMouseClicked
+        actualizarMenuHistorico();
+    }//GEN-LAST:event_jtblHistoricoMouseClicked
+
+    private void jtblHistoricoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtblHistoricoMousePressed
+        actualizarMenuHistorico();
+    }//GEN-LAST:event_jtblHistoricoMousePressed
+
+    private void menuBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuBorrarActionPerformed
+        String msj = "¿Está seguro que desea eliminar la liquidación por el importe de ";
+        int fila = jtblHistorico.getSelectedRow();
+        int col = jtblHistorico.getColumnCount() - 1;
+        msj += jtblHistorico.getValueAt(fila, col);
+        msj += "?";
+        int result = JOptionPane.showConfirmDialog(null, msj, "Confirmar borrado", 
+                     JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION) {
+            try{
+                borrarLiquidacion(idsHistoricos.get(fila));    
+                limpiarTodo();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e.getMessage(), 
+                        "Error en borrado", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_menuBorrarActionPerformed
+
     public void cargaLiquidaciones(int propID){
 		DefaultTableModel modelo;
         saldo = 0.0;
@@ -292,9 +345,11 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
                          + "WHERE liqPropietario = ?";
             java.sql.PreparedStatement pstm = cnx.prepareStatement(query);
             modelo = limpiarTabla(jtblHistorico, historicoHeaders);
+            idsHistoricos = new ArrayList<Integer>();
             pstm.setInt(1, propID);
             java.sql.ResultSet rst = pstm.executeQuery();
             while (rst.next()){
+                idsHistoricos.add(rst.getInt("liqID"));
                 Double importe = rst.getDouble("liqImporte");
                 Double aCobrar = rst.getDouble("liqACobrar");
                 Double aPagar = rst.getDouble("liqAPagar");
@@ -453,6 +508,8 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
     private javax.swing.JLabel lblHistorico;
     private javax.swing.JLabel lblMovimientos;
     private javax.swing.JLabel lblPropietario;
+    private javax.swing.JMenuItem menuBorrar;
+    private javax.swing.JPopupMenu menuHistorico;
     // End of variables declaration//GEN-END:variables
 
     private boolean valida() {
@@ -465,6 +522,28 @@ public class CierreMovimientos extends javax.swing.JInternalFrame {
 		modelo.setColumnIdentifiers(headers);
 		return modelo;
 	}
+
+    private void borrarLiquidacion(Integer liqID) throws SQLException {
+        String sql = "DELETE FROM Liquidaciones WHERE liqID = ?";
+        java.sql.PreparedStatement pstm = cnx.prepareStatement(sql);    
+        pstm.setInt(1, liqID);
+        pstm.execute();
+        pstm.close();
+
+        sql = "UPDATE Movimientos SET movLiquidacion = 0 WHERE movLiquidacion = ?";
+        pstm = cnx.prepareStatement(sql);    
+        pstm.setInt(1, liqID);
+        pstm.execute();
+        pstm.close();
+    }
+
+    private void actualizarMenuHistorico() {
+        if (jtblHistorico.getSelectedRow() < 0) {
+            menuBorrar.setEnabled(false);
+        } else {
+            menuBorrar.setEnabled(true);
+        }
+    }
 
     private class RenderMovimientos extends DefaultTableCellRenderer implements TableCellRenderer {
          
